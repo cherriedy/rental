@@ -1,0 +1,107 @@
+@use "../../theme/" as *;
+
+#category {
+    width: 1100px;
+    margin: 20px auto;
+
+    .left-col {
+        float: left;
+        width: 730px;
+        margin-right: 12px;
+
+        .card {
+            // padding: 6px 12px;
+
+            .card-header {
+                .card-title {
+                    font-size: 1.2rem;
+                    font-weight: 700;
+                }
+
+                .sort-by {
+                    margin: 10px 0;
+                    font-size: 0.75rem;
+
+                    a {
+                        display: inline-block;
+                        margin-left: 5px;
+                        text-decoration: none;
+                        padding: 5px 10px;
+                        background-color: $light;
+                        border-radius: 5px;
+                    }
+                }
+            }
+
+            .card-body {
+                .card-item {
+                    display: flex;
+                    justify-content: space-between;
+
+                    .card-item-img {
+                        width: 450px;
+                        height: 250px;
+                        border-radius: 5px;
+                        overflow: hidden;
+                    }
+                }
+
+                .card-info {
+                    padding-left: 12px;
+
+                    .post-title {
+                        display: block;
+                        color: $primary;
+                        font-size: 1rem;
+                        font-weight: 600;
+                        text-transform: uppercase;
+                        white-space: normal;
+                        padding-bottom: 12px;
+                    }
+
+                    .post-row {
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        padding-bottom: 12px;
+
+                        .post-price {
+                            font-size: 1.2rem;
+                            font-weight: 700;
+                            color: #16c784;
+                        }
+
+                        .post-time {
+                            font-size: 0.9rem;
+                            color: #aaa;
+                        }
+
+                        .post-summary {
+                            color: #8a8d91;
+                            text-align: justify;
+                        }
+
+                        .post-author {
+                            display: flex;
+                            align-items: center;
+                            justify-content: space-between;
+
+                            img {
+                                width: 30px;
+                                height: 30px;
+                                object-fit: cover;
+                                border-radius: 50%;
+                                overflow: hidden;
+                                margin-right: 5px;
+                            }
+
+                            .author-name {
+                                color: #8a8d91;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

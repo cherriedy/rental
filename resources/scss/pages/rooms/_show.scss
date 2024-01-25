@@ -1,0 +1,36 @@
+@use './../../theme/variables' as *;
+
+.rm-bagde {
+    padding: 6px 12px;
+    border-radius: 100px;
+    background-color: $gray-200;
+}
+
+.rm-bagde-primary {
+    padding: 6px 12px;
+    border: 2px solid $green;
+    border-radius: 100px;
+}
+
+.img-rounded-container {
+    width: 100%;
+    height: 350px;
+    border: none;
+    border-radius: 10px;
+    overflow: hidden;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+
+.dropzoneDragDrop {
+    background-color: #fbfdff;
+    border: 1px dashed $secondary;
+    border-radius: 6px;
+    padding: 60px;
+    text-align: center;
+    cursor: pointer;
+}

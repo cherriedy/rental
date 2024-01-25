@@ -1,0 +1,109 @@
+@extends('layouts.layout')
+
+@section('title', $user->name)
+
+@section('content')
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">User</li>
+        <li class="breadcrumb-item ">Profile</li>
+        <li class="breadcrumb-item ">Edit</li>
+        <li class="breadcrumb-item active">{{ $user->name }}</li>
+    </ol>
+
+    <div class="col-6">
+        <div class="card">
+            <div class="px-3 pt-4 pb-2">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center">
+
+                        <img style="width: 150px" class="me-3 avatar-sm rounded-circle"
+                            src="{{ url('storage/' . $user->avatar) }}" alt="{{ $user->name }}">
+
+                        <div>
+                            <h3 class="card-title mb-0"><a href="/profile">{{ $user->name }}</a></h3>
+                            <span class="fs-6 text-muted">@~{{ $user->name }}</span>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <form class="px-4 py-4" method="POST" action="{{ route('users.update', $user->id) }}"
+                enctype="multipart/form-data" id="update-user-form">
+                @csrf
+                @method('PUT')
+
+                <div class="form-group">
+                    <label for="formFile" class="form-label mt-4">Avatar</label>
+                    <input class="form-control" type="file" name="avatar">
+                    @error('avatar')
+                        <span class="d-block text-danger fs-6">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div class="form-group">
+                    <label for="exampleInputEmail1" class="form-label mt-4">Name</label>
+                    <input type="text" class="form-control" name="name" value="{{ $user->name }}">
+                </div>
+
+                <div class="form-group">
+                    <label for="exampleInputEmail1" class="form-label mt-4">Email address</label>
+                    <input type="email" class="form-control" name="email" value="{{ $user->email }}" disabled>
+                    <small class="form-text text-muted">Email sử dụng để đăng nhập tài khoản!</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="exampleInputEmail1" class="form-label mt-4">Phone</label>
+                    <input type="tel" class="form-control" name="phone" value="{{ $user->phone }}">
+                    @error('phone')
+                        <span class="d-block text-danger fs-6">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div class="form-group">
+                    <label for="exampleInputEmail1" class="form-label mt-4">Facebook</label>
+                    <input type="text" class="form-control" name="facebook" value="{{ $user->facebook }}">
+                </div>
+
+                <a href="" class="d-block text-decoration-none mt-3">Đổi mật khẩu tài khoản</a>
+                <a href="{{ route('users.show', $user->id) }}" class="btn btn-primary mt-2">Cancel</a>
+
+                <button type="submit" class="btn btn-primary mt-2">Save</button>
+            </form>
+        </div>
+    </div>
+    </div>
+@endsection
+
+{{-- @section('script')
+    <script>
+        $('#update-user-form').submit(function(e) {
+            e.preventDefault();
+
+            var url = '{{ route('api.users.update', $user->id) }}';
+            let formData = $('#update-user-form').serialize();
+
+            $.ajax({
+                type: "PUT",
+                url: url,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                },
+                data: formData,
+                dataType: "JSON",
+                success: function(response) {
+                    if (response.status_code == 422) {
+                        response.errors.forEach(error => {
+                            $.notify(error, "error");
+                        });
+                    } else if (response.status_code == 200) {
+                        $.notify(response.message, "success");
+                    }
+                },
+                error: function(response) {
+                    $.notify('Ầy, có vẻ là lỗi rồi!', "error");
+                }
+            });
+        });
+    </script>
+@endsection --}}
