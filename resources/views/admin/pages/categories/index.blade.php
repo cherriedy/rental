@@ -1,6 +1,6 @@
 @extends('admin.layouts.layout')
 
-@section('title', 'Quản lý vị trí')
+@section('title', 'Quản lý danh mục')
 
 @section('content')
     <table class="table">
@@ -8,25 +8,23 @@
             <tr>
                 <th scope="col">ID</th>
                 <th scope="col">Tên</th>
-                <th scope="col">Loại</th>
                 <th scope="col">Ngày tạo</th>
                 <th scope="col">Trạng thái</th>
                 <th scope="col">Chức năng</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($locations as $location)
+            @foreach ($categories as $category)
                 <tr>
-                    <th scope="row">{{ $location->id }}</th>
-                    <td scope="row">{{ $location->name }}</td>
-                    <td scope="row">{{ $location->getLocationType() }}</td>
-                    <td scope="row">{{ date('d-m-Y', strtotime($location->created_at)) }}</td>
-                    <td scope="row">{{ $location->getLocationStatus() }}</td>
+                    <th scope="row">{{ $category->id }}</th>
+                    <td scope="row">{{ $category->name }}</td>
+                    <td scope="row">{{ date('d-m-Y', strtotime($category->created_at)) }}</td>
+                    <td scope="row">{{ $category->getCategoryStatus() }}</td>
                     <td scope="row">
-                        <a href="{{ route('admins.locations.update', $location->id) }}"><i
+                        <a href="{{ route('admins.categories.update', $category->id) }}"><i
                                 class="fa-solid fa-pen-to-square"></i></a>
 
-                        <a href="{{ route('admins.locations.delete', $location->id) }}"><i
+                        <a href="{{ route('admins.categories.delete', $category->id) }}"><i
                                 class="fa-solid fa-trash"></i></a>
                     </td>
                 </tr>
