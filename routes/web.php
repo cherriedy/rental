@@ -49,5 +49,13 @@ Route::group(['prefix' => 'images', 'as' => 'images.', 'middleware' => 'auth'], 
 
 Route::group(['prefix' => 'admins', 'as' => 'admins.', 'middleware' => 'admin'], function() {
     Route::get('dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
-    Route::resource('locations', AdminLocationController::class);
+    Route::group(['prefix' => 'locations', 'as' => 'locations'], function() {
+        Route::get('', [AdminLocationController::class, 'index'])->name('index');
+
+        Route::get('create', [AdminLocationController::class, 'create'])->name('create');
+        Route::post('create', [AdminLocationController::class, 'store']);
+
+        Route::get('edit/{id}', [AdminLocationController::class, 'edit'])->name('edit');
+        Route::put('edit/{id}', [AdminLocationController::class, 'update']);
+    });
 });

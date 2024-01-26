@@ -5,7 +5,7 @@
 @section('content')
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/profile" class="text-decoration-none">{{ Auth::user()->name }}</a></li>
-        <li class="breadcrumb-item"><a href="\rooms" class="text-decoration-none">Quản lý phòng</a></li>
+        <li class="breadcrumb-item"><a href="/rooms" class="text-decoration-none">Quản lý phòng</a></li>
         <li class="breadcrumb-item active">Sửa tin</li>
     </ol>
 
