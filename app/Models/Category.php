@@ -10,7 +10,14 @@ class Category extends Model
 {
     use HasFactory;
 
-    protected $guared = [''];
+    // protected $guared = [];
+    protected $fillable = [
+        'name',
+        'slug',
+        'title',
+        'description',
+        'status',
+    ];
 
     protected $CategoryStatus = [
         1 => 'Hiển thị',

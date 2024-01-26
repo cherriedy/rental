@@ -12,6 +12,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Shared\UserProfileController;
 use App\Http\Controllers\Admin\AdminLocationController;
 use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\AdminUserController;
 
 Route::get('/', function () { return view('welcome'); });
 
@@ -50,8 +51,8 @@ Route::group(['prefix' => 'images', 'as' => 'images.', 'middleware' => 'auth'], 
     Route::post('', [ImageController::class, 'store'])->name('store');
     Route::delete('', [ImageController::class, 'destroy'])->name('destroy');
 });
-/* ADMIN */
 
+/* ADMIN */
 Route::group(['prefix' => 'admins', 'as' => 'admins.', 'middleware' => 'admin'], function() {
     Route::get('dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
 
@@ -64,7 +65,7 @@ Route::group(['prefix' => 'admins', 'as' => 'admins.', 'middleware' => 'admin'],
         Route::get('{location}/update', [AdminLocationController::class, 'edit'])->name('update');
         Route::post('{location}/update', [AdminLocationController::class, 'update']);
 
-        Route::delete('{location}/delete', [AdminLocationController::class, 'destroy'])->name('delete');
+        Route::get('{location}/delete', [AdminLocationController::class, 'destroy'])->name('delete');
     });
 
     Route::group(['prefix' => 'categories', 'as' => 'categories.'], function() {
@@ -76,7 +77,10 @@ Route::group(['prefix' => 'admins', 'as' => 'admins.', 'middleware' => 'admin'],
         Route::get('{category}/update', [AdminCategoryController::class, 'edit'])->name('update');
         Route::post('{category}/update', [AdminCategoryController::class, 'update']);
 
-        Route::delete('{category}/delete', [AdminCategoryController::class, 'destroy'])->name('delete');
+        Route::get('{category}/delete', [AdminCategoryController::class, 'destroy'])->name('delete');
     });
+
+    Route::resource('users', AdminUserController::class)->only(['index', 'edit', 'update']);
+    Route::get('users/{user}/delete', [AdminUserController::class, 'destroy'])->name('users.delete');
 });
 

@@ -21,12 +21,12 @@
 
             <div class="mt-3">
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="status" id="status-show" value="1">
+                    <input class="form-check-input" type="radio" name="status" id="status-show" value="1" {{($category->status ?? 0) == 1 ? 'checked' : ''}} >
                     <label class="form-check-label" for="status-show">Hiển thị</label>
                 </div>
 
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="status" id="status-hide" value="2">
+                    <input class="form-check-input" type="radio" name="status" id="status-hide" value="2" {{($category->status ?? 0) == 2 ? 'checked' : ''}}>
                     <label class="form-check-label" for="status-hide">Tạm ẩn</label>
                 </div>
             </div>
