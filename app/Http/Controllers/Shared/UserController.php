@@ -46,6 +46,10 @@ class UserController extends Controller
         ]);
     }
 
+    /* AJAX */
+
+
+
     /* ADMINISTRATION */
     public function destroy(User $user) {
         $this->authorize('delete', $user);

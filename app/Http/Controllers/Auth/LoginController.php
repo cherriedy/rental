@@ -20,7 +20,7 @@ class LoginController extends Controller
 
         if (Auth::attempt($validated)) {
             if (Auth::user()->isAdmin) {
-                return redirect()->route('admin.dashboard');
+                return redirect()->route('admins.dashboard');
             }
 
             return redirect()->route('index')->with('success', 'Đăng nhập thành công!');

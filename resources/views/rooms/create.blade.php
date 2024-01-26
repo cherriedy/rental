@@ -15,7 +15,7 @@
 
     <hr>
 
-    <form id="create-room-form" action="{{ route('rooms.store') }}" method="POST" enctype="multipart/form-data"
+    <form id="create-room-form" action="/" method="POST" enctype="multipart/form-data"
         class="form-horizontal">
         @csrf
 
@@ -257,7 +257,7 @@
         $('#create-room-form').submit(function(e) {
             e.preventDefault();
 
-            var url = '{{ route('api.rooms.store') }}';
+            var url = '{{ route('rooms.store') }}';
             let formData = $('#create-room-form').serialize();
 
             $.ajax({

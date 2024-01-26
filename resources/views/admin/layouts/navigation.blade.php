@@ -7,34 +7,18 @@
         <div class="collapse navbar-collapse" id="navbarColor04">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a href="/" class="nav-link">
+                    <a href="{{ route('admins.dashboard') }}" class="nav-link">
                         <div style="width: 120px; height: auto;">
                             <img src="{{ Vite::asset('resources/images/logo-no-background.png') }}" alt=""
                                 style="width: 100%; height: 100%; object-fit: cover;">
                         </div>
                     </a>
-                </li>
 
-                @foreach ($_CATEGORY ?? [] as $item)
-                    <li class="nav-item">
-                        <a href="{{ route('public.home.category', ['slug' => $item->slug, 'id' => $item->id]) }}"
-                            class="nav-link" title="{{ $item->name }}">{{ $item->name }}</a>
-                    </li>
-                @endforeach
+                </li>
 
             </ul>
 
             <ul class="navbar-nav">
-
-                @guest
-                    <li class="nav-item">
-                        <a href="/login" class="nav-link">Đăng nhập</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a href="/register" class="nav-link">Tạo tài khoản</a>
-                    </li>
-                @endguest
 
                 @auth
                     <li class="nav-item dropdown">
@@ -61,7 +45,6 @@
                         </div>
                     </li>
 
-                    <a href="/rooms/create" class="btn btn-primary">Thêm tin mới</a>
                 @endauth
             </ul>
 

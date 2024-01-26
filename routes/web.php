@@ -1,13 +1,15 @@
 <?php
+use App\Models\Image;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ImageController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Shared\RoomController;
 use App\Http\Controllers\Shared\UserController;
 use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\ImageController;
-use App\Models\Image;
+use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\AdminLocationController;
 
 Route::get('/', function () { return view('welcome'); });
 
@@ -45,6 +47,7 @@ Route::group(['prefix' => 'images', 'as' => 'images.', 'middleware' => 'auth'], 
     Route::delete('', [ImageController::class, 'destroy'])->name('destroy');
 });
 
-Route::group(['prefix' => 'admins', 'as' => 'admins.'], function() {
-    // Route::get('dashboard', [])->;
+Route::group(['prefix' => 'admins', 'as' => 'admins.', 'middleware' => 'admin'], function() {
+    Route::get('dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+    Route::resource('locations', AdminLocationController::class);
 });

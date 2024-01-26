@@ -4,12 +4,15 @@ namespace App\Http\Controllers\Shared;
 
 use Carbon\Carbon;
 use App\Models\Room;
+use App\Models\Image;
 use App\Models\Category;
 use App\Models\Location;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Models\TemporaryFile;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\Room\CreateRoomRequest;
 use App\Http\Requests\Room\UpdateRoomRequest;
 
@@ -52,6 +55,49 @@ class RoomController extends Controller
 
     //     return redirect()->route('rooms.index')->with('success', 'Đăng bài thành công!');
     // }
+
+    /* Store with AJAX */
+    public function store(CreateRoomRequest $request)
+    {
+        $validated = $request->validated();
+
+        $validated['slug'] = Str::slug($validated['title']);
+
+        /* DEVELOPER */
+        $validated['exact_address'] = 'NULL';
+        $validated['expiration_date'] = Carbon::now();
+        /*END DEVELOPER */
+
+        if ($room = Room::create($validated)) {
+            $temporaryFiles = TemporaryFile::all();
+
+            foreach ($temporaryFiles as $temporaryFile) {
+                Storage::copy('images/tmp/' . $temporaryFile->folder . '/' . $temporaryFile->filename, 'images/' . $temporaryFile->folder . '/' . $temporaryFile->filename);
+
+                Image::create([
+                    'name' => $temporaryFile->filename,
+                    'path' => $temporaryFile->folder . '/' . $temporaryFile->filename,
+                    'room_id' => $room->id,
+                ]);
+
+                Storage::deleteDirectory('images/tmp/' . $temporaryFile->folder);
+
+                $temporaryFile->delete();
+            }
+
+            return response()->json([
+                'status_code' => '200',
+                'message' => 'Đăng bài thành công!',
+            ]);
+        } else {
+            $temporaryImages = TemporaryFile::all();
+
+            foreach ($temporaryImages as $temporaryImage) {
+                Storage::deleteDirectory('images/tmp/' . $temporaryImage->folder);
+                $temporaryImage->delete();
+            }
+        }
+    }
 
     public function edit(Room $room)
     {
