@@ -6,10 +6,10 @@ use App\Http\Controllers\ImageController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Shared\RoomController;
-use App\Http\Controllers\Shared\UserController;
 use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Shared\UserProfileController;
 use App\Http\Controllers\Admin\AdminLocationController;
+use App\Http\Controllers\Admin\AdminDashboardController;
 
 Route::get('/', function () { return view('welcome'); });
 
@@ -38,8 +38,8 @@ Route::group(['namespace' => 'Auth'], function () {
 Route::resource('rooms', RoomController::class)->middleware(['auth']);
 
 /* User */
-Route::resource('users', UserController::class)->only(['show', 'edit', 'update'])->middleware('auth');
-Route::get('/profile', [UserController::class, 'profile'])->name('profile');
+Route::resource('users', UserProfileController::class)->only(['show', 'edit', 'update'])->middleware('auth');
+Route::get('/profile', [UserProfileController::class, 'profile'])->name('profile');
 
 /* Image */
 Route::group(['prefix' => 'images', 'as' => 'images.', 'middleware' => 'auth'], function() {

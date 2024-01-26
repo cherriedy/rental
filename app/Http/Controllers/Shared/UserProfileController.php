@@ -8,7 +8,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
-class UserController extends Controller
+class UserProfileController extends Controller
 {
     public function show(User $user) {
         if (!$user) { abort(404); }
