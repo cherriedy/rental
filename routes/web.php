@@ -3,42 +3,54 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ImageController;
-use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Shared\RoomController;
-use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Shared\UserProfileController;
 use App\Http\Controllers\Public\GetRoomByLocationController;
 
-/* Homepage */
-Route::get('/', function () { return view('index'); })->name('index');
+/* PUBLIC */
+Route::get('/', function () {
+    return view('index');
+})->name('index');
+
 Route::group(['namespace' => 'Public'], function () {
     Route::get('chuyen-muc-{slug}-{id}', [HomeController::class, 'category'])
         ->where(['slug' => '[a-z-0-9-]+', 'id' => '[0-9]+'])
         ->name('public.home.category');
 });
 
-/* Room */
-Route::resource('rooms', RoomController::class)->only('index', 'create', 'edit')->middleware(['auth']);
+// Route::resource('rooms', RoomController::class)->only('index', 'create', 'edit')->middleware(['auth']);
+Route::group(['prefix' => 'rooms', 'as' => 'rooms.', 'middleware' => 'auth'], function () {
+    Route::get('', [RoomController::class, 'index'])->name('index');
+    Route::get('create', [RoomController::class, 'create'])->name('create');
 
-Route::get('rooms/{slug}-{room}', [RoomController::class, 'show'])
-    ->where(['slug' => '[a-z-0-9-]+', 'room' => '[0-9]+'])
-    ->name('rooms.show');
+    Route::post('store', [RoomController::class, 'store'])->name('store');
 
-Route::get('rooms/{room}/hide', [RoomController::class, 'hide'])->name('rooms.hide');
-Route::get('rooms/{room}/active', [RoomController::class, 'active'])->name('rooms.active');
+    Route::group(['prefix' => '{room}'], function () {
+        Route::get('edit', [RoomController::class, 'edit'])->name('edit');
+        Route::get('hide', [RoomController::class, 'hide'])->name('hide');
+        Route::get('active', [RoomController::class, 'active'])->name('active');
+
+        Route::put('update', [RoomController::class, 'update'])->name('update');
+    });
+
+    Route::get('{slug}-{room}', [RoomController::class, 'show'])
+        ->where(['slug' => '[a-z-0-9-]+', 'room' => '[0-9]+'])
+        ->name('show');
+});
 
 /* User */
-Route::resource('users', UserProfileController::class)->only(['show', 'edit', 'update'])->middleware('auth');
+Route::resource('users', UserProfileController::class)
+    ->only(['show', 'edit', 'update'])
+    ->middleware('auth');
 Route::get('profile', [UserProfileController::class, 'profile'])->name('profile');
 
 /* Image */
-Route::group(['prefix' => 'images', 'as' => 'images.', 'middleware' => 'auth'], function() {
+Route::group(['prefix' => 'images', 'as' => 'images.', 'middleware' => 'auth'], function () {
     Route::post('', [ImageController::class, 'store'])->name('store');
     Route::delete('', [ImageController::class, 'destroy'])->name('destroy');
 });
 
-/* PUBLIC */
+/* PUBLIC -> GET BY LOCATION */
 Route::get('cities/{slug}-{city}', [GetRoomByLocationController::class, 'city'])
     ->where(['slug' => '[a-z-0-9-]+', 'city' => '[0-9]+'])
     ->name('cities.index');
