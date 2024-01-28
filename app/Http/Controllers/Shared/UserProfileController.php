@@ -48,17 +48,4 @@ class UserProfileController extends Controller
 
     /* AJAX */
 
-
-
-    /* ADMINISTRATION */
-    public function destroy(User $user) {
-        $this->authorize('delete', $user);
-
-        if (!$user) { abort(404); }
-
-        if ($user->delete()) {
-            return redirect()->route('index')->with('success' , 'Tài khoản người dùng đã được xoá thành công!');
-        } else {
-        }
-    }
 }

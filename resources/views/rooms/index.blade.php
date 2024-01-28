@@ -11,7 +11,7 @@
         @include('shared.success-message')
     </div>
 
-    <table class="table">
+    <table class="table table-bordered">
         <thead>
             <tr>
                 <th scope="col">Mã tin</th>
@@ -36,16 +36,30 @@
                     </td>
 
                     <td>
-                        <span class="badge bg-primary">{{ $room->category->name }}</span> {{ $room->title }}
-                        <p class="mt-1">
-                            <a href="#" class="text-decoration-none"><i class="fa fa-refresh"></i> Đăng lại</a>
-                            <a href="#" class="text-decoration-none mx-3"><i class="fa fa-eye-slash"></i> Ẩn tin</a>
+                        <a href="{{ route('rooms.show', ['slug' => $room->slug, 'room' => $room->id]) }}"><span
+                                class="badge bg-primary">{{ $room->category->name }}</span> {{ $room->title }}</a>
+                        <p class="d-flex align-items-center mt-3">
+                            @if ($room->status == \App\Models\Room::STATUS_EXPRIED)
+                                <a href="#" class="text-decoration-none"><i class="fa fa-refresh"></i> Đăng lại</a>
+                            @endif
+
+                            <a href="{{ route('rooms.edit', $room->id) }}" class="text-decoration-none"><i
+                                    class="fa fa-refresh"></i>
+                                Sửa tin</a>
+
+                            @if ($room->status == \App\Models\Room::STATUS_HIDE)
+                                <a href="{{ route('rooms.active', $room->id) }}" class="text-decoration-none mx-3"><i
+                                        class="fa fa-eye-slash"></i> Hiển thị</a>
+                            @else
+                                <a href="{{ route('rooms.hide', $room->id) }}" class="text-decoration-none mx-3"><i
+                                        class="fa fa-eye-slash"></i> Ẩn tin</a>
+                            @endif
                         </p>
                     </td>
                     <td>{{ number_format($room->price, 0, '', ',') }} đồng / tháng</td>
                     <td>{{ date('Y-m-d', strtotime($room->created_at)) }}</td>
                     <td>{{ $room->expiration_date }}</td>
-                    <td>Hết hạn</td>
+                    <td>{{ $room->getStatus() }}</td>
                 </tr>
             @endforeach
         </tbody>

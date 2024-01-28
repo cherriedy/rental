@@ -1,24 +1,26 @@
 @extends('layouts.layout')
 
-@section('title', 'Sửa tin')
+@section('title', 'Đăng tin mới')
 
 @section('content')
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/profile" class="text-decoration-none">{{ Auth::user()->name }}</a></li>
-        <li class="breadcrumb-item"><a href="/rooms" class="text-decoration-none">Quản lý phòng</a></li>
+        <li class="breadcrumb-item"><a href="\rooms" class="text-decoration-none">Quản lý phòng</a></li>
         <li class="breadcrumb-item active">Sửa tin</li>
     </ol>
 
     <div class="d-flex align-items-center justify-content-between">
-        <h1 class="h1">Sửa tin</h1>
+        <h1 class="h1">Sửa bài đăng (Mã tin: {{ $room->id }})</h1>
     </div>
 
     <hr>
 
-    <form id="create-room-form" action="{{ route('rooms.update', $room->id) }}" method="POST" enctype="multipart/form-data"
-        class="form-horizontal">
+    <form id="update-room-form" action="/" method="POST" enctype="multipart/form-data" class="form-horizontal">
         @csrf
-        @method('put')
+        @method('PUT')
+
+        <input type="hidden" name="user_id" value="{{ Auth::id() }}">
+
         <div class="row">
             <div class="col-md-8">
                 <div class="row">
@@ -30,11 +32,13 @@
                 <div class="row mt-3">
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label for="province_id" class="col-form-label">Tỉnh/Thành phố </label>
-                            <select name="province_id" class="form-control js-select2">
+                            <label for="city_id" class="col-form-label ">Tỉnh/Thành phố </label>
+                            <select name="city_id" class="form-control js-select2 js-select-city">
                                 <option value="">-- Chọn Tỉnh/TP --</option>
-                                @foreach ($provinces as $province)
-                                    <option value="{{ $province->id }}" {{$province->id == ($room->province_id) ? 'selected' : ''}}>{{ $province->name }}</option>
+                                @foreach ($cities ?? [] as $city)
+                                    <option value="{{ $city->id }}"
+                                        {{ ($room->city_id ?? 0) == $city->id ? 'selected' : '' }}>{{ $city->name }}
+                                    </option>
                                 @endforeach
                             </select>
                         </div>
@@ -42,11 +46,13 @@
 
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label for="district_id" class="col-form-label">Quận/Huyện</label>
-                            <select name="district_id" class="form-control js-select2">
-                                <option value="">-- Chọn Quận/Huyện --</option>
-                                @foreach ($districts as $district)
-                                    <option value="{{ $district->id }}" {{$district->id == ($room->district_id) ? 'selected' : ''}}>{{ $district->name }}</option>
+                            <label for="district_id" class="col-form-label ">Quận/Huyện</label>
+                            <select name="district_id" class="form-control js-select2 js-select-district">
+                                @foreach ($districts ?? [] as $district)
+                                    <option value="{{ $district->id }}"
+                                        {{ ($room->district_id ?? 0) == $district->id ? 'selected' : '' }}>
+                                        {{ $district->name }}
+                                    </option>
                                 @endforeach
                             </select>
                         </div>
@@ -54,11 +60,12 @@
 
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label for="ward_id" class="col-form-label">Phường/Xã </label>
-                            <select name="ward_id" class="form-control js-select2">
-                                <option value="">-- Phường/Xã --</option>
-                                @foreach ($wards as $ward)
-                                    <option value="{{ $ward->id }}" {{$ward->id == ($room->ward_id) ? 'selected' : ''}}>{{ $ward->name }}</option>
+                            <label for="ward_id" class="col-form-label ">Phường/Xã</label>
+                            <select name="ward_id" class="form-control js-select2 js-select-ward">
+                                @foreach ($wards ?? [] as $ward)
+                                    <option value="{{ $ward->id }}"
+                                        {{ ($room->ward_id ?? 0) == $ward->id ? 'selected' : '' }}>{{ $ward->name }}
+                                    </option>
                                 @endforeach
                             </select>
                         </div>
@@ -66,13 +73,13 @@
 
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label for="street_id" class="col-form-label">Đường/Phố</label>
-                            <select name="street_id" class="form-control js-select2">
-                                <option value="">-- Đường/Phố --</option>
-                                <option value="0">Street 1</option>
-                                <option value="1">Street 2</option>
-                                <option value="2">Street 3</option>
-                                <option value="3">Street 4</option>
+                            <label for="street_id" class="col-form-label ">Đường/Phố</label>
+                            <select name="street_id" class="form-control js-select2 js-select-street">
+                                @foreach ($streets ?? [] as $street)
+                                    <option value="{{ $street->id }}"
+                                        {{ ($room->street_id ?? 0) == $street->id ? 'selected' : '' }}>{{ $street->name }}
+                                    </option>
+                                @endforeach
                             </select>
                         </div>
                     </div>
@@ -82,8 +89,8 @@
                     <div class="col-md-3">
                         <label for="apartment_number" class="col-form-label">Số nhà</label>
                         <div class="input-group">
-                            <input type="text" name="apartment_number" class="form-control"
-                                value="{{ $room->aparment_number ?? '' }}">
+                            <input type="text" name="apartment_number" class="form-control js-input-apartment_number"
+                                value="{{ $room->apartment_number }}">
                         </div>
                     </div>
                 </div>
@@ -92,7 +99,8 @@
                     <div class="col-md-8">
                         <div class="form-group">
                             <label for="exact_address" class="col-form-label">Địa chỉ chính xác</label>
-                            <input type="text" class="form-control" name="exact_address" value="" disabled>
+                            <input type="text" class="form-control" name="exact_address" readonly
+                                value="{{ $room->exact_address }}">
                         </div>
                     </div>
                 </div>
@@ -107,23 +115,25 @@
                         <select name="category_id" class="form-control js-select2">
                             <option value="">-- Chọn loại chuyên mục --</option>
                             @foreach ($categories as $category)
-                                <option value="{{ $category->id }}" {{$category->id == ($room->category_id) ? 'selected' : ''}}>{{ $category->name }}</option>
+                                <option value="{{ $category->id }}"
+                                    {{ $room->category_id == $category->id ? 'selected' : '' }}>{{ $category->name }}
+                                </option>
                             @endforeach
                         </select>
                     </div>
                 </div>
 
                 <div class="row mt-3">
-                    <label for="name" class="col-form-label">Tiêu đề</label>
+                    <label for="title" class="col-form-label">Tiêu đề</label>
                     <div class="col-md-8">
-                        <input type="text" class="form-control" name="name" value="{{ $room->name }}">
+                        <input type="text" class="form-control" name="title" value="{{ $room->title }}">
                     </div>
                 </div>
 
                 <div class="row mt-3">
-                    <label for="content" class="col-form-label">Nội dung mô tả</label>
+                    <label for="description" class="col-form-label">Nội dung mô tả</label>
                     <div class="col-md-8">
-                        <textarea name="content" class="form-control" rows="10" spellcheck="false" data-gram="false">{{ $room->content }}</textarea>
+                        <textarea name="description" class="form-control" rows="10" spellcheck="false" data-gram="false">{{ $room->description }}</textarea>
                     </div>
                 </div>
 
@@ -151,8 +161,8 @@
                     <label for="price" class="col-form-label">Giá cho thuê</label>
                     <div class="col-md-6">
                         <div class="input-group">
-                            <input type="text" name="price" class="form-control" pattern="[0-9.]+"
-                                value="{{ number_format($room->price, 0, '', ','); }}">
+                            <input type="text" name="price" class="form-control"
+                                value="{{ number_format($room->price, 0, '', ',') }}">
 
                             <div class="input-group-append">
                                 <span class="input-group-text">đồng / tháng</span>
@@ -162,6 +172,7 @@
 
                     <small class="form-text text-muted">Nhập đầy đủ số, ví dụ 1 triệu thì nhập là
                         1000000</small>
+                    <small class="text text-success"></small>
                 </div>
 
                 <div class="row mt-3">
@@ -177,7 +188,6 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
 
                 <div class="row mt-3">
@@ -185,9 +195,9 @@
 
                     <div class="col-md-6">
                         <select name="subject_id" class="form-control">
-                            <option value="0">-- Tất cả --</option>
-                            <option value="1">Nam</option>
-                            <option value="2">Nữ</option>
+                            <option value="0" {{ $room->subject_id == 0 ? 'selected' : '' }}>-- Tất cả --</option>
+                            <option value="1" {{ $room->subject_id == 1 ? 'selected' : '' }}>Nam</option>
+                            <option value="2" {{ $room->subject_id == 2 ? 'selected' : '' }}>Nữ</option>
                         </select>
                     </div>
                 </div>
@@ -199,15 +209,12 @@
                 </div>
 
                 <div class="row mt-3">
-                    <p>Cập nhật hình ảnh rõ ràng sẽ cho thuê nhanh hơn</p>
-
-                    <div class="form-group">
-                        <div class="browse_photos js-dropzone dz-clickable">
-                            <i class="icon-upload-image"></i>
-                            <span>Thêm Ảnh</span>
-                        </div>
+                    <div class="col-md-8">
+                        <input type="file" name="image" id="image" class="filepond" multiple
+                            data-allow-reorder="true" data-max-file-size="3MB" data-max-files="10">
                     </div>
                 </div>
+
 
                 <div class="row mt-5">
                     <div class="col-md-8">
@@ -251,8 +258,55 @@
 @endsection
 
 @section('script')
-    <!-- Laravel Javascript Validation -->
-    <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js') }}"></script>
+    <script>
 
-    {!! JsValidator::formRequest('App\Http\Requests\Room\UpdateRoomRequest') !!}
+        FilePond.registerPlugin(FilePondPluginImagePreview);
+
+        const inputElement = document.querySelector('input[id="image"]');
+        const pond = FilePond.create(inputElement);
+
+        FilePond.setOptions({
+            server: {
+                process: '{{ route('images.store') }}',
+                revert: '{{ route('images.destroy') }}',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                },
+            },
+            allowImagePreview: true,
+            imagePreviewMaxHeight: 150,
+        });
+
+
+        $('#update-room-form').submit(function(e) {
+            e.preventDefault();
+
+            var url = '{{ route('rooms.update', $room->id) }}';
+            let formData = $('#update-room-form').serialize();
+
+            $.ajax({
+                type: "PUT",
+                url: url,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data: formData,
+                dataType: "JSON",
+                success: function(response) {
+                    if (response.status_code == 422) {
+                        response.errors.forEach(error => {
+                            $.notify(error, "error");
+                        });
+                    } else if (response.status_code == 200) {
+                        $.notify(response.message, "success");
+                        window.location.replace('http://127.0.0.1:8000/rooms');
+                    }
+                },
+                error: function(response) {
+                    $.notify('Ầy, có vẻ là lỗi rồi!', "erorr");
+                }
+            });
+        });
+    </script>
+
 @endsection

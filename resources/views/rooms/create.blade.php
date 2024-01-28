@@ -71,7 +71,7 @@
                     <div class="col-md-3">
                         <label for="apartment_number" class="col-form-label">Số nhà</label>
                         <div class="input-group">
-                            <input type="text" name="apartment_number" class="form-control">
+                            <input type="text" name="apartment_number" class="form-control js-input-apartment_number">
                         </div>
                     </div>
                 </div>

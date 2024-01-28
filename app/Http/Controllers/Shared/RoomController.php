@@ -25,7 +25,7 @@ class RoomController extends Controller
         return view('rooms.index', compact('rooms'));
     }
 
-    public function show(Room $room)
+    public function show($slug, Room $room)
     {
         return view('rooms.show', compact('room'));
     }
@@ -64,7 +64,7 @@ class RoomController extends Controller
         $validated['slug'] = Str::slug($validated['title']);
 
         /* DEVELOPER */
-        $validated['exact_address'] = 'NULL';
+        // $validated['exact_address'] = 'NULL';
         $validated['expiration_date'] = Carbon::now();
         /*END DEVELOPER */
 
@@ -106,9 +106,10 @@ class RoomController extends Controller
         $cities = Location::where('type', 1)->get();
         $districts = Location::where('type', 2)->get();
         $wards = Location::where('type', 3)->get();
+        $streets = Location::where('type', 4)->get();
         $categories = Category::select('id', 'name')->get();
 
-        return view('rooms.edit', compact('room', 'cities', 'districts', 'wards', 'categories'));
+        return view('rooms.edit', compact('room', 'cities', 'districts', 'wards', 'streets', 'categories'));
     }
 
     public function update(UpdateRoomRequest $request, Room $room)
@@ -121,11 +122,37 @@ class RoomController extends Controller
         $validated['slug'] = Str::slug($validated['title']);
         $validated['exp_date'] = Carbon::now();
         $validated['price'] = Str::replace(',', '', $request['price']);
+        /* DEVELOPER */
+        // $validated['exact_address'] = 'NULL';
+        $validated['updated_at'] = Carbon::now();
 
         $room->update($validated);
 
-        return redirect()
-            ->route('rooms.show', $room)
-            ->with('success', 'Cập nhật tin thành công!');
+        return response()->json([
+            'status_code' => '200',
+            'message' => 'Cập nhật thành công!',
+        ]);
+    }
+
+    public function hide(Room $room) {
+        $room->status = Room::STATUS_HIDE;
+        $room->save();
+
+        return redirect()->back();
+    }
+
+    public function active(Room $room) {
+        $today = date('Y-m-d');
+        $checkDateOfRoom = Room::where([
+            ['created_at', '<=', $today],
+            ['expiration_date', '>=', $today],
+        ])->get();
+
+        if ($checkDateOfRoom) {
+            $room->status = Room::STATUS_ACTIVE;
+            $room->save();
+
+            return redirect()->back();
+        }
     }
 }

@@ -12,9 +12,9 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Shared\UserProfileController;
 use App\Http\Controllers\Admin\AdminLocationController;
 use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\AdminRoomController;
 use App\Http\Controllers\Admin\AdminUserController;
 
-Route::get('/', function () { return view('welcome'); });
 
 /* Homepage */
 Route::get('/', function () { return view('index'); })->name('index');
@@ -40,7 +40,14 @@ Route::group(['namespace' => 'Auth'], function () {
 });
 
 /* Room */
-Route::resource('rooms', RoomController::class)->middleware(['auth']);
+Route::resource('rooms', RoomController::class)->only('index', 'create', 'edit')->middleware(['auth']);
+
+Route::get('rooms/{slug}-{room}', [RoomController::class, 'show'])
+    ->where(['slug' => '[a-z-0-9-]+', 'room' => '[0-9]+'])
+    ->name('rooms.show');
+
+Route::get('rooms/{room}/hide', [RoomController::class, 'hide'])->name('rooms.hide');
+Route::get('rooms/{room}/active', [RoomController::class, 'active'])->name('rooms.active');
 
 /* User */
 Route::resource('users', UserProfileController::class)->only(['show', 'edit', 'update'])->middleware('auth');
@@ -80,7 +87,20 @@ Route::group(['prefix' => 'admins', 'as' => 'admins.', 'middleware' => 'admin'],
         Route::get('{category}/delete', [AdminCategoryController::class, 'destroy'])->name('delete');
     });
 
-    Route::resource('users', AdminUserController::class)->only(['index', 'edit', 'update']);
-    Route::get('users/{user}/delete', [AdminUserController::class, 'destroy'])->name('users.delete');
+    Route::group(['prefix' => 'users', 'as' => 'users.'], function() {
+        Route::get('', [AdminUserController::class, 'index'])->name('index');
+
+        Route::get('create', [AdminUserController::class, 'create'])->name('create');
+        Route::post('create', [AdminUserController::class, 'store']);
+
+        Route::get('{user}/update', [AdminUserController::class, 'edit'])->name('update');
+        Route::post('{user}/update', [AdminUserController::class, 'update']);
+
+        Route::get('{user}/delete', [AdminUserController::class, 'destroy'])->name('delete');
+    });
+
+    Route::group(['prefix' => 'rooms', 'as' => 'rooms.'], function() {
+        Route::get('', [AdminRoomController::class, 'index'])->name('index');
+    });
 });
 

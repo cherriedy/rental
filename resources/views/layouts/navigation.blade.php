@@ -25,7 +25,6 @@
             </ul>
 
             <ul class="navbar-nav">
-
                 @guest
                     <li class="nav-item">
                         <a href="/login" class="nav-link">Đăng nhập</a>
@@ -37,16 +36,29 @@
                 @endguest
 
                 @auth
-                    <li class="nav-item dropdown">
+                    <div class="d-flex flex-row align-items-center justify-content-between" style="column-gap: 12px;">
+                        <a href="{{ route('rooms.create') }}" class="btn btn-sm btn-primary">Thêm tin mới</a>
+
+                        @if (Auth::user()->isAdmin)
+                            <a href="{{ route('admins.dashboard') }}" class="btn btn-sm btn-outline-success">Quản lý</a>
+                        @endif
+                    </div>
+
+                    <div class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
                             aria-haspopup="true" aria-expanded="false">
                             <img src="{{ url('storage/', Auth::user()->avatar) }}"
                                 alt=""style="width: 25px; height: 25px; border-radius: 50%;">
-                            {{ Auth::user()->name }}
                         </a>
 
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" href="{{ route('profile') }}">Trang cá nhân</a>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <a class="dropdown-item" href="{{ route('profile') }}">
+                                <img src="{{ url('storage/', Auth::user()->avatar) }}"
+                                    style="width: 25px; height: 25px; border-radius: 50%; margin-right: 12px;">
+                                {{ Auth::user()->name }}
+                            </a>
+
+                            <div class="dropdown-divider"></div>
 
                             <a class="dropdown-item" href="/rooms">Quản lí tin đăng</a>
 
@@ -54,14 +66,8 @@
                                 @csrf
                                 <button type="submit" class="dropdown-item">Đăng xuất</a>
                             </form>
-
-                            {{-- <a class="dropdown-item" href="#">Something else here</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#">Separated link</a> --}}
                         </div>
-                    </li>
-
-                    <a href="/rooms/create" class="btn btn-primary">Thêm tin mới</a>
+                    </div>
                 @endauth
             </ul>
 

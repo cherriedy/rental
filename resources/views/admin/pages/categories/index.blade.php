@@ -3,6 +3,8 @@
 @section('title', 'Quản lý danh mục')
 
 @section('content')
+    <a href="{{ route('admins.categories.create') }}" class="btn btn-sm btn-outline-info">Thêm danh mục</a>
+
     <table class="table">
         <thead>
             <tr>

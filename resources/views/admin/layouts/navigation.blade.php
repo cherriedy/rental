@@ -20,17 +20,28 @@
 
             <ul class="navbar-nav">
 
+                <div class="d-flex align-items-center">
+                    <a href="{{ route('index') }}" class="btn btn-sm btn-outline-warning">Trang chủ</a>
+                </div>
+
                 @auth
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
                             aria-haspopup="true" aria-expanded="false">
                             <img src="{{ url('storage/', Auth::user()->avatar) }}"
                                 alt=""style="width: 25px; height: 25px; border-radius: 50%;">
-                            {{ Auth::user()->name }}
+                            {{-- {{ Auth::user()->name }} --}}
                         </a>
 
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" href="{{ route('profile') }}">Trang cá nhân</a>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <a class="dropdown-item" href="{{ route('profile') }}">
+                                <img src="{{ url('storage/', Auth::user()->avatar) }}"
+                                    style="width: 25px; height: 25px; border-radius: 50%; margin-right: 12px;">
+                                {{ Auth::user()->name }}
+                            </a>
+
+                            <div class="dropdown-divider"></div>
+
 
                             <a class="dropdown-item" href="/rooms">Quản lí tin đăng</a>
 

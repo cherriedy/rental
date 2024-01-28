@@ -3,6 +3,8 @@
 @section('title', 'Quản lý vị trí')
 
 @section('content')
+    <a href="{{ route('admins.locations.create') }}" class="btn btn-sm btn-outline-info">Thêm địa điểm</a>
+
     <table class="table">
         <thead>
             <tr>

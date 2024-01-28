@@ -11,7 +11,7 @@ class UpdateRoomRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -28,7 +28,7 @@ class UpdateRoomRequest extends FormRequest
             'street_id' => 'required',
             'category_id' => 'required',
             'apartment_number' => 'required',
-            'exact_adrress' => 'required',
+            'exact_address' => 'required',
             'title' => 'required',
             'description' => 'required',
             'price' => 'required',
