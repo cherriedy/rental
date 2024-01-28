@@ -1,7 +1,5 @@
 <?php
 
-use App\Http\Controllers\Admin\AdminCategoryController;
-use App\Models\Image;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ImageController;
@@ -10,11 +8,7 @@ use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Shared\RoomController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Shared\UserProfileController;
-use App\Http\Controllers\Admin\AdminLocationController;
-use App\Http\Controllers\Admin\AdminDashboardController;
-use App\Http\Controllers\Admin\AdminRoomController;
-use App\Http\Controllers\Admin\AdminUserController;
-
+use App\Http\Controllers\Public\GetRoomByLocationController;
 
 /* Homepage */
 Route::get('/', function () { return view('index'); })->name('index');
@@ -22,21 +16,6 @@ Route::group(['namespace' => 'Public'], function () {
     Route::get('chuyen-muc-{slug}-{id}', [HomeController::class, 'category'])
         ->where(['slug' => '[a-z-0-9-]+', 'id' => '[0-9]+'])
         ->name('public.home.category');
-});
-
-/* Auth */
-Route::group(['namespace' => 'Auth'], function () {
-    Route::group(['prefix' => 'login'], function () {
-        Route::get('', [LoginController::class, 'login'])->name('login');
-        Route::post('', [LoginController::class, 'authentication']);
-    });
-
-    Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
-
-    Route::group(['prefix' => 'register'], function () {
-        Route::get('', [RegisterController::class, 'register'])->name('register');
-        Route::post('', [RegisterController::class, 'store']);
-    });
 });
 
 /* Room */
@@ -59,48 +38,15 @@ Route::group(['prefix' => 'images', 'as' => 'images.', 'middleware' => 'auth'], 
     Route::delete('', [ImageController::class, 'destroy'])->name('destroy');
 });
 
-/* ADMIN */
-Route::group(['prefix' => 'admins', 'as' => 'admins.', 'middleware' => 'admin'], function() {
-    Route::get('dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+/* PUBLIC */
+Route::get('cities/{slug}-{city}', [GetRoomByLocationController::class, 'city'])
+    ->where(['slug' => '[a-z-0-9-]+', 'city' => '[0-9]+'])
+    ->name('cities.index');
 
-    Route::group(['prefix' => 'locations', 'as' => 'locations.'], function() {
-        Route::get('', [AdminLocationController::class, 'index'])->name('index');
+Route::get('districts/{slug}-{district}', [GetRoomByLocationController::class, 'district'])
+    ->where(['slug' => '[a-z-0-9-]+', 'district' => '[0-9]+'])
+    ->name('districts.index');
 
-        Route::get('create', [AdminLocationController::class, 'create'])->name('create');
-        Route::post('create', [AdminLocationController::class, 'store']);
-
-        Route::get('{location}/update', [AdminLocationController::class, 'edit'])->name('update');
-        Route::post('{location}/update', [AdminLocationController::class, 'update']);
-
-        Route::get('{location}/delete', [AdminLocationController::class, 'destroy'])->name('delete');
-    });
-
-    Route::group(['prefix' => 'categories', 'as' => 'categories.'], function() {
-        Route::get('', [AdminCategoryController::class, 'index'])->name('index');
-
-        Route::get('create', [AdminCategoryController::class, 'create'])->name('create');
-        Route::post('create', [AdminCategoryController::class, 'store']);
-
-        Route::get('{category}/update', [AdminCategoryController::class, 'edit'])->name('update');
-        Route::post('{category}/update', [AdminCategoryController::class, 'update']);
-
-        Route::get('{category}/delete', [AdminCategoryController::class, 'destroy'])->name('delete');
-    });
-
-    Route::group(['prefix' => 'users', 'as' => 'users.'], function() {
-        Route::get('', [AdminUserController::class, 'index'])->name('index');
-
-        Route::get('create', [AdminUserController::class, 'create'])->name('create');
-        Route::post('create', [AdminUserController::class, 'store']);
-
-        Route::get('{user}/update', [AdminUserController::class, 'edit'])->name('update');
-        Route::post('{user}/update', [AdminUserController::class, 'update']);
-
-        Route::get('{user}/delete', [AdminUserController::class, 'destroy'])->name('delete');
-    });
-
-    Route::group(['prefix' => 'rooms', 'as' => 'rooms.'], function() {
-        Route::get('', [AdminRoomController::class, 'index'])->name('index');
-    });
-});
-
+Route::get('wards/{slug}-{ward}', [GetRoomByLocationController::class, 'ward'])
+    ->where(['slug' => '[a-z-0-9-]+', 'ward' => '[0-9]+'])
+    ->name('wards.index');
