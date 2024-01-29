@@ -38,6 +38,14 @@ class RoomService
             $rooms->where('ward_id', $wardID);
         }
 
+        if ($priceRANGE = Arr::get($params, 'price_range')) {
+            $rooms->where('price_range', $priceRANGE);
+        }
+
+        if ($areaRANGE = Arr::get($params, 'area_range')) {
+            $rooms->where('area_range', $areaRANGE);
+        }
+
         return $rooms->select($self->col)->orderbyDesc('updated_at')->get();
     }
 }
