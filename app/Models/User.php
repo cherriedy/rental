@@ -25,6 +25,7 @@ class User extends Authenticatable
         'avatar',
         'facebook',
         'isAdmin',
+        'phone',
     ];
 
     /**
@@ -48,7 +49,7 @@ class User extends Authenticatable
     ];
 
     public function room() {
-        return $this->hasMany(Room::class)->orderByDesc('created_at');
+        return $this->hasMany(Room::class, 'user_id')->orderByDesc('created_at');
     }
 
 }

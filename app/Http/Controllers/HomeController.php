@@ -16,6 +16,6 @@ class HomeController extends Controller
 
         $rooms = Room::where('category_id', $id)->orderByDesc('id')->paginate(20);
 
-        return view('home.categories', compact('category'));
+        return view('public.pages.categories.index', compact('category', 'rooms'));
     }
 }

@@ -31,4 +31,16 @@ class Location extends Model
     public function getLocationStatus() {
         return Arr::get($this->LocationStatus, $this->status, '???');
     }
+
+    public function roomCity() {
+        return $this->hasMany(Room::class, 'city_id');
+    }
+
+    public function roomDistrict() {
+        return $this->hasMany(Room::class, 'district_id');
+    }
+
+    public function roomWard() {
+        return $this->hasMany(Room::class, 'ward_id');
+    }
 }

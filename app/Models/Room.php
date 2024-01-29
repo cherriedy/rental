@@ -15,6 +15,8 @@ class Room extends Model
     protected $fillable = ['user_id', 'city_id', 'district_id', 'ward_id', 'street_id', 'apartment_number', 'category_id', 'title', 'description', 'price', 'area', 'user_id', 'slug', 'exact_address', 'expiration_date', 'updated_at', 'created_at'];
     // protected $guraded = [''];
 
+    protected $with = ['user:id,name,avatar,phone'];
+
     const STATUS_ACTIVE = 1;        // Hoạt Động
     const STATUS_EXPRIED = -1;      // Hết Hạn
     const STATUS_CANCEL = 0;        // Huỷ

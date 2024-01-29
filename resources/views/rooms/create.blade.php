@@ -15,8 +15,7 @@
 
     <hr>
 
-    <form id="create-room-form" action="/" method="POST" enctype="multipart/form-data"
-        class="form-horizontal">
+    <form id="create-room-form" action="/" method="POST" enctype="multipart/form-data" class="form-horizontal">
         @csrf
 
         <input type="hidden" name="user_id" value="{{ Auth::id() }}">
@@ -67,21 +66,31 @@
                     </div>
                 </div>
 
-                <div class="row mt-3">
+                {{-- <div class="row mt-3">
                     <div class="col-md-3">
                         <label for="apartment_number" class="col-form-label">Số nhà</label>
                         <div class="input-group">
                             <input type="text" name="apartment_number" class="form-control js-input-apartment_number">
                         </div>
                     </div>
+                </div> --}}
+
+                <div class="row mt-3">
+                    <div class="col-md-3">
+                        <label for="apartment_number" class="col-form-label">Số nhà</label>
+                        <div class="input-group">
+                            <input type="text" name="apartment_number" class="form-control js-input-apartment_number"
+                                value="">
+                        </div>
+                    </div>
                 </div>
+
 
                 <div class="row mt-3">
                     <div class="col-md-8">
                         <div class="form-group">
                             <label for="exact_address" class="col-form-label">Địa chỉ chính xác</label>
-                            <input type="text" class="form-control" name="exact_address" value=""
-                                disabled="disable">
+                            <input type="text" class="form-control" name="exact_address" value="" readonly>
                         </div>
                     </div>
                 </div>

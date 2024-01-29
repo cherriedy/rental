@@ -33,7 +33,7 @@ class CreateRoomRequest extends FormRequest
             'ward_id' => 'required',
             'street_id' => 'required',
             'apartment_number' => 'required',
-            'exact_adrress' => 'required',
+            'exact_address' => 'required',
             'category_id' => 'required',
             'title' => 'required|unique:rooms',
             'image' => 'required',

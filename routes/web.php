@@ -5,6 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\Shared\RoomController;
 use App\Http\Controllers\Shared\UserProfileController;
+use App\Http\Controllers\Public\GetRoomByCategoryController;
 use App\Http\Controllers\Public\GetRoomByLocationController;
 
 /* PUBLIC */
@@ -12,13 +13,12 @@ Route::get('/', function () {
     return view('index');
 })->name('index');
 
-Route::group(['namespace' => 'Public'], function () {
-    Route::get('chuyen-muc-{slug}-{id}', [HomeController::class, 'category'])
-        ->where(['slug' => '[a-z-0-9-]+', 'id' => '[0-9]+'])
-        ->name('public.home.category');
-});
+// Route::group(['namespace' => 'Public'], function () {
+//     Route::get('chuyen-muc-{slug}-{id}', [HomeController::class, 'category'])
+//         ->where(['slug' => '[a-z-0-9-]+', 'id' => '[0-9]+'])
+//         ->name('public.home.category');
+// });
 
-// Route::resource('rooms', RoomController::class)->only('index', 'create', 'edit')->middleware(['auth']);
 Route::group(['prefix' => 'rooms', 'as' => 'rooms.', 'middleware' => 'auth'], function () {
     Route::get('', [RoomController::class, 'index'])->name('index');
     Route::get('create', [RoomController::class, 'create'])->name('create');
@@ -51,14 +51,18 @@ Route::group(['prefix' => 'images', 'as' => 'images.', 'middleware' => 'auth'], 
 });
 
 /* PUBLIC -> GET BY LOCATION */
-Route::get('cities/{slug}-{city}', [GetRoomByLocationController::class, 'city'])
+Route::get('tinh-thanh/{slug}-{city}', [GetRoomByLocationController::class, 'city'])
     ->where(['slug' => '[a-z-0-9-]+', 'city' => '[0-9]+'])
     ->name('cities.index');
 
-Route::get('districts/{slug}-{district}', [GetRoomByLocationController::class, 'district'])
+Route::get('quan-huyen/{slug}-{district}', [GetRoomByLocationController::class, 'district'])
     ->where(['slug' => '[a-z-0-9-]+', 'district' => '[0-9]+'])
     ->name('districts.index');
 
-Route::get('wards/{slug}-{ward}', [GetRoomByLocationController::class, 'ward'])
+Route::get('phuong-xa/{slug}-{ward}', [GetRoomByLocationController::class, 'ward'])
     ->where(['slug' => '[a-z-0-9-]+', 'ward' => '[0-9]+'])
     ->name('wards.index');
+
+Route::get('chuyen-muc-{slug}-{category}', [GetRoomByCategoryController::class, 'index'])
+    ->where(['slug' => '[a-z-0-9-]+', 'ward' => '[0-9]+'])
+    ->name('category.getRoom');

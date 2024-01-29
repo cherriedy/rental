@@ -12,7 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('rooms', function (Blueprint $table) {
-            $table->tinyInteger('status')->default(1)->comment('1: Hoạt đông - 2: Ẩn - 0: Huỷ - (-1): Hết hạn');
+            // $table->tinyInteger('price_range')->default(1)->comment('Khoảng giá của phòng');
+            // $table->tinyInteger('_range')
+            // $table->tiny
         });
     }
 
@@ -22,7 +24,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('rooms', function (Blueprint $table) {
-            $table->dropColumn('status');
+            //
         });
     }
 };
