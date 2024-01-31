@@ -11,5 +11,5 @@
     <h3 class="h3" style="font-weight: 600">{{ $category->title }}</h3>
     <small>{{ $category->description }}</small>
 
-    @include('shared.search-list')
+    @include('shared.room-list')
 @endsection

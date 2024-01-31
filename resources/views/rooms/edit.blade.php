@@ -304,6 +304,7 @@
                 },
                 error: function(response) {
                     $.notify('Ầy, có vẻ là lỗi rồi!', "erorr");
+                    // console.log(response.errors);
                 }
             });
         });

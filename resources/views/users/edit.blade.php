@@ -36,10 +36,13 @@
                 <div class="form-group">
                     <label for="formFile" class="form-label mt-4">Avatar</label>
                     <input class="form-control" type="file" name="avatar">
-                    @error('avatar')
-                        <span class="d-block text-danger fs-6">{{ $message }}</span>
-                    @enderror
                 </div>
+
+                {{-- FILEPOND TEST --}}
+                {{-- <div style="width: 150px; height: 150px;" class="me-3">
+                    <input type="file" class="filepond" name="avatar" id="avatar" accept="image/png, image/jpeg, image/gif" />
+                </div> --}}
+
 
                 <div class="form-group">
                     <label for="exampleInputEmail1" class="form-label mt-4">Name</label>
@@ -55,9 +58,6 @@
                 <div class="form-group">
                     <label for="exampleInputEmail1" class="form-label mt-4">Phone</label>
                     <input type="tel" class="form-control" name="phone" value="{{ $user->phone }}">
-                    @error('phone')
-                        <span class="d-block text-danger fs-6">{{ $message }}</span>
-                    @enderror
                 </div>
 
                 <div class="form-group">
@@ -75,12 +75,55 @@
     </div>
 @endsection
 
-{{-- @section('script')
+@section('script')
+    <script src="https://unpkg.com/filepond-plugin-image-edit/dist/filepond-plugin-image-edit.js"></script>
+    <script src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.js"></script>
+    <script src="https://unpkg.com/filepond-plugin-image-exif-orientation/dist/filepond-plugin-image-exif-orientation.js">
+    </script>
+    <script src="https://unpkg.com/filepond-plugin-image-crop/dist/filepond-plugin-image-crop.js"></script>
+    <script src="https://unpkg.com/filepond-plugin-image-resize/dist/filepond-plugin-image-resize.js"></script>
+    <script src="https://unpkg.com/filepond-plugin-image-transform/dist/filepond-plugin-image-transform.js"></script>
+    <script src="https://unpkg.com/filepond-plugin-image-edit/dist/filepond-plugin-image-edit.js"></script>
+
+
     <script>
+        // FilePond.registerPlugin(
+        //     FilePondPluginFileValidateType,
+        //     FilePondPluginImageExifOrientation,
+        //     FilePondPluginImagePreview,
+        //     FilePondPluginImageCrop,
+        //     FilePondPluginImageResize,
+        //     FilePondPluginImageTransform,
+        //     FilePondPluginImageEdit
+        // );
+
+        // const inputElement = document.querySelector('input[name="avatar"]');
+        // const pond = FilePond.create(inputElement);
+
+        // FilePond.setOptions({
+        //     labelIdle: `Kéo & thả ảnh hoặc <span class="filepond--label-action">Tải lên</span>`,
+        //     imagePreviewHeight: 170,
+        //     imageCropAspectRatio: '1:1',
+        //     imageResizeTargetWidth: 200,
+        //     imageResizeTargetHeight: 200,
+        //     stylePanelLayout: 'compact circle',
+        //     styleLoadIndicatorPosition: 'center bottom',
+        //     styleProgressIndicatorPosition: 'right bottom',
+        //     styleButtonRemoveItemPosition: 'left bottom',
+        //     styleButtonProcessItemPosition: 'right bottom',
+        //     server: {
+        //         proccess: '{{ route('images.store') }}',
+        //         revert: '{{ route('images.destroy') }}',
+        //         header: {
+        //             'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        //         }
+        //     }
+        // });
+
         $('#update-user-form').submit(function(e) {
             e.preventDefault();
 
-            var url = '{{ route('api.users.update', $user->id) }}';
+            var url = '{{ route('users.update', $user->id) }}';
             let formData = $('#update-user-form').serialize();
 
             $.ajax({
@@ -98,6 +141,9 @@
                         });
                     } else if (response.status_code == 200) {
                         $.notify(response.message, "success");
+                        setTimeout(() => {
+                            window.location.replace(document.referrer);
+                        }, 1500);
                     }
                 },
                 error: function(response) {
@@ -106,4 +152,4 @@
             });
         });
     </script>
-@endsection --}}
+@endsection

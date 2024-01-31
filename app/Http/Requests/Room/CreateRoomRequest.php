@@ -39,7 +39,7 @@ class CreateRoomRequest extends FormRequest
             'image' => 'required',
             'description' => 'required',
             'price' => 'required',
-            'area' => 'required|max:100',
+            'area' => 'required|numeric|min:5',
         ];
     }
 
@@ -57,7 +57,7 @@ class CreateRoomRequest extends FormRequest
             'description.required' => 'Không được để trống mô tả.',
             'price.required' => 'Không được để trống giá.',
             'area.required' => 'Không được để trống diện tích.',
-            'area.max' => 'Diện tích không quá 100m2.',
+            'area.min' => 'Diện tích phải lớn hơn 5m².',
             'image.required' => 'Không được để trống hình.',
         ];
     }

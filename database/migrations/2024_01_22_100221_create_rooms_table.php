@@ -19,7 +19,7 @@ return new class extends Migration
             $table->text('description')->comment('Mô tả bài đăng');
             $table->tinyInteger('subject_id')->default(0)->comment('0:Tất cả - 1:Nam - 2:Nữ');
             $table->bigInteger('price')->comment('Giá cho thuê');
-            $table->tinyInteger('area')->comment('Diện tích');
+            $table->bigInteger('area')->comment('Diện tích');
             $table->bigInteger('category_id')->comment('Mã chuyên mục');
             $table->bigInteger('city_id')->comment('Mã tỉnh/thành phố');
             $table->bigInteger('district_id')->comment('Mã quận/huyện');

@@ -26,21 +26,27 @@ class GetRoomByLocationService
     public static function indexByDistrict(Request $request, Location $location) {
         $wards = Location::where('parent_id', $location->id)->get();
 
-        if ($request->has('price') && $request->has('area')) {
-            $rooms = RoomService::getListRoom($request, [
+        if ($request->has('price_range') && $request->has('area_range') && $request->has('ward_id')) {
+            $rooms = RoomService::getListRoom($request, $params = [
                 'district_id' => $location->id,
-                'price' => $request['price'],
-                'area' => $request['area'],
+                'price_range' => ($request['price_range'] ? $request['price_range'] : -1),
+                'area_range' => ($request['area_range'] ? $request['area_range'] : -1),
+                'ward_id' => ($request['ward_id'] ? $request['ward_id'] : -1),
             ]);
-        } elseif ($request->has('price')) {
+        } elseif ($request->has('price_range')) {
             $rooms = RoomService::getListRoom($request, [
                 'district_id' => $location->id,
-                'price' => $request['price'],
+                'price_range' => ($request['price_range'] ? $request['price_range'] : -1),
             ]);
-        } elseif($request->has('area')) {
+        } elseif($request->has('area_range')) {
             $rooms = RoomService::getListRoom($request, [
                 'district_id' => $location->id,
-                'area' => $request['area'],
+                'area_range' => ($request['area_range'] ? $request['area_range'] : -1),
+            ]);
+        } elseif($request->has('ward_id')) {
+            $rooms = RoomService::getListRoom($request, [
+                'district_id' => $location->id,
+                'ward_id' => ($request['ward_id'] ? $request['ward_id'] : -1),
             ]);
         } else {
             $rooms = RoomService::getListRoom($request, [
@@ -52,21 +58,21 @@ class GetRoomByLocationService
     }
 
     public static function indexByWard(Request $request, Location $location) {
-        if ($request->has('price') && $request->has('area')) {
+        if ($request->has('price_range') && $request->has('area_range')) {
             $rooms = RoomService::getListRoom($request, [
                 'ward_id' => $location->id,
-                'price' => $request['price'],
-                'area' => $request['area'],
+                'price_range' => ($request['price_range'] ? $request['price_range'] : -1),
+                'area_range' => ($request['area_range'] ? $request['area_range'] : -1),
             ]);
         } elseif($request->has('price')) {
             $rooms = RoomService::getListRoom($request, [
                 'ward_id' => $location->id,
-                'price' => $request['price'],
+                'price_range' => ($request['price_range'] ? $request['price_range'] : -1),
             ]);
         } elseif($request->has('area')) {
             $rooms = RoomService::getListRoom($request, [
                 'ward_id' => $location->id,
-                'area' => $request['area'],
+                'area_range' => ($request['area_range'] ? $request['area_range'] : -1),
             ]);
         } else {
             $rooms = RoomService::getListRoom($request, [

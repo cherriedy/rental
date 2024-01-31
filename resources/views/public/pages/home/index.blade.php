@@ -4,4 +4,5 @@
 
 @section('content')
     @include('shared.success-message')
+    @include('shared.search-bar')
 @endsection

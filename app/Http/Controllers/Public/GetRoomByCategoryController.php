@@ -12,6 +12,6 @@ class GetRoomByCategoryController extends Controller
     public function index(Request $request, $slug, Category $category) {
         $viewData = GetRoomByCategoryService::index($request, $category);
 
-        return view('public.pages.categories.index-dev', $viewData);
+        return view('public.pages.categories.index', $viewData);
     }
 }

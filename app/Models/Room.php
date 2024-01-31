@@ -12,7 +12,7 @@ class Room extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'city_id', 'district_id', 'ward_id', 'street_id', 'apartment_number', 'category_id', 'title', 'description', 'price', 'area', 'user_id', 'slug', 'exact_address', 'expiration_date', 'updated_at', 'created_at'];
+    protected $fillable = ['user_id', 'city_id', 'district_id', 'ward_id', 'street_id', 'apartment_number', 'category_id', 'title', 'description', 'price', 'area', 'user_id', 'slug', 'exact_address', 'expiration_date', 'updated_at', 'created_at', 'price_range', 'area_range'];
     // protected $guraded = [''];
 
     protected $with = ['user:id,name,avatar,phone'];

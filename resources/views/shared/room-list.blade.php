@@ -2,8 +2,8 @@
     <div class="left-col">
         <section class="card">
             <div class="card-header">
-                {{-- <span class="card-title">Tổng {{ !$category->room ? 0 : $category->room->count() }} kết
-                    quả</span> --}}
+                <span class="card-title">Tổng {{ $rooms->count() ? $rooms->count() : 0 }} kết
+                    quả</span>
 
                 <div class="sort-by">
                     <span>Sắp xếp: </span>
@@ -23,7 +23,8 @@
                         </div>
 
                         <div class="card-info">
-                            <span class="post-title">{{ $room->title }}</span>
+                            <span class="post-title"><a
+                                    href="{{ route('rooms.show', ['slug' => $room->slug, 'room' => $room->id]) }}">{{ $room->title }}</a></span>
 
                             <div class="post-row">
                                 <span class="post-price">{{ number_format($room->price, 0, '', ',') }}
@@ -62,19 +63,6 @@
     </div>
 
     <div class="right-col">
-        <section class="card">
-            <div class="card-header">
-                <span class="card-title">Xem theo giá</span>
-            </div>
-
-            <ul class="d-flex flex-col flex-wrap" style="list-style:none; row-gap: 4px; column-gap: 8px;">
-                <li>Dưới 1 triệu</li>
-                <li>Dưới 1 triệu</li>
-                <li>Dưới 1 triệu</li>
-                <li>Dưới 1 triệu</li>
-                <li>Dưới 1 triệu</li>
-                <li>Dưới 1 triệu</li>
-            </ul>
-        </section>
+        @include('shared.room-list-aside')
     </div>
 </div>

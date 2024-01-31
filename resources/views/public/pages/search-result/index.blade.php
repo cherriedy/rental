@@ -3,13 +3,13 @@
 @section('title', 'Tìm kiếm theo danh mục')
 
 @section('content')
-    <ol class="breadcrumb">
+    {{-- <ol class="breadcrumb">
         <li class="breadcrumb-item">Trang chủ</li>
         <li class="breadcrumb-item active">{{ $location->name }}</li>
     </ol>
 
     <h3 class="h3" style="font-weight: 600">{{ $location->title }}</h3>
-    <small>{{ $location->description }}</small>
+    <small>{{ $location->description }}</small> --}}
 
     @if (isset($districts) && !$districts->IsEmpty())
         <div class="row">

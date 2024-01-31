@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('rooms', function (Blueprint $table) {
-            $table->tinyInteger('price_range')->default(1)->comment('Khoảng giá của phòng');
-            $table->tinyInteger('area_range')->default(1)->comment('Khoảng diện tích');
+            $table->tinyInteger('hot_service')->default(0)->comment('Lưu dịch vị v1, v2, v3,..');
+            $table->string('cancel_reason')->nullable();
         });
     }
 
@@ -23,8 +23,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('rooms', function (Blueprint $table) {
-            $table->dropColumn('price_range');
-            $table->dropColumn('area_range');
+            $table->dropColumn('hot_service');
+            $table->dropColumn('cancel_reason');
         });
     }
 };

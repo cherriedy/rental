@@ -1,23 +1,17 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\Shared\RoomController;
 use App\Http\Controllers\Shared\UserProfileController;
 use App\Http\Controllers\Public\GetRoomByCategoryController;
 use App\Http\Controllers\Public\GetRoomByLocationController;
+use App\Http\Controllers\Public\SearchRoomController;
 
 /* PUBLIC */
 Route::get('/', function () {
-    return view('index');
+    return view('public.pages.home.index');
 })->name('index');
-
-// Route::group(['namespace' => 'Public'], function () {
-//     Route::get('chuyen-muc-{slug}-{id}', [HomeController::class, 'category'])
-//         ->where(['slug' => '[a-z-0-9-]+', 'id' => '[0-9]+'])
-//         ->name('public.home.category');
-// });
 
 Route::group(['prefix' => 'rooms', 'as' => 'rooms.', 'middleware' => 'auth'], function () {
     Route::get('', [RoomController::class, 'index'])->name('index');
@@ -66,3 +60,5 @@ Route::get('phuong-xa/{slug}-{ward}', [GetRoomByLocationController::class, 'ward
 Route::get('chuyen-muc-{slug}-{category}', [GetRoomByCategoryController::class, 'index'])
     ->where(['slug' => '[a-z-0-9-]+', 'ward' => '[0-9]+'])
     ->name('category.getRoom');
+
+Route::post('search', SearchRoomController::class)->name('search');

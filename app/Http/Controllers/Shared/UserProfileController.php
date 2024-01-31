@@ -26,6 +26,28 @@ class UserProfileController extends Controller
         return view('users.edit', compact('user'));
     }
 
+    // public function update(UpdateUserRequest $request, User $user) {
+    //     $this->authorize('update', $user);
+
+    //     $validated = $request->validated();
+
+    //     if ($request->has('avatar')) {
+    //         $validated['avatar'] = $request->file('avatar')->store('profile', 'public');
+
+    //         Storage::disk('public')->delete($user->avatar ?? '');
+    //     }
+
+    //     if ($user->update($validated)) {
+    //         return redirect()->route('users.show', $user->id)->with('success', 'Cập nhật thông tin thành công!');
+    //     }
+
+    //     return redirect()->route('user.edit')->withErrors([
+    //         'error' => 'Có lỗi, vui lòng thử lại.',
+    //     ]);
+    // }
+
+    /* AJAX */
+
     public function update(UpdateUserRequest $request, User $user) {
         $this->authorize('update', $user);
 
@@ -38,14 +60,12 @@ class UserProfileController extends Controller
         }
 
         if ($user->update($validated)) {
-            return redirect()->route('users.show', $user->id)->with('success', 'Cập nhật thông tin thành công!');
+            return response()->json([
+                'status_code' => 200,
+                'message' => 'Cập nhật thành công.',
+            ]);
         }
 
-        return redirect()->route('user.edit')->withErrors([
-            'error' => 'Có lỗi, vui lòng thử lại.',
-        ]);
     }
-
-    /* AJAX */
 
 }

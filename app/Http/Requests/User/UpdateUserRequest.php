@@ -46,21 +46,21 @@ class UpdateUserRequest extends FormRequest
         ];
     }
 
-    // protected function failedValidation(Validator $validator)
-    // {
-    //     if ($this->wantsJson()) {
-    //         $hasErrors = $validator->errors();
+    protected function failedValidation(Validator $validator)
+    {
+        if ($this->wantsJson()) {
+            $hasErrors = $validator->errors();
 
-    //         foreach ($hasErrors->all() as $error) {
-    //             $errors[] = $error;
-    //         }
+            foreach ($hasErrors->all() as $error) {
+                $errors[] = $error;
+            }
 
-    //         $response = response()->json([
-    //             'errors' => $errors,
-    //             'status_code' => 422,
-    //         ]);
-    //     }
+            $response = response()->json([
+                'errors' => $errors,
+                'status_code' => 422,
+            ]);
+        }
 
-    //     throw (new ValidationException($validator, $response))->errorBag($this->errorBag)->redirectTo($this->getRedirectUrl());
-    // }
+        throw (new ValidationException($validator, $response))->errorBag($this->errorBag)->redirectTo($this->getRedirectUrl());
+    }
 }
