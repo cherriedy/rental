@@ -26,6 +26,7 @@ class User extends Authenticatable
         'facebook',
         'isAdmin',
         'phone',
+        'account_balance',
     ];
 
     /**
