@@ -22,6 +22,15 @@ class Room extends Model
     const STATUS_CANCEL = 0;        // Huỷ
     const STATUS_HIDE = 2;           // Ẩn
 
+    const GENDER_ALL = 0;
+    const GENDER_MALE = 1;
+    const GENDER_FEMALE = 2;
+
+    const SERVICE_H0 = 0;
+    const SERVICE_H1 = 1;
+    const SERVICE_H2 = 2;
+    const SERVICE_H3 = 3;
+
     protected $statusType = [
         self::STATUS_ACTIVE => 'Hoạt động',
         self::STATUS_EXPRIED => 'Hết hạn',
@@ -30,9 +39,16 @@ class Room extends Model
     ];
 
     protected $subjectType = [
-        0 => 'Tất cả',
-        1 => 'Nam',
-        2 => 'Nữ',
+        self::GENDER_ALL => 'Tất cả',
+        self::GENDER_MALE => 'Nam',
+        self::GENDER_FEMALE => 'Nữ',
+    ];
+
+    protected $hotServiceType = [
+        self::SERVICE_H0 => "Dịch vụ HOT 0",
+        self::SERVICE_H1 => "Dịch vụ HOT 1",
+        self::SERVICE_H2 => "Dịch vụ HOT 2",
+        self::SERVICE_H3 => "Dịch vụ HOT 3",
     ];
 
     public function slug() {
@@ -45,6 +61,10 @@ class Room extends Model
 
     public function getSubject() {
         return Arr::get($this->subjectType, $this->subject_id);
+    }
+
+    public function gethotService() {
+        return Arr::get($this->hotSeriveType, $this->hot_serivce);
     }
 
     public function user() {
