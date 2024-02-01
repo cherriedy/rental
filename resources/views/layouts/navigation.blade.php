@@ -63,7 +63,8 @@
 
                             <div class="dropdown-divider"></div>
 
-                            <a class="dropdown-item" href="/rooms">Quản lí tin đăng</a>
+                            <a class="dropdown-item" href="{{ route('rooms.index') }}">Quản lí tin đăng</a>
+                            <a class="dropdown-item" href="{{ route('recharge.index') }}">Nạp tiền</a>
 
                             <form action="{{ route('logout') }}" method="post">
                                 @csrf

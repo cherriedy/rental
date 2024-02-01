@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\VNPayApiController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\Shared\RoomController;
@@ -7,6 +8,7 @@ use App\Http\Controllers\Shared\UserProfileController;
 use App\Http\Controllers\Public\GetRoomByCategoryController;
 use App\Http\Controllers\Public\GetRoomByLocationController;
 use App\Http\Controllers\Public\SearchRoomController;
+use App\Http\Controllers\Shared\UserRechargeController;
 
 /* PUBLIC */
 Route::get('/', function () {
@@ -62,3 +64,22 @@ Route::get('chuyen-muc-{slug}-{category}', [GetRoomByCategoryController::class, 
     ->name('category.getRoom');
 
 Route::post('search', SearchRoomController::class)->name('search');
+
+/* CHARGE */
+Route::group(['prefix' => 'nap-tien', 'as' => 'recharge.', 'middleware' => 'auth'], function () {
+    Route::get('', [UserReChargeController::class, 'index'])->name('index');
+
+    Route::get('{slug}-{id}', [UserRechargeController::class, 'redirectRecharge'])
+    ->where(['slug' => '[a-z-0-9-]+', 'id' => '[0-9]+'])
+    ->name('redirect-transfer');
+
+    Route::get('chuyen-khoan', [UserRechargeController::class, 'tranferIndex'])->name('transfer');
+    Route::post('chuyen-khoan', [UserRechargeController::class, 'transferProcess']);
+
+    Route::get('internet-banking', [UserRechargeController::class, 'internetBankingIndex'])->name('internet-banking');
+    Route::post('internet-banking', [UserRechargeController::class, 'internetBankingProcess']);
+    Route::get('internet-banking/vnpay_return.php', VNPayApiController::class)->name('internet-banking.vnpayReturn');
+
+    Route::get('refund', [UserRechargeController::class, 'refundIndex'])->name('refund');
+    Route::post('refund', [UserRechargeController::class, 'refundProcess']);
+});
