@@ -47,6 +47,7 @@ class UserRoomController extends Controller
         return view('users.rooms.create', compact('cities', 'districts', 'wards', 'categories', 'streets'));
     }
 
+
     protected function mappingPrice($validated)
     {
         $validated['price_range'] = match (true) {
@@ -223,13 +224,13 @@ class UserRoomController extends Controller
                 $starting_date > date('Y-m-d') => Room::STATUS_PAID,
             };
 
-            // $room->starting_date = $starting_date;
-            // $room->expiration_date = $expiration_date;
-            // $room->hot_service = $hotServiceOption;
-            // $room->updated_at = Carbon::now();
-            // $room->save();
-            $room->update($request->all());
-
+            $room->starting_date = $starting_date;
+            $room->expiration_date = $expiration_date;
+            $room->hot_service = $hotServiceOption;
+            $room->updated_at = Carbon::now();
+            $room->save();
+            // $room->update($request->all());
+ //
             DB::commit();
 
             return redirect()->route('rooms.index');
