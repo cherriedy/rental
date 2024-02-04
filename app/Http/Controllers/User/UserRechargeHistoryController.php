@@ -4,10 +4,8 @@ namespace App\Http\Controllers\User;
 
 use Exception;
 use Carbon\Carbon;
-use Omnipay\Omnipay;
 use Illuminate\Http\Request;
 use App\Models\RechargeHistory;
-use App\Services\Core\VNPayService;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -18,26 +16,35 @@ class UserRechargeHistoryController extends Controller
     {
         $viewData = RechargeHistory::rechargeSet;
 
-        return view('users.payment.index', $viewData);
+        return view('users.recharge.index', $viewData);
+    }
+
+    public function rechargeHistory()
+    {
+        $rechargeHistories = RechargeHistory::where('user_id', Auth::id())
+            ->orderbyDesc('id')
+            ->get();
+
+        return view('users.recharge.history', compact('rechargeHistories'));
     }
 
     public function internetBankingIndex()
     {
         $viewData = RechargeHistory::rechargeSet;
 
-        return view('users.payment.internet-banking', $viewData);
+        return view('users.recharge.internet-banking', $viewData);
     }
 
     public function transferIndex()
     {
-        return view('users.payment.tranfer');
+        return view('users.recharge.tranfer');
     }
 
     public function redirectRecharge(Request $request, $slug, $id)
     {
         return match (intval($id)) {
-            1 => view('users.payment.tranfer'),
-            2 => view('users.payment.cash'),
+            1 => view('users.recharge.tranfer'),
+            2 => view('users.recharge.cash'),
             3 => redirect()->route('recharge.internet-banking'),
             default => abort(404),
         };
@@ -62,7 +69,7 @@ class UserRechargeHistoryController extends Controller
                 return redirect()->away($response['url']);
             }
         } catch (Exception $exception) {
-            Log::error("====================internerBankingProcess: " . $exception->getMessage());
+            Log::error('====================internerBankingProcess: ' . $exception->getMessage());
         }
     }
 
@@ -117,7 +124,6 @@ class UserRechargeHistoryController extends Controller
                 $i = 1;
             }
             $query .= urlencode($key) . '=' . urlencode($value) . '&';
-
         }
 
         $vnp_Url = $vnp_Url . '?' . $query;

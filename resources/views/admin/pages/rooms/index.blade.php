@@ -20,6 +20,9 @@
                     <th scope="col">Phường/Xã</th>
                     <th scope="col">Đường</th>
                     <th scope="col">Ngày tạo</th>
+                    <th scope="col">Ngày cập nhật</th>
+                    <th scope="col">Ngày bắt đầu</th>
+                    <th scope="col">Ngày kết thúc</th>
                     <th scope="col">Trạng thái</th>
                     <th scope="col">Chức năng</th>
                 </tr>
@@ -40,6 +43,10 @@
                         <td scope="row">{{ $room->district->name }}</td>
                         <td scope="row">{{ $room->ward->name }}</td>
                         <td scope="row">{{ $room->street->name }}</td>
+                        <td scope="row">{{ date('d-m-Y', strtotime($room->created_at)) }}</td>
+                        <td scope="row">{{ date('d-m-Y', strtotime($room->updated_at)) }}</td>
+                        <td scope="row">{{ date('d-m-Y', strtotime($room->starting_date)) }}</td>
+                        <td scope="row">{{ date('d-m-Y', strtotime($room->expiration_date)) }}</td>
                         <td scope="row">{{ $room->getStatus() }}</td>
                         <td scope="row">{{ date('d-m-Y', strtotime($room->created_at)) }}</td>
                         <td scope="row">

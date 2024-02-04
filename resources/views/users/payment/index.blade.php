@@ -1,33 +1,32 @@
 @extends('layouts.layout')
 
-@section('title', 'Nạp tiền vào tài khoản')
+@section('title', 'Lịch sử thanh toán')
 
 @section('content')
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item">{{ Auth::user()->name }}</li>
-        <li class="breadcrumb-item">Quản lý</li>
-        <li class="breadcrumb-item active">Nạp tiền</li>
-    </ol>
-
-    <h3 class="h3">Nạp tiền vào tài khoản</h3>
-    <hr>
-
-    <div class="row">
-        <div class="col-md-8">
-            <h4 class="mt-3">Mời bạn chọn phương thức nạp tiền</h4>
-            <div class="method-container">
-                @foreach ($method as $item)
-                    <div class="method-card">
-                        <a href="{{ route('recharge.redirect-transfer', ['slug' => Illuminate\Support\Str::slug($item['name']), 'id' => $item['id']]) }}">
-                            <div class="method-avatar">
-                                <img src="{{ $item['avatar'] }}" alt="method-avatar">
-                            </div>
-
-                            <div class="method-name">{{ $item['name'] }}</div>
-                        </a>
-                    </div>
+    <div class="container table-responsive py-5">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Loại dịch vụ</th>
+                    <th scope="col">Mã phòng</th>
+                    <th scope="col">Phí</th>
+                    <th scope="col">Trạng thái</th>
+                    <th scope="col">Ngày nạp</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($paymentHistories ?? [] as $paymentHistory)
+                    <tr>
+                        <td scope="row">Dịch vụ nổi bật</td>
+                        <td scope="row">{{ $paymentHistory->room_id }}</td>
+                        <td scope="row">{{ number_format($paymentHistory->amount, 0, '', ',') }}</td>
+                        <td scope="row">{{ $paymentHistory->getStatus() }}</td>
+                        <td scope="row">{{ date('d-m-Y', strtotime($paymentHistory->created_at)) }}</td>
+                        </td>
+                    </tr>
                 @endforeach
-            </div>
-        </div>
+            </tbody>
+        </table>
+
     </div>
 @endsection

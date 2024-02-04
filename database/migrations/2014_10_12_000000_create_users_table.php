@@ -22,6 +22,7 @@ return new class extends Migration
             $table->boolean('isAdmin')->default(false);
             $table->boolean('isVerified')->default(false);
             $table->timestamp('email_verified_at')->nullable();
+            $table->bigInteger('account_balance')->default(0);
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();

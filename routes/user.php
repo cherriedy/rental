@@ -1,29 +1,34 @@
 <?php
 
+use App\Http\Controllers\Auth\ForgetPasswordController;
+use App\Http\Controllers\User\UserPaymentHistoryController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Shared\RoomController;
-use App\Http\Controllers\Api\VNPayApiController;
-use App\Http\Controllers\Api\VnPayIPNController;
+use App\Http\Controllers\User\UserRoomController;
+use App\Http\Controllers\VnPay\VnPayIPNController;
 use App\Http\Controllers\User\UserProfileController;
-use App\Http\Controllers\User\UserRechargeController;
+use App\Http\Controllers\User\UserRechargeHistoryController;
+use App\Http\Controllers\VnPay\VnPayReturnController;
 
 /* ROOM */
 Route::group(['prefix' => 'rooms', 'as' => 'rooms.', 'middleware' => 'auth'], function () {
-    Route::get('', [RoomController::class, 'index'])->name('index');
-    Route::get('create', [RoomController::class, 'create'])->name('create');
+    Route::get('', [UserRoomController::class, 'index'])->name('index');
 
-    Route::post('store', [RoomController::class, 'store'])->name('store');
+    Route::get('create', [UserRoomController::class, 'create'])->name('create');
+    Route::post('store', [UserRoomController::class, 'store'])->name('store');
 
     Route::group(['prefix' => '{room}'], function () {
-        Route::get('edit', [RoomController::class, 'edit'])->name('edit');
-        Route::get('hide', [RoomController::class, 'hide'])->name('hide');
-        Route::get('active', [RoomController::class, 'active'])->name('active');
+        Route::get('edit', [UserRoomController::class, 'edit'])->name('edit');
+        Route::put('update', [UserRoomController::class, 'update'])->name('update');
 
-        Route::put('update', [RoomController::class, 'update'])->name('update');
+        Route::get('hide', [UserRoomController::class, 'hide'])->name('hide');
+        Route::get('active', [UserRoomController::class, 'active'])->name('active');
+
+        Route::get('hot-service', [UserRoomController::class, 'hotServiceIndex'])->name('hot-service');
+        Route::post('hot-service', [UserRoomController::class, 'hotServiceStore']);
     });
 });
 
-Route::get('{slug}-{room}', [RoomController::class, 'show'])
+Route::get('{slug}-{room}', [UserRoomController::class, 'show'])
     ->where(['slug' => '[a-z-0-9-]+', 'room' => '[0-9]+'])
     ->name('rooms.show');
 
@@ -38,27 +43,38 @@ Route::group(['prefix' => 'users', 'as' => 'users.', 'middleware' => 'auth'], fu
     });
 });
 
+Route::get('forget-password', [ForgetPasswordController::class, 'forgetPasswordIndex'])->name('forget-password');
+Route::post('forget-password', [ForgetPasswordController::class, 'forgetPasswordProcess']);
+
+Route::get( 'get-password/{user}/{token}', [ForgetPasswordController::class, 'getPasswordIndex'])->name('get-password');
+Route::post('get-password/{user}/{token}', [ForgetPasswordController::class, 'getPasswordProcess']);
+
 /* RECHAGRE */
 Route::group(['prefix' => 'nap-tien', 'as' => 'recharge.', 'middleware' => 'auth'], function () {
-    Route::get('', [UserRechargeController::class, 'index'])->name('index');
+    Route::get('', [UserRechargeHistoryController::class, 'index'])->name('index');
 
-    Route::get('{slug}-{id}', [UserRechargeController::class, 'redirectRecharge'])
+    Route::get('{slug}-{id}', [UserRechargeHistoryController::class, 'redirectRecharge'])
         ->where(['slug' => '[a-z-0-9-]+', 'id' => '[0-9]+'])
         ->name('redirect-transfer');
 
-    Route::get('chuyen-khoan', [UserRechargeController::class, 'tranferIndex'])->name('transfer');
-    Route::post('chuyen-khoan', [UserRechargeController::class, 'transferProcess']);
+    Route::get('chuyen-khoan', [UserRechargeHistoryController::class, 'tranferIndex'])->name('transfer');
+    Route::post('chuyen-khoan', [UserRechargeHistoryController::class, 'transferProcess']);
 
     Route::group(['prefix' => 'internet-banking'], function () {
-        Route::get('internet-banking', [UserRechargeController::class, 'internetBankingIndex'])->name('internet-banking');
-        Route::post('internet-banking', [UserRechargeController::class, 'internetBankingProcess']);
+        Route::get('internet-banking', [UserRechargeHistoryController::class, 'internetBankingIndex'])->name('internet-banking');
+        Route::post('internet-banking', [UserRechargeHistoryController::class, 'internetBankingProcess']);
 
         Route::group(['as' => 'internet-banking.'], function () {
-            Route::get('vnpay_return.php', VNPayApiController::class)->name('vnpayReturn');
+            Route::get('vnpay_return.php', VnPayReturnController::class)->name('vnpayReturn');
             Route::get('vnpay_ipn.php', VnPayIPNController::class)->name('vnpayIPN');
         });
     });
 
-    Route::get('refund', [UserRechargeController::class, 'refundIndex'])->name('refund');
-    Route::post('refund', [UserRechargeController::class, 'refundProcess']);
+    Route::get('lich-su-nap-tien', [UserRechargeHistoryController::class, 'rechargeHistory'])->name('history');
+
+    Route::get('refund', [UserRechargeHistoryController::class, 'refundIndex'])->name('refund');
+    Route::post('refund', [UserRechargeHistoryController::class, 'refundProcess']);
 });
+
+/* PAYMENT */
+Route::get('lich-su-thanh-toan', UserPaymentHistoryController::class)->name('payments.history');

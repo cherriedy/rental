@@ -32,13 +32,16 @@
                     <div>
                         @can('update', $user)
                             <div class="mt-3">
-                                <a href="{{ route('users.edit', $user->id) }}" class="btn btn-primary">Edit</a>
+                                <a href="{{ route('users.settings.edit') }}" class="btn btn-primary">Edit</a>
                             </div>
                         @endcan
                     </div>
                 </div>
 
                 <div class="px-2 mt-4">
+                    <h5 class="fs-5"> Số dư khả dụng : </h5>
+                    <p class="fs-6 fw-light">{{ number_format($user->account_balance, 0, '', ',') }} vnđ</p>
+
                     <h5 class="fs-5"> Email : </h5>
                     <p class="fs-6 fw-light">{{ $user->email }}</p>
 

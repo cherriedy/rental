@@ -11,7 +11,7 @@ class AdminRoomController extends Controller
     public function index() {
         $rooms = Room::orderbyDesc('created_at')->get();
 
-        return view('admin.pages.rooms.index', compact('rooms'));
+        return view('admin.pages.rooms.table', compact('rooms'));
     }
 
     public function success(Room $room) {
@@ -29,16 +29,22 @@ class AdminRoomController extends Controller
     }
 
     public function expries(Room $room) {
-        $room->status = Room::STATUS_EXPRIED;
+        $room->status = Room::STATUS_EXPIRED;
         $room->save();
 
         return redirect()->back();
     }
 
-    public function cancel(Room $room) {
-        $room->status = Room::STATUS_CANCEL;
-        $room->save();
+    public function cancelIndex(Room $room) {
+        return view('admin.pages.rooms.cancel', compact('room'));
+    }
 
-        return redirect()->back();
+    public function cancelProcess(Request $request, Room $room) {
+        $room->update([
+            'status' => Room::STATUS_CANCEL,
+            'cancel_reason' => $request['reason'],
+        ]);
+
+        return redirect()->route('admins.rooms.index');
     }
 }

@@ -1,13 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ImageController;
-use App\Http\Controllers\Shared\RoomController;
-use App\Http\Controllers\Api\VNPayApiController;
-use App\Http\Controllers\Api\VnPayIPNController;
+use App\Http\Controllers\TemporaryImageController;
 use App\Http\Controllers\Public\SearchRoomController;
-use App\Http\Controllers\Shared\UserProfileController;
-use App\Http\Controllers\Shared\UserRechargeController;
 use App\Http\Controllers\Public\GetRoomByCategoryController;
 use App\Http\Controllers\Public\GetRoomByLocationController;
 
@@ -16,8 +11,8 @@ Route::get('/', function () { return view('public.pages.home.index'); })->name('
 
 /* TEMPORARY IMAGE */
 Route::group(['prefix' => 'images', 'as' => 'images.', 'middleware' => 'auth'], function () {
-    Route::post('', [ImageController::class, 'store'])->name('store');
-    Route::delete('', [ImageController::class, 'destroy'])->name('destroy');
+    Route::post('', [TemporaryImageController::class, 'store'])->name('store');
+    Route::delete('', [TemporaryImageController::class, 'destroy'])->name('destroy');
 });
 
 /* ROOM BY LOCATION */

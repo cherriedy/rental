@@ -39,7 +39,7 @@
                         <a href="{{ route('rooms.show', ['slug' => $room->slug, 'room' => $room->id]) }}"><span
                                 class="badge bg-primary">{{ $room->category->name }}</span> {{ $room->title }}</a>
                         <p class="d-flex align-items-center mt-3">
-                            @if ($room->status == \App\Models\Room::STATUS_EXPRIED)
+                            @if ($room->status == \App\Models\Room::STATUS_EXPIRED)
                                 <a href="#" class="text-decoration-none"><i class="fa fa-refresh"></i> Đăng lại</a>
                             @endif
 
@@ -47,12 +47,17 @@
                                     class="fa fa-refresh"></i>
                                 Sửa tin</a>
 
-                            @if ($room->status == \App\Models\Room::STATUS_HIDE)
+                            {{-- @if ($room->status == \App\Models\Room::STATUS_HIDE)
                                 <a href="{{ route('rooms.active', $room->id) }}" class="text-decoration-none mx-3"><i
                                         class="fa fa-eye-slash"></i> Hiển thị</a>
                             @else
                                 <a href="{{ route('rooms.hide', $room->id) }}" class="text-decoration-none mx-3"><i
                                         class="fa fa-eye-slash"></i> Ẩn tin</a>
+                            @endif --}}
+
+                            @if ($room->status == \App\Models\Room::STATUS_DEFAULT || $room->status == \App\Models\Room::STATUS_EXPIRED)
+                                <a href="{{ route('rooms.hot-service', $room->id) }}" class="text-decoration-none mx-3"><i
+                                        class="fa fa-eye-slash"></i>Mua gói dịch vụ HOT</a>
                             @endif
                         </p>
                     </td>

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class PaymentHistoryController extends Controller
+class TokenController extends Controller
 {
     //
 }

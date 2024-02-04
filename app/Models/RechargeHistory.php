@@ -2,12 +2,16 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\User;
+use Illuminate\Support\Arr;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class RechargeHistory extends Model
 {
     use HasFactory;
+
+    protected $with = ['user:id,name'];
 
     protected $fillable = [
         'user_id',
@@ -22,7 +26,7 @@ class RechargeHistory extends Model
     const STATUS_SUCCESS = 2;
     const STATUS_ERROR = -1;
 
-    protected $statusType = [
+    protected $statusSet = [
         self::STATUS_CANCEL => 'Huỷ',
         self::STATUS_DEFAULT => 'Khởi tạo',
         self::STATUS_SUCCESS => 'Thành công',
@@ -58,4 +62,16 @@ class RechargeHistory extends Model
             5 => 80000,
         ],
     ];
+
+    public function getStatus() {
+        return Arr::get($this->statusSet, $this->status);
+    }
+
+    public function getType() {
+        return Arr::get($this->rechargeSet, $this->status);
+    }
+
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
 }

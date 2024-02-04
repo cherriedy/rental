@@ -11,7 +11,7 @@ class RoomService
 
     public static function getRoomNew($limit = 5) {
         $self = new self();
-        return Room::whereIn('Status', [Room::STATUS_ACTIVE, Room::STATUS_EXPRIED])
+        return Room::whereIn('Status', [Room::STATUS_ACTIVE, Room::STATUS_EXPIRED])
             ->limit($limit)
             ->select($self->col)
             ->orderbyDesc('updated_at')
@@ -20,7 +20,7 @@ class RoomService
 
     public static function getListRoom($request, $params = []) {
         $self = new self();
-        $rooms = Room::whereIn('Status', [Room::STATUS_ACTIVE, Room::STATUS_EXPRIED]);
+        $rooms = Room::whereIn('Status', [Room::STATUS_ACTIVE, Room::STATUS_EXPIRED]);
 
         if ($categoryID = Arr::get($params, 'category_id')) {
             $rooms->where('category_id', $categoryID);

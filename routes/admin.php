@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\AdminCategoryController;
 use App\Http\Controllers\Admin\AdminLocationController;
 use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\AdminRechargeHistoryController;
 
 Route::group(['prefix' => 'admins', 'as' => 'admins.', 'middleware' => 'admin'], function () {
     Route::get('dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
@@ -48,5 +49,14 @@ Route::group(['prefix' => 'admins', 'as' => 'admins.', 'middleware' => 'admin'],
 
     Route::group(['prefix' => 'rooms', 'as' => 'rooms.'], function () {
         Route::get('', [AdminRoomController::class, 'index'])->name('index');
+
+        Route::group(['prefix' => '{room}'], function() {
+            Route::get('cancel', [AdminRoomController::class, 'cancelIndex'])->name('cancel');
+            Route::put('cancel', [AdminRoomController::class, 'cancelProcess']);
+        });
+    });
+
+    Route::group(['prefix' => 'recharge-histories' , 'as' => 'recharge-histories.'], function() {
+        Route::get('', [AdminRechargeHistoryController::class, 'index'])->name('index');
     });
 });

@@ -43,7 +43,7 @@
                         <a href="{{ route('rooms.create') }}" class="btn btn-sm btn-primary">Thêm tin mới</a>
 
                         @if (Auth::user()->isAdmin)
-                            <a href="{{ route('admins.dashboard') }}" class="btn btn-sm btn-outline-success">Quản lý</a>
+                            <a href="{{ route('admins.dashboard') }}" class="btn btn-sm btn-outline-success">Quản trị</a>
                         @endif
                     </div>
 
@@ -63,8 +63,18 @@
 
                             <div class="dropdown-divider"></div>
 
+                            <div>
+                                <span class="dropdown-item">Số dư khả dụng</span>
+                                <small
+                                    class="dropdown-item text text-success mx-auto">{{ number_format(auth()->user()->account_balance, 0, '', '.') }}
+                                    vnđ</small>
+                            </div>
+
+                            <div class="dropdown-divider"></div>
+
                             <a class="dropdown-item" href="{{ route('rooms.index') }}">Quản lí tin đăng</a>
-                            <a class="dropdown-item" href="{{ route('recharge.index') }}">Nạp tiền</a>
+                            <a class="dropdown-item" href="{{ route('recharge.index') }}">Quản lí nạp tiền</a>
+                            <a class="dropdown-item" href="{{ route('payments.history') }}">Lịch sử thanh toán</a>
 
                             <form action="{{ route('logout') }}" method="post">
                                 @csrf

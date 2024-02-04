@@ -6,8 +6,10 @@ namespace App\Providers;
 
 use App\Models\Room;
 use App\Models\User;
+use App\Models\Token;
 use App\Policies\RoomPolicy;
 use App\Policies\UserPolicy;
+use App\Policies\TokenPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -20,6 +22,7 @@ class AuthServiceProvider extends ServiceProvider
     protected $policies = [
         User::class => UserPolicy::class,
         Room::class => RoomPolicy::class,
+        Token::class => TokenPolicy::class,
     ];
 
     /**

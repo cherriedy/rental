@@ -20,7 +20,7 @@
                             src="{{ url('storage/' . $user->avatar) }}" alt="{{ $user->name }}">
 
                         <div>
-                            <h3 class="card-title mb-0"><a href="/profile">{{ $user->name }}</a></h3>
+                            <h3 class="card-title mb-0"><a href="{{ route('profile') }}">{{ $user->name }}</a></h3>
                             <span class="fs-6 text-muted">@~{{ $user->name }}</span>
                         </div>
 
@@ -28,8 +28,7 @@
                 </div>
             </div>
 
-            <form class="px-4 py-4" method="POST" action="{{ route('users.update', $user->id) }}"
-                enctype="multipart/form-data" id="update-user-form">
+            <form class="px-4 py-4" method="POST" action="" enctype="multipart/form-data" id="update-user-form">
                 @csrf
                 @method('PUT')
 
@@ -66,7 +65,7 @@
                 </div>
 
                 <a href="" class="d-block text-decoration-none mt-3">Đổi mật khẩu tài khoản</a>
-                <a href="{{ route('users.show', $user->id) }}" class="btn btn-primary mt-2">Cancel</a>
+                <a href="{{ route('profile') }}" class="btn btn-primary mt-2">Cancel</a>
 
                 <button type="submit" class="btn btn-primary mt-2">Save</button>
             </form>
@@ -123,7 +122,7 @@
         $('#update-user-form').submit(function(e) {
             e.preventDefault();
 
-            var url = '{{ route('users.update', $user->id) }}';
+            var url = '{{ route('users.settings.update') }}';
             let formData = $('#update-user-form').serialize();
 
             $.ajax({

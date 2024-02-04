@@ -49,8 +49,14 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    // protected $with = ['recharge_histories:id'];
+
     public function room() {
-        return $this->hasMany(Room::class, 'user_id')->orderByDesc('created_at');
+        return $this->hasMany(Room::class)->orderByDesc('created_at');
+    }
+
+    public function rechargeHistory() {
+        return $this->hasMany(RechargeHistory::class)->orderByDesc('id');
     }
 
 }

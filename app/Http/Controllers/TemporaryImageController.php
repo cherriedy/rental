@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
 use Illuminate\Support\Facades\Storage;
 
-class ImageController extends Controller
+class TemporaryImageController extends Controller
 {
     public function store(Request $request)
     {
