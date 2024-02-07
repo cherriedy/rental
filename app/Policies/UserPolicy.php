@@ -12,17 +12,4 @@ class UserPolicy
     {
         return $user->is(Auth::user());
     }
-
-    // public function delete(User $user, User $model): bool {
-    //     return $user->is($model) ||  $user->idAdmin;
-    // }
-
-    // public function delete(User $user): bool {
-    //     return $user->idAdmin;
-    // }
-
-    public function login() {
-        // return !Auth::check();
-        return true;
-    }
 }

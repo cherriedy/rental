@@ -5,7 +5,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
 
-Route::group(['namespace' => 'Auth'], function () {
+Route::group(['namespace' => 'Auth', 'middleware' => 'guest'], function () {
     Route::group(['prefix' => 'login'], function () {
         Route::get('', [LoginController::class, 'login'])->name('login');
         Route::post('', [LoginController::class, 'authentication']);
