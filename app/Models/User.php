@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Room;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -50,6 +51,10 @@ class User extends Authenticatable
     ];
 
     // protected $with = ['recharge_histories:id'];
+
+    public function password() {
+        return Hash::make($this->password());
+    }
 
     public function room() {
         return $this->hasMany(Room::class)->orderByDesc('created_at');

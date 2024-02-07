@@ -47,7 +47,7 @@ Route::get('forget-password', [ForgetPasswordController::class, 'forgetPasswordI
 Route::post('forget-password', [ForgetPasswordController::class, 'forgetPasswordProcess']);
 
 Route::get( 'get-password/{user}/{token}', [ForgetPasswordController::class, 'getPasswordIndex'])->name('get-password');
-Route::post('get-password/{user}/{token}', [ForgetPasswordController::class, 'getPasswordProcess']);
+Route::put('get-password/{user}/{token}', [ForgetPasswordController::class, 'getPasswordProcess']);
 
 /* RECHAGRE */
 Route::group(['prefix' => 'nap-tien', 'as' => 'recharge.', 'middleware' => 'auth'], function () {

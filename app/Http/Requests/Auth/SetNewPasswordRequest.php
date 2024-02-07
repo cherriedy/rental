@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Requests\User;
+namespace App\Http\Requests\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Validation\ValidationException;
 
-class LoginUserRequest extends FormRequest
+class SetNewPasswordRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,21 +24,18 @@ class LoginUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => 'required|string|email|max:255',
-            // DEVELOPER
-            'password' => 'required|string|min:3',
-            // 'password' => 'required|string|min:8',
+            'password' => 'required|confirmed|min:8|max:40',
+            'password_confirmation' => 'required',
         ];
     }
 
     public function messages(): array
     {
         return [
-            'email.required' => 'Không được để trống email',
-            'email.email' => 'Vui lòng nhập đúng định dạng',
-            'email.max' => 'Email phải bé hơn 255 kí tự',
             'password.required' => 'Không được để trống mật khẩu',
+            'password.confirmed' => 'Mật khẩu nhập lại không trùng khớp',
             'password.min' => 'Mật khẩu phải lớn hơn 8 kí tự',
+            'password_confirmation.required' => 'Không được để trống mật khẩu nhập lại',
         ];
     }
 

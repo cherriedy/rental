@@ -1,5 +1,5 @@
 <div id="searchbar">
-    <form method="POST" action="{{ route('search') }}" class="searchform js-form-submit-data">
+    <form method="GET" action="{{ route('search') }}" class="searchform js-form-submit-data">
         @csrf
         <div class="search_field container" style="justify-content: space-between">
             <style>

@@ -26,7 +26,7 @@ class UpdateUserRequest extends FormRequest
         return [
             'avatar' => 'nullable|image|mimes:png,jpg,jpeg|dimensions:min_width=250,min_height=250|max:3000',
             'name' => 'required|string|min:3|max:40',
-            'phone' => ['required', 'regex:/^(0?)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}$/'],
+            'phone' => ['nullable', 'regex:/^(0?)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}$/'],
             'facebook' => 'nullable',
         ];
     }
@@ -41,8 +41,9 @@ class UpdateUserRequest extends FormRequest
             'name.required' => 'Tên không được để trống.',
             'name.min' => 'Tên phải lớn hơn 3 kí tự.',
             'name.max' => 'Tên phải bé hơn 40 kí tự.',
-            'phone.required' => 'Số điện thoại không được để trống.',
             'phone.regex' => 'Số điện thoại không đúng định dạng.',
+            // 'phone.required' => 'Số điện thoại không được để trống.',
+            // 'phone.unique' => 'Số điện thoại đã được sử dụng.',
         ];
     }
 

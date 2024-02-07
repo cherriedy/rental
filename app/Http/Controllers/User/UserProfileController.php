@@ -38,6 +38,7 @@ class UserProfileController extends Controller
     // public function update(UpdateUserRequest $request, User $user) {
     public function update(UpdateUserRequest $request) {
         $user = Auth::user();
+
         $this->authorize('update', $user);
 
         $validated = $request->validated();
@@ -53,8 +54,9 @@ class UserProfileController extends Controller
                 'status_code' => 200,
                 'message' => 'Cập nhật thành công.',
             ]);
-        }
 
+            // return redirect()->route('users.show');
+        }
     }
 
 }

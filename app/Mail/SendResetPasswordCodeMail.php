@@ -13,7 +13,7 @@ class SendResetPasswordCodeMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    private $user, $token;
+    public $user, $token;
 
     /**
      * Create a new message instance.
@@ -41,10 +41,10 @@ class SendResetPasswordCodeMail extends Mailable
     {
         return new Content(
             view: 'auth.reset-password',
-            with: [
-                'user' => $this->user,
-                'token' => $this->token,
-            ],
+            // with: [
+            //     'user' => $this->user,
+            //     'token' => $this->token,
+            // ],
         );
     }
 

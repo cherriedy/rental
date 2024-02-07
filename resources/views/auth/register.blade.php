@@ -3,6 +3,8 @@
 @section('title', 'Register')
 
 @section('content')
+    @include('shared.loading')
+
     <div class="row justify-content-center">
         <div class="col-12 col-sm-8 col-md-6">
             <form class="form mt-5" action="/" method="POST" id="create-user-form">
@@ -53,6 +55,8 @@
         $('#create-user-form').submit(function(e) {
             e.preventDefault();
 
+            $('#loading').show();
+
             var url = '{{ route('register') }}';
             let formData = $('#create-user-form').serialize();
 
@@ -65,6 +69,8 @@
                 data: formData,
                 dataType: "JSON",
                 success: function(response) {
+                    $('#loading').hide();
+
                     if (response.status_code == 422) {
                         response.errors.forEach(error => {
                             $.notify(error, "error");
@@ -74,6 +80,8 @@
                     }
                 },
                 error: function(response) {
+                    $('#loading').hide();
+
                     $.notify('Ầy, có vẻ là lỗi rồi!', "erorr");
                 }
             });

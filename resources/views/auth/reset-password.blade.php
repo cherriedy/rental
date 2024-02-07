@@ -202,7 +202,8 @@
 <w:anchorlock/>
 <v:textbox inset="5px,0px,0px,0px">
 <center style="color:#ffffff; font-family:Arial, sans-serif; font-size:15px">
-<![endif]--><a href="{{}}" target="_blank" style="text-decoration:none;display:inline-block;color:#ffffff;background-color:#506bec;border-radius:16px;width:auto;border-top:0px solid TRANSPARENT;font-weight:undefined;border-right:0px solid TRANSPARENT;border-bottom:0px solid TRANSPARENT;border-left:0px solid TRANSPARENT;padding-top:8px;padding-bottom:8px;font-family:Helvetica Neue, Helvetica, Arial, sans-serif;font-size:15px;text-align:center;mso-border-alt:none;word-break:keep-all;"><span
+<![endif]--><a href="{{ route('get-password', ['user' => $user, 'token' => $token]) }}" target="_blank"
+                                                                        style="text-decoration:none;display:inline-block;color:#ffffff;background-color:#506bec;border-radius:16px;width:auto;border-top:0px solid TRANSPARENT;font-weight:undefined;border-right:0px solid TRANSPARENT;border-bottom:0px solid TRANSPARENT;border-left:0px solid TRANSPARENT;padding-top:8px;padding-bottom:8px;font-family:Helvetica Neue, Helvetica, Arial, sans-serif;font-size:15px;text-align:center;mso-border-alt:none;word-break:keep-all;"><span
                                                                             style="padding-left:25px;padding-right:20px;font-size:15px;display:inline-block;letter-spacing:normal;"><span
                                                                                 style="word-break:break-word;"><span
                                                                                     style="line-height: 30px;"

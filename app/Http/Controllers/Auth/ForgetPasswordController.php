@@ -10,6 +10,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\SendResetPasswordCodeMail;
 use App\Http\Requests\Auth\ResetPasswordRequest;
+use App\Http\Requests\Auth\SetNewPasswordRequest;
+use Illuminate\Support\Facades\Hash;
 
 class ForgetPasswordController extends Controller
 {
@@ -34,8 +36,6 @@ class ForgetPasswordController extends Controller
             ->where('email', $validated['email'])
             ->get()->toArray();
 
-        // dd($user[0]['id']);
-
         Token::create([
             'user_id' => $user[0]['id'],
             'token' => $token,
@@ -44,8 +44,10 @@ class ForgetPasswordController extends Controller
             'service' => Token::SERVICE_EMAIL,
         ]);
 
-        $mail = new SendResetPasswordCodeMail($user, $token);
-        Mail::to($validated['email'])->send($mail);
+        // $mail = new SendResetPasswordCodeMail($user, $token);
+        // Mail::to($validated['email'])->send($mail);
+
+        Mail::to($validated['email'])->send(new SendResetPasswordCodeMail($user[0]['id'], $token));
 
         return response()->json([
             'status_code' => 200,
@@ -53,11 +55,27 @@ class ForgetPasswordController extends Controller
         ]);
     }
 
-    public function getPasswordIndex() {
-        // return
+    public function getPasswordIndex($user, $token) {
+        $user_token = Token::select('starting_time')
+            ->where([ ['user_id', $user], ['token', $token] ])
+            ->whereDate('starting_time', '>=', Carbon::now())
+            ->get();
+
+        if (!$user_token->isEmpty()) {
+            return view('auth.set-new-password', compact('user', 'token'));
+        } else {
+            abort(404);
+        }
     }
 
-    public function getPasswordProcess($user, $token) {
-        // return
+    public function getPasswordProcess(SetNewPasswordRequest $request, User $user, $token) {
+        $validated = $request->validated();
+
+        $user->update($validated);
+
+        return response()->json([
+            'status_code' => 200,
+            'message' => 'Cập nhật mật khẩu thành công.'
+        ]);
     }
 }

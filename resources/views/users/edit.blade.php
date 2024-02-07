@@ -33,7 +33,7 @@
                 @method('PUT')
 
                 <div class="form-group">
-                    <label for="formFile" class="form-label mt-4">Avatar</label>
+                    <label for="" class="form-label mt-4">Avatar</label>
                     <input class="form-control" type="file" name="avatar">
                 </div>
 
@@ -124,6 +124,7 @@
 
             var url = '{{ route('users.settings.update') }}';
             let formData = $('#update-user-form').serialize();
+            // let formData = new FormData(this);
 
             $.ajax({
                 type: "PUT",
@@ -132,7 +133,8 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
                 },
                 data: formData,
-                dataType: "JSON",
+                // dataType: "JSON",
+                mimeType: 'multipart/form-data',
                 success: function(response) {
                     if (response.status_code == 422) {
                         response.errors.forEach(error => {
