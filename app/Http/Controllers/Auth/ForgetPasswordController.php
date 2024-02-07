@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\SendResetPasswordCodeMail;
 use App\Http\Requests\Auth\ResetPasswordRequest;
 use App\Http\Requests\Auth\SetNewPasswordRequest;
-use Illuminate\Support\Facades\Hash;
 
 class ForgetPasswordController extends Controller
 {
@@ -44,9 +43,6 @@ class ForgetPasswordController extends Controller
             'service' => Token::SERVICE_EMAIL,
         ]);
 
-        // $mail = new SendResetPasswordCodeMail($user, $token);
-        // Mail::to($validated['email'])->send($mail);
-
         Mail::to($validated['email'])->send(new SendResetPasswordCodeMail($user[0]['id'], $token));
 
         return response()->json([
@@ -56,9 +52,9 @@ class ForgetPasswordController extends Controller
     }
 
     public function getPasswordIndex($user, $token) {
-        $user_token = Token::select('starting_time')
-            ->where([ ['user_id', $user], ['token', $token] ])
-            ->whereDate('starting_time', '>=', Carbon::now())
+        $user_token = Token::select('id')
+            ->where([ ['user_id', $user], ['token', $token] , ['type', Token::TOKEN_REST_PASSWORD], ['service', Token::SERVICE_EMAIL] ])
+            ->whereRaw("DATE_ADD(starting_time, INTERVAL 24 HOUR) >= NOW()")
             ->get();
 
         if (!$user_token->isEmpty()) {
