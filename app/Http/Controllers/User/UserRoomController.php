@@ -2,31 +2,29 @@
 
 namespace App\Http\Controllers\User;
 
-use Exception;
-use Carbon\Carbon;
-use App\Models\Room;
-use App\Models\Image;
-use App\Models\Category;
-use App\Models\Location;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use App\Models\TemporaryFile;
-use App\Models\PaymentHistory;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\Room\CreateRoomRequest;
 use App\Http\Requests\Room\UpdateRoomRequest;
+use App\Models\Category;
+use App\Models\Image;
+use App\Models\Location;
+use App\Models\PaymentHistory;
+use App\Models\Room;
+use App\Models\TemporaryFile;
+use Carbon\Carbon;
+use Exception;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class UserRoomController extends Controller
 {
     public function index()
     {
         $rooms = Auth::user()->room;
-
-        // dd($rooms);
 
         return view('users.rooms.index', compact('rooms'));
     }
@@ -89,7 +87,9 @@ class UserRoomController extends Controller
         $validated['slug'] = Str::slug($validated['title']);
         $validated = $this->mappingPrice($validated);
         $validated = $this->mappingArea($validated);
+        $validated['starting_date'] = Carbon::now();
         $validated['expiration_date'] = Carbon::now();
+        $validated['map'] = env('GOOGLEMAPS_API_URL') . '?key=' . env('GOOGLEMAPS_API_KEY') . '&q=' . urlencode(str_replace(' ', '', $validated['exact_address']));
 
         if ($room = Room::create($validated)) {
             $temporaryFiles = TemporaryFile::all();
@@ -124,7 +124,7 @@ class UserRoomController extends Controller
 
     public function edit(Room $room)
     {
-        // $this->authorize('update', $room);
+        $this->authorize('update', $room);
 
         $cities = Location::where('type', 1)->get();
         $districts = Location::where('type', 2)->get();
@@ -137,17 +137,17 @@ class UserRoomController extends Controller
 
     public function update(UpdateRoomRequest $request, Room $room)
     {
-        // $this->authorize('update', $room);
+        $this->authorize('update', $room);
 
         $validated = $request->validated();
 
         $validated['user_id'] = Auth::id();
         $validated['slug'] = Str::slug($validated['title']);
-        // $validated['exp_date'] = Carbon::now();
         $validated['price'] = Str::replace(',', '', $request['price']);
         $validated = $this->mappingPrice($validated);
         $validated = $this->mappingArea($validated);
         $validated['updated_at'] = Carbon::now();
+        $validated['map'] = env('GOOGLEMAPS_API_URL') . '?key=' . env('GOOGLEMAPS_API_KEY') . '&q=' . urlencode(str_replace(' ', '', $validated['exact_address']));
 
         if ($room->update($validated)) {
             return response()->json([
@@ -196,7 +196,7 @@ class UserRoomController extends Controller
             $room->status = match (true) {
                 $starting_date == $today => Room::STATUS_ACTIVE,
                 $starting_date > $today => Room::STATUS_PAID,
-                default => Room::STATUS_CANCEL,
+                default => Room::STATUS_DEFAULT,
             };
 
             $room->starting_date = $starting_date;
