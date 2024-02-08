@@ -18,7 +18,7 @@ class RoomService
             ->get();
     }
 
-    public static function getListRoom($request, $params = []) {
+    public static function getListRoom($params = []) {
         $self = new self();
         $rooms = Room::whereIn('Status', [Room::STATUS_ACTIVE, Room::STATUS_EXPIRED]);
 
