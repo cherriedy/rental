@@ -1,5 +1,7 @@
 <?php
 
+use Carbon\Carbon;
+use App\Models\Room;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TemporaryImageController;
 use App\Http\Controllers\Public\SearchRoomController;
@@ -7,10 +9,12 @@ use App\Http\Controllers\Public\GetRoomByCategoryController;
 use App\Http\Controllers\Public\GetRoomByLocationController;
 
 /* HOMEPAGE */
-Route::get('/', function () { return view('public.pages.home.index'); })->name('index');
+Route::get('/', function () {
+    return view('public.pages.home.index');
+})->name('index');
 
 /* TEMPORARY IMAGE */
-Route::group(['prefix' => 'images', 'as' => 'images.', 'middleware' => 'auth'], function () {
+Route::group(['prefix' => 'temporary-images', 'as' => 'images.', 'middleware' => 'auth'], function () {
     Route::post('', [TemporaryImageController::class, 'store'])->name('store');
     Route::delete('', [TemporaryImageController::class, 'destroy'])->name('destroy');
 });
@@ -29,7 +33,7 @@ Route::get('phuong-xa/{slug}-{ward}', [GetRoomByLocationController::class, 'ward
     ->name('wards.index');
 
 /* ROOM BY CATEGORY */
-Route::get('chuyen-muc-{slug}-{category}', [GetRoomByCategoryController::class, 'index'])
+Route::get('chuyen-muc-{slug}-{category}', GetRoomByCategoryController::class)
     ->where(['slug' => '[a-z-0-9-]+', 'ward' => '[0-9]+'])
     ->name('category.getRoom');
 
