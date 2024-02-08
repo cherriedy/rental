@@ -4,29 +4,30 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\UpdateUserRequest;
+use App\Models\TemporaryFile;
 use App\Models\User;
+use Illuminate\Contracts\Cache\Store;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class UserProfileController extends Controller
 {
-    public function show(User $user) {
-        if (!$user) { abort(404); }
+    public function show(User $user)
+    {
+        if (!$user) {
+            abort(404);
+        }
 
         return view('users.show', compact('user'));
     }
 
-    public function profile() {
+    public function profile()
+    {
         return $this->show(Auth::user());
     }
 
-    // public function edit(User $user) {
-    //     $this->authorize('update', $user);
-
-    //     return view('users.edit', compact('user'));
-    // }
-
-    public function edit() {
+    public function edit()
+    {
         $user = Auth::user();
         $this->authorize('update', $user);
 
@@ -34,19 +35,28 @@ class UserProfileController extends Controller
     }
 
     /* AJAX */
-
-    // public function update(UpdateUserRequest $request, User $user) {
-    public function update(UpdateUserRequest $request) {
+    public function update(UpdateUserRequest $request)
+    {
         $user = Auth::user();
 
         $this->authorize('update', $user);
 
         $validated = $request->validated();
 
-        if ($request->has('avatar')) {
-            $validated['avatar'] = $request->file('avatar')->store('profile', 'public');
+        if ($request->has('image')) {
+            $temporaryFiles = TemporaryFile::all();
 
-            Storage::disk('public')->delete($user->avatar ?? '');
+            foreach ($temporaryFiles as $temporaryFile) {
+                Storage::copy('images/tmp/' . $temporaryFile->folder . '/' . $temporaryFile->filename, 'images/' . $temporaryFile->folder . '/' . $temporaryFile->filename);
+
+                $validated['avatar'] = $temporaryFile->folder . '/' . $temporaryFile->filename;
+
+                Storage::deleteDirectory('images/tmp/' . $temporaryFile->folder);
+
+                Storage::disk('public')->delete($user->avatar ?? '');
+
+                $temporaryFile->delete();
+            }
         }
 
         if ($user->update($validated)) {
@@ -54,9 +64,6 @@ class UserProfileController extends Controller
                 'status_code' => 200,
                 'message' => 'Cập nhật thành công.',
             ]);
-
-            // return redirect()->route('users.show');
         }
     }
-
 }
