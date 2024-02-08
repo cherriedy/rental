@@ -28,7 +28,7 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
                             aria-haspopup="true" aria-expanded="false">
-                            <img src="{{ url('storage/', Auth::user()->avatar) }}"
+                            <img src="{{ asset('images/' . Auth::user()->avatar) }}"
                                 alt=""style="width: 25px; height: 25px; border-radius: 50%;">
                             {{-- {{ Auth::user()->name }} --}}
                         </a>
