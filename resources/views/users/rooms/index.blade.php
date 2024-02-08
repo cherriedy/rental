@@ -18,6 +18,7 @@
                 <th scope="col">Ảnh đại diện</th>
                 <th scope="col">Tiêu đề</th>
                 <th scope="col">Giá</th>
+                <th scope="col">Dịch vụ nổi bật</th>
                 <th scope="col">Ngày bắt đầu</th>
                 <th scope="col">Ngày kết thúc</th>
                 <th scope="col">Trạng thái</th>
@@ -30,8 +31,13 @@
                     <th scope="row"># {{ $room->id }}</th>
                     <td>
                         <div style="overflow: hidden; width: 100px; margin: 0 auto; position: relative;">
-                            <img src="https://phongtro123.com/img/thumb_default.jpg" alt=""
-                                style="display: block; width: 100%; height: 100%; object-fit: cover;">
+                            {{-- <img src="https://phongtro123.com/img/thumb_default.jpg" alt=""
+                                style="display: block; width: 100%; height: 100%; object-fit: cover;"> --}}
+
+                            @foreach ($room->image as $image)
+                                <img src="{{ asset('images/' . $image->path) }}" alt=""
+                                    style="display: block; width: 100%; height: 100%; object-fit: cover;">
+                            @endforeach
                         </div>
                     </td>
 
@@ -62,7 +68,8 @@
                         </p>
                     </td>
                     <td>{{ number_format($room->price, 0, '', ',') }} đồng / tháng</td>
-                    <td>{{ date('Y-m-d', strtotime($room->created_at)) }}</td>
+                    <td>{{ $room->gethotService() }}</td>
+                    <td>{{ $room->starting_date }}</td>
                     <td>{{ $room->expiration_date }}</td>
                     <td>{{ $room->getStatus() }}</td>
                 </tr>
