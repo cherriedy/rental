@@ -1,57 +1,90 @@
-@extends('layouts.layout')
+<!DOCTYPE html>
+<html lang="en">
 
-@section('title', 'Register')
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-@section('content')
-    @include('shared.loading')
+    <title>Nhà tốt: Đăng nhập</title>
 
-    <div class="row justify-content-center">
-        <div class="col-12 col-sm-8 col-md-6">
-            <form class="form mt-5" action="/" method="POST" id="create-user-form">
-                @csrf
-                <h3 class="text-center text-dark">Register</h3>
+    <link href="https://fonts.googleapis.com/css?family=Karla:400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.materialdesignicons.com/4.8.95/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 
-                <div class="form-group">
-                    <label for="name" class="text-dark">Name:</label><br>
-                    <input type="text" name="name" class="form-control">
+    @vite(['resources/scss/app.scss', 'resources/js/app.js'])
+</head>
+
+<body>
+    <main>
+        @include('shared.loading')
+
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-6 login-section-wrapper">
+                    <div class="brand-wrapper">
+                        <a href="{{ route('index') }}">
+                            <img src="{{ Vite::asset('resources/images/logo-no-background.png') }}" alt="logo"
+                                class="logo">
+                        </a>
+                    </div>
+                    <div class="login-wrapper my-auto">
+                        <h1 class="login-title">Đăng kí</h1>
+
+                        <form action="" method="POST" id="create-user-form">
+                            @csrf
+                            <div class="form-group">
+                                <label for="email">Tên</label>
+                                <input type="text" name="name" id="name" class="form-control">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" name="email" id="email" class="form-control">
+                            </div>
+
+                            <div class="form-group mb-4">
+                                <label for="password">Mật khẩu</label>
+                                <input type="password" name="password" id="password" class="form-control">
+                            </div>
+
+                            <div class="form-group mb-4">
+                                <label for="password_confirmation">Nhập lại mật khẩu</label>
+                                <input type="password" name="password_confirmation" id="password_confirmation"
+                                    class="form-control">
+                            </div>
+
+                            <input name="login" id="login" class="btn btn-block login-btn" type="submit"
+                                value="Đăng nhập">
+                        </form>
+
+                        <p class="login-wrapper-footer-text">Đã có tài khoản? <a href="{{ route('login') }}"
+                                class="text-reset">Đăng nhập tại đây</a></p>
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="email" class="text-dark">Email:</label><br>
-                    <input type="text" name="email" class="form-control">
+                <div class="col-sm-6 px-0 d-none d-sm-block">
+                    <img src="https://images.unsplash.com/photo-1556020685-ae41abfc9365?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                        alt="login image" class="login-img">
                 </div>
-
-                <div class="form-group mt-3">
-                    <label for="password" class="text-dark">Password:</label><br>
-                    <input type="password" name="password" class="form-control">
-                </div>
-
-                <div class="form-group mt-3">
-                    <label for="password-confirmation" class="text-dark">Confirm Password:</label><br>
-                    <input type="password" name="password_confirmation" class="form-control">
-                </div>
-
-                <div>
-                    @error('RegisterError')
-                        <span class="text-danger fs-6">{{ $message }}</span>
-                    @enderror
-                </div>
-
-                <div class="form-group">
-                    <label for="remember-me" class="text-dark"></label><br>
-                    <input type="submit" name="submit" class="btn btn-dark btn-md" value="Submit">
-                </div>
-
-                <div class="text-right mt-2">
-                    <a href="/login" class="text-dark">Login here</a>
-                </div>
-            </form>
+            </div>
         </div>
-    </div>
-@endsection
+    </main>
 
-@section('script')
-    <script>
+    {{-- <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script> --}}
+    {{-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script> --}}
+
+    {{-- BOOTSTRAP --}}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
+    </script>
+
+    {{-- JQUERY --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script type="text/javascript">
         $('#create-user-form').submit(function(e) {
             e.preventDefault();
 
@@ -77,6 +110,10 @@
                         });
                     } else if (response.status_code == 200) {
                         $.notify(response.message, "success");
+
+                        setTimeout(() => {
+                            window.location.replace('{{ route('index') }}');
+                        }, 1500);
                     }
                 },
                 error: function(response) {
@@ -87,4 +124,6 @@
             });
         });
     </script>
-@endsection
+</body>
+
+</html>
