@@ -8,7 +8,6 @@ use App\Models\Room;
 use App\Models\Image;
 use App\Models\Category;
 use App\Models\Location;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
@@ -18,7 +17,6 @@ use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\Room\CreateRoomRequest;
 use App\Http\Requests\Room\UpdateRoomRequest;
 
@@ -27,6 +25,8 @@ class UserRoomController extends Controller
     public function index()
     {
         $rooms = Auth::user()->room;
+
+        // dd($rooms);
 
         return view('users.rooms.index', compact('rooms'));
     }
@@ -89,10 +89,7 @@ class UserRoomController extends Controller
         $validated['slug'] = Str::slug($validated['title']);
         $validated = $this->mappingPrice($validated);
         $validated = $this->mappingArea($validated);
-
-        /* DEVELOPER */
         $validated['expiration_date'] = Carbon::now();
-        /*END DEVELOPER */
 
         if ($room = Room::create($validated)) {
             $temporaryFiles = TemporaryFile::all();
@@ -157,12 +154,6 @@ class UserRoomController extends Controller
                 'status_code' => '200',
                 'message' => 'Cập nhật thành công!',
             ]);
-        } else {
-            // return response()->json([
-            //     'status_code' => '200',
-            //     'message' => 'Cập nhật thành công!',
-            //     'errors' => dd($validated),
-            // ]);
         }
     }
 
@@ -175,23 +166,6 @@ class UserRoomController extends Controller
     public function hotServiceStore(Request $request, Room $room)
     {
         try {
-            // $validated = Validator::make( $request->all(), [
-            //         'hotServiceOption' => 'required',
-            //         'starting_date' => 'required',
-            //         'days' => 'required',
-            //     ], [
-            //         'hotServiceOption.required' => 'Gói dịch vụ không được để trống.',
-            //         'starting_date' => 'Ngày bắt đầu không được để trống',
-            //         'days' => 'Số ngày sử dụng không được để trống.',
-            //     ],
-            // );
-
-            // if ($validated->fails()) {
-            //     return response()->json([
-            //         'status_code' => 422,
-            //         'erorrs' => $validated->errors(),
-            //     ]);
-            // } else {
             $hotServiceOption = $request['hotServiceOption'];
             $price_PerDay_Of_hotService = config('rental.priceType')[$hotServiceOption];
             $days = $request['days'];
@@ -216,16 +190,13 @@ class UserRoomController extends Controller
                 ->decrement('account_balance', $totalMoney);
 
             $starting_date = Carbon::parse($request['starting_date']);
-            $expiration_date = $starting_date->addDay($request['days']);
+            $expiration_date = $starting_date->clone()->addDay($request['days']);
 
-            // $room->status = match (true) {
-            //     $starting_date == date('Y-m-d') => Room::STATUS_ACTIVE,
-            //     $starting_date > date('Y-m-d') => Room::STATUS_PAID,
-            // };
-
+            $today = Carbon::today();
             $room->status = match (true) {
-                Room::whereDate('starting_date', date('Y-m-d'))->exists() => Room::STATUS_ACTIVE,
-                Room::whereDate('starting_date', '>', date('Y-m-d'))->exists() => Room::STATUS_PAID,
+                $starting_date == $today => Room::STATUS_ACTIVE,
+                $starting_date > $today => Room::STATUS_PAID,
+                default => Room::STATUS_CANCEL,
             };
 
             $room->starting_date = $starting_date;
@@ -233,12 +204,9 @@ class UserRoomController extends Controller
             $room->hot_service = $hotServiceOption;
             $room->updated_at = Carbon::now();
             $room->save();
-            // $room->update($request->all());
-            //
             DB::commit();
 
             return redirect()->route('rooms.index');
-            // }
         } catch (Exception $exception) {
             DB::rollBack();
             Log::info('========HOT-SERVICE-STORE: ' . $exception);
