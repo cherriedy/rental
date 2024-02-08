@@ -3,17 +3,28 @@
 @section('title', 'Đăng tin mới')
 
 @section('content')
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="/profile" class="text-decoration-none">{{ Auth::user()->name }}</a></li>
-        <li class="breadcrumb-item"><a href="\rooms" class="text-decoration-none">Quản lý phòng</a></li>
-        <li class="breadcrumb-item active">Đăng tin mới</li>
-    </ol>
+    <div class="container-fluid header bg-white p-0">
+        <div class="row g-0 align-items-center flex-column-reverse flex-md-row">
+            <div class="col-md-6 p-5 mt-lg-5">
+                <h1 class="display-5 animated fadeIn mb-4">Đăng tin mới</h1>
 
-    <div class="d-flex align-items-center justify-content-between">
-        <h1 class="h1">Đăng tin mới</h1>
+                <nav aria-label="breadcrumb animated fadeIn">
+                    <ol class="breadcrumb text-uppercase">
+                        <li class="breadcrumb-item"><a href="{{ route('profile') }}">{{ Auth::user()->name }}</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('rooms.index') }}">Quản lý bài đăng</a></li>
+                        <li class="breadcrumb-item text-body active" aria-current="page">Đăng bài</li>
+                    </ol>
+                </nav>
+            </div>
+
+            <div class="col-md-6 animated fadeIn">
+                <img class="img-fluid" src="{{ Vite::asset('resources/images/header.jpg') }}" alt="">
+            </div>
+        </div>
     </div>
 
-    <hr>
+    {{-- SEARCH BAR --}}
+    @include('shared.search-bar-2')
 
     <form id="create-room-form" action="/" method="POST" enctype="multipart/form-data" class="form-horizontal">
         @csrf
@@ -66,25 +77,14 @@
                     </div>
                 </div>
 
-                {{-- <div class="row mt-3">
+                <div class="row mt-3">
                     <div class="col-md-3">
                         <label for="apartment_number" class="col-form-label">Số nhà</label>
                         <div class="input-group">
                             <input type="text" name="apartment_number" class="form-control js-input-apartment_number">
                         </div>
                     </div>
-                </div> --}}
-
-                <div class="row mt-3">
-                    <div class="col-md-3">
-                        <label for="apartment_number" class="col-form-label">Số nhà</label>
-                        <div class="input-group">
-                            <input type="text" name="apartment_number" class="form-control js-input-apartment_number"
-                                value="">
-                        </div>
-                    </div>
                 </div>
-
 
                 <div class="row mt-3">
                     <div class="col-md-8">
@@ -191,16 +191,16 @@
                 <div class="row mt-5">
                     <div class="col-md-8">
                         <h3>Hình ảnh</h3>
+                        <small class="text text-sm text-primary">Hình đầu tiên sẽ được làm hình đại diện</small>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-md-8">
+                            <input type="file" name="image" id="image" class="filepond" multiple
+                                data-allow-reorder="true" data-max-file-size="3MB" data-max-files="10">
+                        </div>
                     </div>
                 </div>
-
-                <div class="row mt-3">
-                    <div class="col-md-8">
-                        <input type="file" name="image" id="image" class="filepond" multiple
-                            data-allow-reorder="true" data-max-file-size="3MB" data-max-files="10">
-                    </div>
-                </div>
-
 
                 <div class="row mt-5">
                     <div class="col-md-8">
@@ -210,11 +210,9 @@
             </div>
 
             <div class="col-md-4">
-                <div style="width: 100%; height: 300px; margin-bottom: 30px;">
-                    <iframe
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3918.8167703610898!2d106.71605791074683!3d10.825329989281883!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752883dd4ceea5%3A0xb7add6f6be271dc7!2zQ2h1bmcgQ8awIE3hu7kgTG9uZw!5e0!3m2!1svi!2s!4v1705160517776!5m2!1svi!2s"
-                        width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"
-                        referrerpolicy="no-referrer-when-downgrade"></iframe>
+                <div id="maps" style="width: 100%; height: 300px; margin-bottom: 30px;">
+                    <iframe width="100%" height="100%" style="border:0" loading="lazy"
+                        src="https://www.google.com/maps/embed/v1/place?q=ho%20chi%20minh&key={{ env('GOOGLEMAPS_API_KEY') }}"></iframe>
                 </div>
 
                 <div class="card mb-5" style="color: #856404; background-color: #fff3cd; border-color: #ffeeba;">
@@ -244,11 +242,33 @@
 @endsection
 
 @section('script')
-    <script>
+    <script async defer type="text/javascript"
+        src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLEMAPS_API_KEY') }}&libraries=places&callback=initMap">
+    </script>
+
+    <script type="text/javascript">
+        function initMap() {
+            // const default_location = {
+            //     lat: 10.762622,
+            //     lng: 106.660172,
+            // };
+
+            // const map = new google.maps.Map(document.getElementById('maps'), {
+            //     zoom: 10,
+            //     center: default_location,
+            //     disableDefaultUI: true,
+            //     zoomControl: true,
+            //     streetViewControl: false,
+            //     fullscreenControl: false,
+            // });
+        }
+    </script>
+
+    <script type="text/javascript">
         FilePond.registerPlugin(FilePondPluginImagePreview);
 
-        const inputElement = document.querySelector('input[id="image"]');
-        const pond = FilePond.create(inputElement);
+        const images_inputElement = document.querySelector('input[id="image"]');
+        const pond = FilePond.create(images_inputElement);
 
         FilePond.setOptions({
             server: {
@@ -260,9 +280,11 @@
             },
             allowImagePreview: true,
             imagePreviewMaxHeight: 150,
+            labelIdle: `Kéo & thả ảnh hoặc <span class="filepond--label-action">Tải lên</span>`,
         });
+    </script>
 
-
+    <script type="text/javascript">
         $('#create-room-form').submit(function(e) {
             e.preventDefault();
 
