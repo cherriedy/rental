@@ -38,9 +38,15 @@
                                 <input type="email" name="email" id="email" class="form-control">
                             </div>
 
-                            <div class="form-group mb-4">
+                            <div class="form-group mb-3">
                                 <label for="password">Mật khẩu</label>
                                 <input type="password" name="password" id="password" class="form-control">
+                            </div>
+
+                            <div class="form-check form-switch mb-4">
+                                <input class="form-check-input" type="checkbox" id="rememberme" name="rememberme">
+                                <label class="form-check-label" for="flexSwitchCheckDefault">Lưu phiên đăng nhập cho lần
+                                    sau</label>
                             </div>
 
                             <input name="login" id="login" class="btn btn-block login-btn" type="submit"
