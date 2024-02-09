@@ -16,8 +16,8 @@
                 <div class="d-flex align-items-center justify-content-between">
                     <div class="d-flex align-items-center">
 
-                        <img style="width: 150px" class="me-3 avatar-sm rounded-circle"
-                            src="{{ url('storage/' . $user->avatar) }}" alt="{{ $user->name }}">
+                        {{-- <img style="width: 150px" class="me-3 avatar-sm rounded-circle"
+                            src="{{ url('storage/' . $user->avatar) }}" alt="{{ $user->name }}"> --}}
 
                         <div>
                             <h3 class="card-title mb-0"><a href="{{ route('profile') }}">{{ $user->name }}</a></h3>
@@ -32,15 +32,16 @@
                 @csrf
                 @method('PUT')
 
-                <div class="form-group">
+                {{-- <div class="form-group">
                     <label for="" class="form-label mt-4">Avatar</label>
                     <input class="form-control" type="file" name="avatar">
-                </div>
+                </div> --}}
 
                 {{-- FILEPOND TEST --}}
-                {{-- <div style="width: 150px; height: 150px;" class="me-3">
-                    <input type="file" class="filepond" name="avatar" id="avatar" accept="image/png, image/jpeg, image/gif" />
-                </div> --}}
+                <div style="width: 150px; height: 150px;" class="me-3">
+                    <input type="file" class="filepond" name="image" id="image"
+                        accept="image/png, image/jpeg, image/gif" />
+                </div>
 
 
                 <div class="form-group">
@@ -75,56 +76,42 @@
 @endsection
 
 @section('script')
-    <script src="https://unpkg.com/filepond-plugin-image-edit/dist/filepond-plugin-image-edit.js"></script>
-    <script src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.js"></script>
-    <script src="https://unpkg.com/filepond-plugin-image-exif-orientation/dist/filepond-plugin-image-exif-orientation.js">
+
+
+    <script type="module">
+        FilePond.registerPlugin(
+            FilePondPluginFileValidateType,
+            FilePondPluginImagePreview,
+        );
+
+        const inputElement = document.querySelector('input[name="image"]');
+        const pond = FilePond.create(inputElement);
+
+        FilePond.setOptions({
+            server: {
+                process: '{{ route('images.store') }}',
+                revert: '{{ route('images.destroy') }}',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                },
+            },
+            allowImageEdit: true,
+            labelIdle: `Kéo & thả ảnh hoặc <span class="filepond--label-action">Tải lên</span>`,
+            imagePreviewHeight: 170,
+            stylePanelLayout: 'compact circle',
+            styleLoadIndicatorPosition: 'center bottom',
+            styleProgressIndicatorPosition: 'right bottom',
+            styleButtonRemoveItemPosition: 'left bottom',
+            styleButtonProcessItemPosition: 'right bottom',
+        });
     </script>
-    <script src="https://unpkg.com/filepond-plugin-image-crop/dist/filepond-plugin-image-crop.js"></script>
-    <script src="https://unpkg.com/filepond-plugin-image-resize/dist/filepond-plugin-image-resize.js"></script>
-    <script src="https://unpkg.com/filepond-plugin-image-transform/dist/filepond-plugin-image-transform.js"></script>
-    <script src="https://unpkg.com/filepond-plugin-image-edit/dist/filepond-plugin-image-edit.js"></script>
 
-
-    <script>
-        // FilePond.registerPlugin(
-        //     FilePondPluginFileValidateType,
-        //     FilePondPluginImageExifOrientation,
-        //     FilePondPluginImagePreview,
-        //     FilePondPluginImageCrop,
-        //     FilePondPluginImageResize,
-        //     FilePondPluginImageTransform,
-        //     FilePondPluginImageEdit
-        // );
-
-        // const inputElement = document.querySelector('input[name="avatar"]');
-        // const pond = FilePond.create(inputElement);
-
-        // FilePond.setOptions({
-        //     labelIdle: `Kéo & thả ảnh hoặc <span class="filepond--label-action">Tải lên</span>`,
-        //     imagePreviewHeight: 170,
-        //     imageCropAspectRatio: '1:1',
-        //     imageResizeTargetWidth: 200,
-        //     imageResizeTargetHeight: 200,
-        //     stylePanelLayout: 'compact circle',
-        //     styleLoadIndicatorPosition: 'center bottom',
-        //     styleProgressIndicatorPosition: 'right bottom',
-        //     styleButtonRemoveItemPosition: 'left bottom',
-        //     styleButtonProcessItemPosition: 'right bottom',
-        //     server: {
-        //         proccess: '{{ route('images.store') }}',
-        //         revert: '{{ route('images.destroy') }}',
-        //         header: {
-        //             'X-CSRF-TOKEN': '{{ csrf_token() }}'
-        //         }
-        //     }
-        // });
-
+    <script type="text/javascript">
         $('#update-user-form').submit(function(e) {
             e.preventDefault();
 
             var url = '{{ route('users.settings.update') }}';
             let formData = $('#update-user-form').serialize();
-            // let formData = new FormData(this);
 
             $.ajax({
                 type: "PUT",
@@ -133,8 +120,7 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
                 },
                 data: formData,
-                // dataType: "JSON",
-                mimeType: 'multipart/form-data',
+                dataType: "JSON",
                 success: function(response) {
                     if (response.status_code == 422) {
                         response.errors.forEach(error => {
@@ -143,7 +129,7 @@
                     } else if (response.status_code == 200) {
                         $.notify(response.message, "success");
                         setTimeout(() => {
-                            window.location.replace(document.referrer);
+                            window.location.replace('{{ route('profile') }}');
                         }, 1500);
                     }
                 },
