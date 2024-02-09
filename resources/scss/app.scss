@@ -5,18 +5,14 @@
 @use 'layout';
 @use 'pages';
 
+// Fonts
+@import url('https://fonts.bunny.net/css?family=Nunito');
 
-html {
-    box-sizing: border-box;
-    text-decoration: none !important;
-    outline: 0;
-    padding: 0;
-    margin: 0;
-}
+// DataTables
+@import 'bootstrap-icons/font/bootstrap-icons.css';
+@import "datatables.net-bs5/css/dataTables.bootstrap5.min.css";
+@import "datatables.net-buttons-bs5/css/buttons.bootstrap5.min.css";
+@import 'datatables.net-select-bs5/css/select.bootstrap5.css';
 
-// html, body {
-//     max-width: 100%;
-//     overflow-x: hidden;
-// }
 
 
