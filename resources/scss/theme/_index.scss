@@ -1,5 +1,4 @@
-// @forward '../../../node_modules/bootstrap/scss/bootstrap';
-// @forward 'custom-bootsrap';
-@import 'variables';
+@import 'custom-boostrap';
+@import '../../../node_modules/bootstrap/scss/bootstrap';
 @import 'bootstrap.min';
-// @import 'public-theme';
+@import 'public-theme';
