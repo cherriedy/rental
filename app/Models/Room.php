@@ -18,6 +18,7 @@ class Room extends Model
 
     protected $guarded = [];
 
+    const STATUS_ZERO = 0;
     const STATUS_DEFAULT = 1; // khởi tạo
     const STATUS_PAID = 2; // đã thanh toán
     const STATUS_EXPIRED = -2; // hết hạn
@@ -28,6 +29,7 @@ class Room extends Model
     const GENDER_MALE = 1;
     const GENDER_FEMALE = 2;
 
+    const SERVICE_ZERO = 0;
     const SERVICE_DEFAULT = 1;
     const SERVICE_H1 = 2;
     const SERVICE_H2 = 3;
@@ -39,19 +41,25 @@ class Room extends Model
         return Str::slug($this->name);
     }
 
-    protected function getStatusAttribute(): Attribute
+    protected function status(): Attribute
     {
-        return Attribute::make(get: fn($value) => config('room.status')[$value]);
+        return Attribute::make(
+            get: fn($value) => config('room.status')[$value]
+        );
     }
 
-    protected function getSubjectAttribute(): Attribute
+    protected function subjectId(): Attribute
     {
-        return Attribute::make(get: fn($value) => config('room.subject')[$value]);
+        return Attribute::make(
+            get: fn($value) => config('room.subject')[$value]
+        );
     }
 
-    protected function getHotServiceAttribute(): Attribute
+    protected function hotService(): Attribute
     {
-        return Attribute::make(get: fn($value) => config('room.hot_service')[$value]);
+        return Attribute::make(
+            get: fn($value) => config('room.hot_service')[$value]
+        );
     }
 
     public function user()
