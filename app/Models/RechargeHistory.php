@@ -13,13 +13,7 @@ class RechargeHistory extends Model
 
     protected $with = ['user:id,name'];
 
-    protected $fillable = [
-        'user_id',
-        'amount',
-        'total',
-        'code',
-        'type',
-    ];
+    protected $guarded  = [];
 
     const STATUS_CANCEL = 0;
     const STATUS_DEFAULT = 1;
