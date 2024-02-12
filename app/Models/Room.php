@@ -3,19 +3,42 @@
 namespace App\Models;
 
 use App\Models\Location;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Room extends Model
 {
     use HasFactory;
 
-    // protected $guraded = [''];
-    protected $fillable = ['user_id', 'city_id', 'district_id', 'ward_id', 'street_id', 'apartment_number', 'category_id', 'title', 'description', 'price', 'area', 'user_id', 'slug', 'exact_address', 'expiration_date', 'updated_at', 'created_at', 'price_range', 'area_range', 'status', 'cancel_reason', 'starting_date', 'map'];
+    protected $with = ["user:id,name,avatar,phone"];
 
-    protected $with = ['user:id,name,avatar,phone'];
+    protected $fillable = [
+        "user_id",
+        "city_id",
+        "district_id",
+        "ward_id",
+        "street_id",
+        "apartment_number",
+        "category_id",
+        "title",
+        "description",
+        "price",
+        "area",
+        "user_id",
+        "slug",
+        "exact_address",
+        "expiration_date",
+        "updated_at",
+        "created_at",
+        "price_range",
+        "area_range",
+        "status",
+        "cancel_reason",
+        "starting_date",
+        "map",
+    ];
 
     const STATUS_DEFAULT = 1; // khởi tạo
     const STATUS_PAID = 2; // đã thanh toán
@@ -35,26 +58,25 @@ class Room extends Model
     const SERVICE_SPECIAL = 5;
 
     protected $statusType = [
-        self::STATUS_DEFAULT => 'Khởi tạo',
-        self::STATUS_PAID => 'Đã thanh toán',
-        self::STATUS_EXPIRED => 'Hết hạn',
-        self::STATUS_ACTIVE => 'Hoạt động',
-        self::STATUS_CANCEL => 'Đã huỷ',
-        // self::STATUS_HIDE => 'Tạm ẩn',
+        self::STATUS_DEFAULT => "Khởi tạo",
+        self::STATUS_PAID => "Đã thanh toán",
+        self::STATUS_EXPIRED => "Hết hạn",
+        self::STATUS_ACTIVE => "Hoạt động",
+        self::STATUS_CANCEL => "Đã huỷ",
     ];
 
     protected $subjectType = [
-        self::GENDER_ALL => 'Tất cả',
-        self::GENDER_MALE => 'Nam',
-        self::GENDER_FEMALE => 'Nữ',
+        self::GENDER_ALL => "Tất cả",
+        self::GENDER_MALE => "Nam",
+        self::GENDER_FEMALE => "Nữ",
     ];
 
     protected $hotServiceType = [
-        self::SERVICE_DEFAULT => 'Dịch vụ mặc định',
-        self::SERVICE_H1 => 'Dịch vụ HOT1',
-        self::SERVICE_H2 => 'Dịch vụ HOT2',
-        self::SERVICE_H3 => 'Dịch vụ HOT3',
-        self::SERVICE_SPECIAL => 'Dịch vụ đặc biệt nổi bật',
+        self::SERVICE_DEFAULT => "Dịch vụ mặc định",
+        self::SERVICE_H1 => "Dịch vụ HOT1",
+        self::SERVICE_H2 => "Dịch vụ HOT2",
+        self::SERVICE_H3 => "Dịch vụ HOT3",
+        self::SERVICE_SPECIAL => "Dịch vụ đặc biệt nổi bật",
     ];
 
     public function slug()
@@ -89,22 +111,22 @@ class Room extends Model
 
     public function city()
     {
-        return $this->belongsTo(Location::class, 'city_id');
+        return $this->belongsTo(Location::class, "city_id");
     }
 
     public function district()
     {
-        return $this->belongsTo(Location::class, 'district_id');
+        return $this->belongsTo(Location::class, "district_id");
     }
 
     public function ward()
     {
-        return $this->belongsTo(Location::class, 'ward_id');
+        return $this->belongsTo(Location::class, "ward_id");
     }
 
     public function street()
     {
-        return $this->belongsTo(Location::class, 'street_id');
+        return $this->belongsTo(Location::class, "street_id");
     }
 
     public function image()
