@@ -26,7 +26,7 @@ class LoginController extends Controller
                 'message' => 'Đăng nhập thành công',
             ];
 
-            $response['isAdmin'] = Auth::user()->isAdmin ? true : false;
+            $response['isAdmin'] = Auth::user()->isAdmin;
 
             return response()->json($response);
         }
