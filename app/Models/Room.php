@@ -12,16 +12,15 @@ class Room extends Model
 {
     use HasFactory;
 
-    protected $with = ["user:id,name,avatar,phone"];
+    protected $with = ['user:id,name,avatar,phone'];
 
     protected $guarded = [];
 
-    const STATUS_DEFAULT = 1; // khởi tạo
-    const STATUS_PAID = 2; // đã thanh toán
-    const STATUS_EXPIRED = -2; //hết hạn
-    const STATUS_ACTIVE = 3; // đã duyệt
-    const STATUS_CANCEL = -1; // huỷ bỏ
-    const STATUS_HIDE = 0; // Ẩn
+    const STATUS_DEFAULT = 1;       // khởi tạo
+    const STATUS_PAID = 2;          // đã thanh toán
+    const STATUS_EXPIRED = -2;      // hết hạn
+    const STATUS_ACTIVE = 3;        // đã duyệt
+    const STATUS_CANCEL = -1;       // huỷ bỏ
 
     const GENDER_ALL = 0;
     const GENDER_MALE = 1;
@@ -65,22 +64,22 @@ class Room extends Model
 
     public function city()
     {
-        return $this->belongsTo(Location::class, "city_id");
+        return $this->belongsTo(Location::class, 'city_id');
     }
 
     public function district()
     {
-        return $this->belongsTo(Location::class, "district_id");
+        return $this->belongsTo(Location::class, 'district_id');
     }
 
     public function ward()
     {
-        return $this->belongsTo(Location::class, "ward_id");
+        return $this->belongsTo(Location::class, 'ward_id');
     }
 
     public function street()
     {
-        return $this->belongsTo(Location::class, "street_id");
+        return $this->belongsTo(Location::class, 'street_id');
     }
 
     public function image()
