@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\User;
+use App\Models\Category;
 use App\Models\Location;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Room extends Model
 {
@@ -37,19 +39,19 @@ class Room extends Model
         return Str::slug($this->name);
     }
 
-    public function getStatusAttribute($value)
+    protected function getStatusAttribute(): Attribute
     {
-        return config('room.status')[$value];
+        return Attribute::make(get: fn($value) => config('room.status')[$value]);
     }
 
-    public function getSubjectAttribute($value)
+    protected function getSubjectAttribute(): Attribute
     {
-        return config('room.subject')[$value];
+        return Attribute::make(get: fn($value) => config('room.subject')[$value]);
     }
 
-    public function getHotServiceAttribute($value)
+    protected function getHotServiceAttribute(): Attribute
     {
-        return config('room.hot_service')[$value];
+        return Attribute::make(get: fn($value) => config('room.hot_service')[$value]);
     }
 
     public function user()
