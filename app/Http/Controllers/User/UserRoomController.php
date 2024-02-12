@@ -40,12 +40,12 @@ class UserRoomController extends Controller
     public function create()
     {
         $cities = Location::where('type', 1)->get();
-        $districts = Location::where('type', 2)->get();
-        $wards = Location::where('type', 3)->get();
-        $streets = Location::where('type', 4)->get();
+        // $districts = Location::where('type', 2)->get();
+        // $wards = Location::where('type', 3)->get();
+        // $streets = Location::where('type', 4)->get();
         $categories = Category::select('id', 'name')->get();
 
-        return view('users.rooms.create', compact('cities', 'districts', 'wards', 'categories', 'streets'));
+        return view('users.rooms.create', compact('cities', 'categories'));
     }
 
     protected function mappingPrice($validated)
