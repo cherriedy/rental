@@ -20,13 +20,6 @@ class RechargeHistory extends Model
     const STATUS_SUCCESS = 2;
     const STATUS_ERROR = -1;
 
-    protected $statusSet = [
-        self::STATUS_CANCEL => 'Huỷ',
-        self::STATUS_DEFAULT => 'Khởi tạo',
-        self::STATUS_SUCCESS => 'Thành công',
-        self::STATUS_ERROR => 'Lỗi',
-    ];
-
     public function getStatus() {
         return Arr::get($this->statusSet, $this->status);
     }
