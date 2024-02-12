@@ -21,9 +21,7 @@ class UserRechargeHistoryController extends Controller
 
     public function rechargeHistory()
     {
-        $rechargeHistories = RechargeHistory::where('user_id', Auth::id())
-            ->orderbyDesc('id')
-            ->get();
+        $rechargeHistories = RechargeHistory::where('user_id', Auth::id())->orderbyDesc('id')->get();
 
         return view('users.recharge.history', compact('rechargeHistories'));
     }
