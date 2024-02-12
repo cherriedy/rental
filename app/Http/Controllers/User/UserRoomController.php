@@ -8,6 +8,7 @@ use App\Models\Room;
 use App\Models\Image;
 use App\Models\Category;
 use App\Models\Location;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
@@ -93,28 +94,36 @@ class UserRoomController extends Controller
         $validated['expiration_date'] = Carbon::now();
         $validated['map'] = env('GOOGLEMAPS_API_URL') . '?key=' . env('GOOGLEMAPS_API_KEY') . '&q=' . urlencode(str_replace(' ', '', $validated['exact_address']));
 
-        if ($room = Room::create($validated)) {
-            $temporaryFiles = TemporaryFile::all();
+        try {
+            DB::beginTransaction();
 
-            foreach ($temporaryFiles as $temporaryFile) {
-                Storage::copy('images/tmp/' . $temporaryFile->folder . '/' . $temporaryFile->filename, 'images/' . $temporaryFile->folder . '/' . $temporaryFile->filename);
+            if ($room = Room::create(Arr::except($validated, 'image'))) {
+                $temporaryFiles = TemporaryFile::all();
 
-                Image::create([
-                    'name' => $temporaryFile->filename,
-                    'path' => $temporaryFile->folder . '/' . $temporaryFile->filename,
-                    'room_id' => $room->id,
+                foreach ($temporaryFiles as $temporaryFile) {
+                    Storage::copy('images/tmp/' . $temporaryFile->folder . '/' . $temporaryFile->filename, 'images/' . $temporaryFile->folder . '/' . $temporaryFile->filename);
+
+                    Image::create([
+                        'name' => $temporaryFile->filename,
+                        'path' => $temporaryFile->folder . '/' . $temporaryFile->filename,
+                        'room_id' => $room->id,
+                    ]);
+
+                    Storage::deleteDirectory('images/tmp/' . $temporaryFile->folder);
+
+                    $temporaryFile->delete();
+                }
+
+                DB::commit();
+
+                return response()->json([
+                    'status_code' => '200',
+                    'message' => 'Đăng bài thành công!',
                 ]);
-
-                Storage::deleteDirectory('images/tmp/' . $temporaryFile->folder);
-
-                $temporaryFile->delete();
             }
+        } catch (Exception $exception) {
+            DB::rollBack();
 
-            return response()->json([
-                'status_code' => '200',
-                'message' => 'Đăng bài thành công!',
-            ]);
-        } else {
             $temporaryImages = TemporaryFile::all();
 
             foreach ($temporaryImages as $temporaryImage) {
