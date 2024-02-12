@@ -84,7 +84,10 @@
                 <div class="card px-3 py-2">
                     <p class="card-title">Description</p>
                     <hr>
-                    <p class="overflow-hidden" style="text-align: justify;">{{ $room->description }}</p>
+                    {{-- <p class="overflow-hidden" style="text-align: justify;">{{ $room->description }}</p> --}}
+                    <pre>
+                        {{ $room->description }}
+                    </pre>
                 </div>
             </div>
 

@@ -1,19 +1,10 @@
 jQuery(document).ready(function () {
-    $('.js-select-city, .js-select-district, .js-select-ward, .js-select-street').change(function () {
+    $('.js-select-city, .js-select-district, .js-select-ward, .js-select-street, .js-input-apartment_number').change(function () {
         getExactAddress();
-        // console.log('okay');
     });
 
-    // $('.js-input-apartment_number').donetyping(function() {
+    // $('.js-input-apartment_number').donetyping(function () {
     //     getExactAddress();
-    // }, 1000);
-
-    // var typingTimer;
-    // var doneTypingInterval = 1000;
-
-    // $('.js-input-apartment_number').on('keyup', function () {
-    //     clearTimeout(typingTimer);
-    //     typingTimer = setTimeout(getExactAddress, doneTypingInterval);
     // });
 
     function getExactAddress() {
@@ -34,15 +25,22 @@ jQuery(document).ready(function () {
 
         var street = '';
         if ($('.js-select-street').val() != '' && $('.js-select-street').val() != 0) {
-            var aparment_number = $('.js-input-apartment_number').val();
-            street = (aparment_number ? aparment_number + ' ' : '') + $('.js-select-street option:selected').text() +', ';
+            // var apartment_number = $('.js-input-apartment_number').val();
+            // street = (apartment_number ? apartment_number + ' ' : '') + $('.js-select-street option:selected').text() + ', ';
+            street = $('.js-select-street option:selected').text() + ', ';
+        }
+
+        var apartment_number = '';
+        if ($('.js-input-apartment_number').val()) {
+            apartment_number = $('.js-input-apartment_number').val() + ' ';
         }
 
         if ($('input[name="exact_address"]').length) {
-            var _address = street + ward + district + city;
+            var _address = apartment_number + street + ward + district + city;
             $('input[name="exact_address"]').val(_address);
             $('input[name="exact_address"]').focus();
             $('input[name="exact_address"]').get(0).setSelectionRange(0, 0);
+            $('#maps').find('iframe').attr('src', 'https://maps.googleapis.com/maps/embed/v1/place?key=AIzaSyCSlzzTKznvOMweDsjQG5Bc0n3CG9H2oHs&q=' + _address);
         }
     }
 });

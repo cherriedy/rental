@@ -3,19 +3,19 @@
 @section('title', $category->name)
 
 @section('content')
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item">Trang chủ</li>
+    {{-- <ol class="breadcrumb">
+        <li class="breadcrumb-item">trang chủ</li>
         <li class="breadcrumb-item active">{{ $category->name }}</li>
     </ol>
 
     <h3 class="h3" style="font-weight: 600">{{ $category->title }}</h3>
-    <small>{{ $category->description }}</small>
+    <small>{{ $category->description }}</small> --}}
 
     <div class="container" id="category">
         <div class="left-col">
             <section class="card">
                 <div class="card-header">
-                    <span class="card-title">Tổng {{ !($category->room) ? 0 : $category->room->count() }} kết
+                    <span class="card-title">Tổng {{ !$category->room ? 0 : $category->room->count() }} kết
                         quả</span>
 
                     <div class="sort-by">

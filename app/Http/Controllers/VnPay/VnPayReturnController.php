@@ -53,7 +53,7 @@ class VnPayReturnController extends Controller
 
                 return view('users.payment.success', compact('rechargeData', 'vnp_HashSecret', 'secureHash', 'vnp_SecureHash'));
             } else {
-                return view('users.payment.success', compact('rechargeData', 'vnp_HashSecret', 'secureHash', 'vnp_SecureHash'));
+                return view('users.payment.success', compact('vnp_HashSecret', 'secureHash', 'vnp_SecureHash'));
             }
         } else {
             echo 'Chu ky khong hop le';

@@ -76,9 +76,7 @@
 @endsection
 
 @section('script')
-
-
-    <script type="module">
+    <script type="text/javascript">
         FilePond.registerPlugin(
             FilePondPluginFileValidateType,
             FilePondPluginImagePreview,

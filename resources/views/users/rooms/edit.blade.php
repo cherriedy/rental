@@ -224,11 +224,9 @@
             </div>
 
             <div class="col-md-4">
-                <div style="width: 100%; height: 300px; margin-bottom: 30px;">
-                    <iframe
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3918.8167703610898!2d106.71605791074683!3d10.825329989281883!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752883dd4ceea5%3A0xb7add6f6be271dc7!2zQ2h1bmcgQ8awIE3hu7kgTG9uZw!5e0!3m2!1svi!2s!4v1705160517776!5m2!1svi!2s"
-                        width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"
-                        referrerpolicy="no-referrer-when-downgrade"></iframe>
+                <div id="maps" style="width: 100%; height: 300px; margin-bottom: 30px;">
+                    <iframe width="100%" height="100%" style="border:0" loading="lazy"
+                        src="https://www.google.com/maps/embed/v1/place?q={{ $room->exact_address }}&key=AIzaSyCSlzzTKznvOMweDsjQG5Bc0n3CG9H2oHs"></iframe>
                 </div>
 
                 <div class="card mb-5" style="color: #856404; background-color: #fff3cd; border-color: #ffeeba;">
@@ -258,56 +256,19 @@
 @endsection
 
 @section('script')
-    <script>
-
-        FilePond.registerPlugin(FilePondPluginImagePreview);
-
-        const inputElement = document.querySelector('input[id="image"]');
-        const pond = FilePond.create(inputElement);
-
-        FilePond.setOptions({
-            server: {
-                process: '{{ route('images.store') }}',
-                revert: '{{ route('images.destroy') }}',
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                },
+    <script type="text/javascript">
+        var routes = {
+            rooms: {
+                update: "{{ route('rooms.update', $room->id) }}"
             },
-            allowImagePreview: true,
-            imagePreviewMaxHeight: 150,
-        });
-
-
-        $('#update-room-form').submit(function(e) {
-            e.preventDefault();
-
-            var url = '{{ route('rooms.update', $room->id) }}';
-            let formData = $('#update-room-form').serialize();
-
-            $.ajax({
-                type: "PUT",
-                url: url,
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                data: formData,
-                dataType: "JSON",
-                success: function(response) {
-                    if (response.status_code == 422) {
-                        response.errors.forEach(error => {
-                            $.notify(error, "error");
-                        });
-                    } else if (response.status_code == 200) {
-                        $.notify(response.message, "success");
-                        window.location.replace('http://127.0.0.1:8000/rooms');
-                    }
-                },
-                error: function(response) {
-                    $.notify('Ầy, có vẻ là lỗi rồi!', "erorr");
-                    // console.log(response.errors);
-                }
-            });
-        });
+            images: {
+                store: "{{ route('images.store') }}",
+                destroy: "{{ route('images.destroy') }}",
+            },
+            redirect: "{{ route('rooms.index') }}",
+            csrf_token: "{{ csrf_token() }}"
+        }
     </script>
 
+    <script src="{{ Vite::asset('resources/js/room/room.edit.js') }}"></script>
 @endsection

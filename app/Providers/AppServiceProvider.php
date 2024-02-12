@@ -5,6 +5,8 @@ namespace App\Providers;
 use App\Models\Category;
 use App\Models\Location;
 use Illuminate\Support\ServiceProvider;
+// use Yajra\DataTables\Html\Builder;
+
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -21,6 +23,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Builder::useVite();
+
         $_PRICE_RANGE = [
             1 => 'Dưới 1 triệu',
             2 => '1 đến 2 triệu',
@@ -46,13 +50,9 @@ class AppServiceProvider extends ServiceProvider
         ];
 
         try {
-            $_CATEGORY = Category::select('id', 'name', 'slug')
-                ->orderBy('name', 'ASC')
-                ->get();
+            $_CATEGORY = Category::select('id', 'name', 'slug')->orderBy('name', 'ASC')->get();
 
-            $_CITY = Location::select('id', 'name', 'slug')
-                ->where('type', 1)
-                ->get();
+            $_CITY = Location::select('id', 'name', 'slug')->where('type', 1)->get();
         } catch (\Exception $exception) {
         }
 

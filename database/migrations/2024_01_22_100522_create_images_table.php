@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('path');
-            $table->bigInteger('room_id')->default(0);
+            $table->bigInteger('room_id')->default(0)->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

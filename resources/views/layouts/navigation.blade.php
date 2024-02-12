@@ -17,9 +17,6 @@
 
                 @foreach ($_CATEGORY ?? [] as $item)
                     <li class="nav-item">
-                        {{-- <a href="{{ route('public.home.category', ['slug' => $item->slug, 'id' => $item->id]) }}"
-                            class="nav-link" title="{{ $item->name }}">{{ $item->name }}</a> --}}
-
                         <a href="{{ route('category.getRoom', ['slug' => $item->slug, 'category' => $item->id]) }}"
                             class="nav-link" title="{{ $item->name }}">{{ $item->name }}</a>
                     </li>

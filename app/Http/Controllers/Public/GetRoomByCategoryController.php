@@ -9,7 +9,7 @@ use App\Services\Page\GetRoomByCategoryService;
 
 class GetRoomByCategoryController extends Controller
 {
-    public function index(Request $request, $slug, Category $category) {
+    public function __invoke(Request $request, $slug, Category $category) {
         $viewData = GetRoomByCategoryService::index($request, $category);
 
         return view('public.pages.categories.index', $viewData);

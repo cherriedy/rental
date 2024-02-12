@@ -40,6 +40,7 @@ class CreateRoomRequest extends FormRequest
             'description' => 'required',
             'price' => 'required',
             'area' => 'required|numeric|min:5',
+            'map' => 'nullable',
         ];
     }
 

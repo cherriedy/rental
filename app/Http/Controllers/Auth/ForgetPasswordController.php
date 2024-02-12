@@ -21,15 +21,9 @@ class ForgetPasswordController extends Controller
 
     public function forgetPasswordProcess(ResetPasswordRequest $request)
     {
-        // $this->authorize('reset');
-
         $validated = $request->validated();
 
         $token = generateRandomString(16);
-
-        // $user = User::select('id')
-        //     ->where('email', $validated['email'])
-        //     ->get();
 
         $user = User::select('id')
             ->where('email', $validated['email'])

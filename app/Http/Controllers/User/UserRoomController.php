@@ -2,23 +2,25 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Room\CreateRoomRequest;
-use App\Http\Requests\Room\UpdateRoomRequest;
-use App\Models\Category;
-use App\Models\Image;
-use App\Models\Location;
-use App\Models\PaymentHistory;
-use App\Models\Room;
-use App\Models\TemporaryFile;
-use Carbon\Carbon;
 use Exception;
+use Carbon\Carbon;
+use App\Models\Room;
+use App\Models\Image;
+use App\Models\Category;
+use App\Models\Location;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Models\TemporaryFile;
+use App\Models\PaymentHistory;
+use App\DataTables\RoomDataTable;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
+use Yajra\DataTables\Facades\DataTables;
+use App\Http\Requests\Room\CreateRoomRequest;
+use App\Http\Requests\Room\UpdateRoomRequest;
 
 class UserRoomController extends Controller
 {

@@ -27,7 +27,8 @@ return new class extends Migration
             $table->bigInteger('street_id')->comment('Mã đường phố');
             $table->string('apartment_number')->comment('Số nhà');
             $table->string('exact_address')->comment('Địa chỉ nhà đầy đủ');
-            $table->string('map')->nullable();
+            // $table->string('map')->nullable();
+            $table->mediumText('map')->nullable();
             $table->string('picture')->nullable()->comment('Hình bài đăng');
             $table->string('video_url')->nullable()->comment('Đường dẫn video trên youtube');
             $table->date('expiration_date')->comment('Ngày hết hạn tin');

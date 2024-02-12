@@ -1,4 +1,6 @@
-import { defineConfig } from 'vite';
+import {
+    defineConfig
+} from 'vite';
 import laravel from 'laravel-vite-plugin';
 
 export default defineConfig({
@@ -11,5 +13,20 @@ export default defineConfig({
 
     optimizeDeps: {
         exclude: ['select2'],
-    }
+    },
+
+    // build: {
+    //     commonjsOptions: {
+    //         include: [/linked-dep/, /node_modules/],
+    //     },
+    // },
+
+    // resolve: {
+    //     alias: [{
+    //         find: /^~.+/,
+    //         replacement: (val) => {
+    //             return val.replace(/^~/, "");
+    //         },
+    //     }, ],
+    // },
 });

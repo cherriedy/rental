@@ -3,6 +3,7 @@
 @section('title', 'Đăng tin mới')
 
 @section('content')
+    {{-- HEADER --}}
     <div class="container-fluid header bg-white p-0">
         <div class="row g-0 align-items-center flex-column-reverse flex-md-row">
             <div class="col-md-6 p-5 mt-lg-5">
@@ -26,7 +27,9 @@
     {{-- SEARCH BAR --}}
     @include('shared.search-bar-2')
 
-    <form id="create-room-form" action="/" method="POST" enctype="multipart/form-data" class="form-horizontal">
+    {{-- FORM --}}
+    <form id="create-room-form" action="/" method="POST" enctype="multipart/form-data"
+        class="form-horizontal container-fluid">
         @csrf
 
         <input type="hidden" name="user_id" value="{{ Auth::id() }}">
@@ -242,11 +245,11 @@
 @endsection
 
 @section('script')
-    <script async defer type="text/javascript"
+    {{-- <script async defer type="text/javascript"
         src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLEMAPS_API_KEY') }}&libraries=places&callback=initMap">
-    </script>
+    </script> --}}
 
-    <script type="text/javascript">
+    {{-- <script type="text/javascript">
         function initMap() {
             // const default_location = {
             //     lat: 10.762622,
@@ -262,58 +265,22 @@
             //     fullscreenControl: false,
             // });
         }
-    </script>
+    </script> --}}
+
 
     <script type="text/javascript">
-        FilePond.registerPlugin(FilePondPluginImagePreview);
-
-        const images_inputElement = document.querySelector('input[id="image"]');
-        const pond = FilePond.create(images_inputElement);
-
-        FilePond.setOptions({
-            server: {
-                process: '{{ route('images.store') }}',
-                revert: '{{ route('images.destroy') }}',
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                },
+        var routes = {
+            rooms: {
+                store: "{{ route('rooms.store') }}",
             },
-            allowImagePreview: true,
-            imagePreviewMaxHeight: 150,
-            labelIdle: `Kéo & thả ảnh hoặc <span class="filepond--label-action">Tải lên</span>`,
-        });
+            images: {
+                store: "{{ route('images.store') }}",
+                destroy: "{{ route('images.destroy') }}",
+            },
+            redirect: "{{ route('rooms.index') }}",
+            csrf_token: "{{ csrf_token() }}",
+        };
     </script>
 
-    <script type="text/javascript">
-        $('#create-room-form').submit(function(e) {
-            e.preventDefault();
-
-            var url = '{{ route('rooms.store') }}';
-            let formData = $('#create-room-form').serialize();
-
-            $.ajax({
-                type: "POST",
-                url: url,
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                data: formData,
-                dataType: "JSON",
-                success: function(response) {
-                    if (response.status_code == 422) {
-                        response.errors.forEach(error => {
-                            $.notify(error, "error");
-                        });
-                    } else if (response.status_code == 200) {
-                        $.notify(response.message, "success");
-                        window.location.replace('http://127.0.0.1:8000/rooms');
-                    }
-                },
-                error: function(response) {
-                    $.notify('Ầy, có vẻ là lỗi rồi!', "erorr");
-                }
-            });
-        });
-    </script>
-
+    <script src="{{ Vite::asset('resources/js/room/room.create.js') }}"></script>
 @endsection

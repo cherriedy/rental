@@ -15,5 +15,6 @@ class Image extends Model
         'name',
         'path',
         'post_id',
+        'room_id'
     ];
 }

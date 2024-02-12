@@ -1,9 +1,9 @@
 import './bootstrap'
 import './notify'
 import 'select2'
-import './room.location'
-import './room.googlemap'
-// import './freshtable'
+import './jquery.donetyping'
+import './room/room.location'
+import './room/room.googlemap'
 
 import.meta.glob(['../images/**']);
 

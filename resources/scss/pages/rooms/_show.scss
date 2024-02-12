@@ -3,12 +3,12 @@
 .rm-bagde {
     padding: 6px 12px;
     border-radius: 100px;
-    background-color: $gray-200;
+    background-color: #f0f0f0;
 }
 
 .rm-bagde-primary {
     padding: 6px 12px;
-    border: 2px solid $green;
+    border: 2px solid $primary;
     border-radius: 100px;
 }
 
@@ -26,11 +26,11 @@
     }
 }
 
-.dropzoneDragDrop {
-    background-color: #fbfdff;
-    border: 1px dashed $secondary;
-    border-radius: 6px;
-    padding: 60px;
-    text-align: center;
-    cursor: pointer;
-}
+// .dropzoneDragDrop {
+//     background-color: #fbfdff;
+//     border: 1px dashed $secondary;
+//     border-radius: 6px;
+//     padding: 60px;
+//     text-align: center;
+//     cursor: pointer;
+// }

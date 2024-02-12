@@ -20,7 +20,7 @@
                 <div class="d-flex align-items-center justify-content-between">
                     <div class="d-flex align-items-center">
                         <img style="width: 150px; height: 150px;" class="me-3 avatar-sm rounded-circle"
-                            src="{{ url('storage/' . $user->avatar) }}" alt="{{ $user->name }}">
+                            src="{{ asset('images/'. $user->avatar) }}" alt="{{ $user->name }}">
 
                         <div>
                             <h3 class="card-title mb-0"><a href="/profile">{{ $user->name }}</a></h3>

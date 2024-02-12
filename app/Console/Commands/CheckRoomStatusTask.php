@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Exception;
+use Carbon\Carbon;
 use App\Models\Room;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
@@ -28,12 +29,14 @@ class CheckRoomStatusTask extends Command
      */
     public function handle()
     {
-        try {
-            $rooms = Room::whereDate('starting_date', '=', date('Y-m-d'))->get();
-            $rooms->status = Room::STATUS_ACTIVE;
-            $rooms->save();
-        } catch (Exception $exception) {
-            Log::info('==============TASK-ROOM-STATUS: ' . $exception);
-        }
+        $today = Carbon::today();
+        $today = date('Y-m-d', strtotime($today));
+        $rooms = Room::whereDate('starting_date', '=', $today)
+            ->where('status', Room::STATUS_PAID)
+            ->update(['status' => Room::STATUS_ACTIVE]);
+
+        $expiredRooms = Room::whereDate('expiration_date', '=', $today)
+            ->where('status', Room::STATUS_ACTIVE)
+            ->update(['status' => Room::STATUS_EXPIRED]);
     }
 }

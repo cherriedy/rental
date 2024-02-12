@@ -59,8 +59,8 @@ get_location = {
                     });
 
                     if (self.current_district_id) {
-						$(".js-select-district").val(self.current_district_id).trigger("change");
-					}
+                        $(".js-select-district").val(self.current_district_id).trigger("change");
+                    }
                 }
             },
             error: function (response) {

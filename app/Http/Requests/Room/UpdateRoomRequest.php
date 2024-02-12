@@ -33,6 +33,7 @@ class UpdateRoomRequest extends FormRequest
             'description' => 'required',
             'price' => 'required',
             'area' => 'required',
+            'map' => 'nullable',
         ];
     }
 

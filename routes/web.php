@@ -38,4 +38,4 @@ Route::get('chuyen-muc-{slug}-{category}', GetRoomByCategoryController::class)
     ->name('category.getRoom');
 
 /* SEARCH */
-Route::get('search', SearchRoomController::class)->name('search');
+Route::post('search', SearchRoomController::class)->name('search');
