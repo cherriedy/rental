@@ -12,10 +12,8 @@ class Category extends Model
 
     protected $guarded = [];
 
-    protected $CategoryStatus = [
-        1 => 'Hiển thị',
-        2 => 'Tạm Ẩn'
-    ];
+    const STATUS_DEFAULT = 1;
+    const STATUS_HIDE = 2;
 
     public function getCategoryStatus() {
         return Arr::get($this->CategoryStatus, $this->status, '???');
