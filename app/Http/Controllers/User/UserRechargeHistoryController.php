@@ -14,9 +14,9 @@ class UserRechargeHistoryController extends Controller
 {
     public function index()
     {
-        $viewData = RechargeHistory::rechargeSet;
+        $methods = config('rechargehistory.method');
 
-        return view('users.recharge.index', $viewData);
+        return view('users.recharge.index', compact('methods'));
     }
 
     public function rechargeHistory()
@@ -30,9 +30,7 @@ class UserRechargeHistoryController extends Controller
 
     public function internetBankingIndex()
     {
-        $viewData = RechargeHistory::rechargeSet;
-
-        return view('users.recharge.internet-banking', $viewData);
+        return view('users.recharge.internet-banking');
     }
 
     public function transferIndex()
