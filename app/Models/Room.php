@@ -14,31 +14,7 @@ class Room extends Model
 
     protected $with = ["user:id,name,avatar,phone"];
 
-    protected $fillable = [
-        "user_id",
-        "city_id",
-        "district_id",
-        "ward_id",
-        "street_id",
-        "apartment_number",
-        "category_id",
-        "title",
-        "description",
-        "price",
-        "area",
-        "user_id",
-        "slug",
-        "exact_address",
-        "expiration_date",
-        "updated_at",
-        "created_at",
-        "price_range",
-        "area_range",
-        "status",
-        "cancel_reason",
-        "starting_date",
-        "map",
-    ];
+    protected $guarded = [];
 
     const STATUS_DEFAULT = 1; // khởi tạo
     const STATUS_PAID = 2; // đã thanh toán
