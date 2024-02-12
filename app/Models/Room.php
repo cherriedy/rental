@@ -16,11 +16,11 @@ class Room extends Model
 
     protected $guarded = [];
 
-    const STATUS_DEFAULT = 1;       // khởi tạo
-    const STATUS_PAID = 2;          // đã thanh toán
-    const STATUS_EXPIRED = -2;      // hết hạn
-    const STATUS_ACTIVE = 3;        // đã duyệt
-    const STATUS_CANCEL = -1;       // huỷ bỏ
+    const STATUS_DEFAULT = 1; // khởi tạo
+    const STATUS_PAID = 2; // đã thanh toán
+    const STATUS_EXPIRED = -2; // hết hạn
+    const STATUS_ACTIVE = 3; // đã duyệt
+    const STATUS_CANCEL = -1; // huỷ bỏ
 
     const GENDER_ALL = 0;
     const GENDER_MALE = 1;
@@ -37,19 +37,19 @@ class Room extends Model
         return Str::slug($this->name);
     }
 
-    public function getStatus()
+    public function getStatusAttribute($value)
     {
-        return Arr::get($this->statusType, $this->status);
+        return config('room.status')[$value];
     }
 
-    public function getSubject()
+    public function getSubjectAttribute($value)
     {
-        return Arr::get($this->subjectType, $this->subject_id);
+        return config('room.subject')[$value];
     }
 
-    public function gethotService()
+    public function getHotServiceAttribute($value)
     {
-        return Arr::get($this->hotServiceType, $this->hot_service);
+        return config('room.hot_service')[$value];
     }
 
     public function user()
