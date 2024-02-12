@@ -33,28 +33,6 @@ class Room extends Model
     const SERVICE_H3 = 4;
     const SERVICE_SPECIAL = 5;
 
-    protected $statusType = [
-        self::STATUS_DEFAULT => "Khởi tạo",
-        self::STATUS_PAID => "Đã thanh toán",
-        self::STATUS_EXPIRED => "Hết hạn",
-        self::STATUS_ACTIVE => "Hoạt động",
-        self::STATUS_CANCEL => "Đã huỷ",
-    ];
-
-    protected $subjectType = [
-        self::GENDER_ALL => "Tất cả",
-        self::GENDER_MALE => "Nam",
-        self::GENDER_FEMALE => "Nữ",
-    ];
-
-    protected $hotServiceType = [
-        self::SERVICE_DEFAULT => "Dịch vụ mặc định",
-        self::SERVICE_H1 => "Dịch vụ HOT1",
-        self::SERVICE_H2 => "Dịch vụ HOT2",
-        self::SERVICE_H3 => "Dịch vụ HOT3",
-        self::SERVICE_SPECIAL => "Dịch vụ đặc biệt nổi bật",
-    ];
-
     public function slug()
     {
         return Str::slug($this->name);
