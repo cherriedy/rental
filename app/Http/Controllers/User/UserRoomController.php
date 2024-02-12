@@ -40,9 +40,6 @@ class UserRoomController extends Controller
     public function create()
     {
         $cities = Location::where('type', 1)->get();
-        // $districts = Location::where('type', 2)->get();
-        // $wards = Location::where('type', 3)->get();
-        // $streets = Location::where('type', 4)->get();
         $categories = Category::select('id', 'name')->get();
 
         return view('users.rooms.create', compact('cities', 'categories'));
@@ -222,14 +219,6 @@ class UserRoomController extends Controller
             DB::rollBack();
             Log::info('========HOT-SERVICE-STORE: ' . $exception);
         }
-    }
-
-    public function hide(Room $room)
-    {
-        $room->status = Room::STATUS_HIDE;
-        $room->save();
-
-        return redirect()->back();
     }
 
     public function active(Room $room)
