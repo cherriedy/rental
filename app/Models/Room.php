@@ -66,14 +66,14 @@ class Room extends Model
     protected function startingDate(): Attribute
     {
         return Attribute::make(
-            get: fn(string $value) => date('m-d-Y', strtotime($value))
+            get: fn(string $value) => date('d-m-Y', strtotime($value))
         );
     }
 
     protected function expirationDate(): Attribute
     {
         return Attribute::make(
-            get: fn(string $value) => date('m-d-Y', strtotime($value))
+            get: fn(string $value) => date('d-m-Y', strtotime($value))
         );
     }
 
