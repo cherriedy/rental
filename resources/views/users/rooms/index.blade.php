@@ -25,7 +25,7 @@
 
     {{-- SEARCH BAR --}}
     @include('shared.search-bar-2')
-FIGHTING!
+
     {{-- TABLE --}}
     <div class="card">
         <div class="card-header w-100 h-100 px-2 py-4">
@@ -40,8 +40,7 @@ FIGHTING!
                     style="font-size: 14px; font-weight: 600; background-color: #00B98E; border-radius: 4px; column-gap: 6px;">
                     <span class="text text-sm">Số dư: </span>
 
-                    <span
-                        style="color: #f0f0f0;">{{ number_format(auth()->user()->account_balance, 0, '', '.') }}</span>
+                    <span style="color: #f0f0f0;">{{ number_format(Auth::user()->account_balance, 0, '', '.') }}</span>
                 </div>
             </div>
         </div>
@@ -78,27 +77,29 @@ FIGHTING!
                                 <a href="{{ route('rooms.show', ['slug' => $room->slug, 'room' => $room->id]) }}"><span
                                         class="badge bg-primary">{{ $room->category->name }}</span> {{ $room->title }}</a>
                                 <p class="d-flex align-items-center mt-3">
-                                    @if ($room->status == \App\Models\Room::STATUS_EXPIRED)
+                                    {{-- @if ($room->status == \App\Models\Room::STATUS_EXPIRED)
                                         <a href="#" class="text-decoration-none"><i class="fa fa-refresh"></i> Đăng
                                             lại</a>
-                                    @endif
+                                    @endif --}}
 
                                     <a href="{{ route('rooms.edit', $room->id) }}" class="text-decoration-none"><i
                                             class="fa fa-refresh"></i>
                                         Sửa tin</a>
 
-                                    @if ($room->status == \App\Models\Room::STATUS_DEFAULT || $room->status == \App\Models\Room::STATUS_EXPIRED)
+                                    @if (in_array($room->getRawOriginal('status'), [\App\Models\Room::STATUS_DEFAULT, \App\Models\Room::STATUS_EXPIRED]))
                                         <a href="{{ route('rooms.hot-service', $room->id) }}"
-                                            class="text-decoration-none mx-3"><i class="fa fa-eye-slash"></i>Mua gói dịch vụ
-                                            HOT</a>
+                                            class="text-decoration-none mx-3">
+                                            <i class="fa fa-eye-slash"></i>Mua gói dịch vụ HOT
+                                        </a>
                                     @endif
+
                                 </p>
                             </td>
                             <td>{{ number_format($room->price, 0, '', ',') }} đồng / tháng</td>
-                            <td>{{ $room->gethotService() }}</td>
+                            <td>{{ $room->hot_service }}</td>
                             <td>{{ $room->starting_date }}</td>
                             <td>{{ $room->expiration_date }}</td>
-                            <td>{{ $room->getStatus() }}</td>
+                            <td>{{ $room->status }}</td>
                         </tr>
                     @endforeach
                 </tbody>
