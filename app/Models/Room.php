@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\User;
 use App\Models\Category;
 use App\Models\Location;
+use DateTime;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -59,6 +60,20 @@ class Room extends Model
     {
         return Attribute::make(
             get: fn($value) => config('room.hot_service')[$value]
+        );
+    }
+
+    protected function startingDate(): Attribute
+    {
+        return Attribute::make(
+            get: fn(string $value) => date('m-d-Y', strtotime($value))
+        );
+    }
+
+    protected function expirationDate(): Attribute
+    {
+        return Attribute::make(
+            get: fn(string $value) => date('m-d-Y', strtotime($value))
         );
     }
 
