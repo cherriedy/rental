@@ -157,11 +157,42 @@ class UserRoomController extends Controller
         $validated['updated_at'] = Carbon::now();
         $validated['map'] = env('GOOGLEMAPS_API_URL') . '?key=' . env('GOOGLEMAPS_API_KEY') . '&q=' . urlencode(str_replace(' ', '', $validated['exact_address']));
 
-        if ($room->update($validated)) {
-            return response()->json([
-                'status_code' => '200',
-                'message' => 'Cập nhật thành công!',
-            ]);
+        try {
+            DB::beginTransaction();
+
+            if ($room->update($validated)) {
+                $temporaryFiles = TemporaryFile::all();
+
+                foreach ($temporaryFiles as $temporaryFile) {
+                    Storage::copy('images/tmp/' . $temporaryFile->folder . '/' . $temporaryFile->filename, 'images/' . $temporaryFile->folder . '/' . $temporaryFile->filename);
+
+                    Image::create([
+                        'name' => $temporaryFile->filename,
+                        'path' => $temporaryFile->folder . '/' . $temporaryFile->filename,
+                        'room_id' => $room->id,
+                    ]);
+
+                    Storage::deleteDirectory('images/tmp/' . $temporaryFile->folder);
+
+                    $temporaryFile->delete();
+                }
+
+                DB::commit();
+
+                return response()->json([
+                    'status_code' => '200',
+                    'message' => 'Cập nhật thành công!',
+                ]);
+            }
+        } catch (Exception $exception) {
+            DB::rollBack();
+
+            $temporaryImages = TemporaryFile::all();
+
+            foreach ($temporaryImages as $temporaryImage) {
+                Storage::deleteDirectory('images/tmp/' . $temporaryImage->folder);
+                $temporaryImage->delete();
+            }
         }
     }
 
