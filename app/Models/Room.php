@@ -15,7 +15,7 @@ class Room extends Model
 {
     use HasFactory;
 
-    protected $with = ['user:id,name,avatar,phone'];
+    protected $with = ['user:id,name,avatar,phone', 'image:id,room_id,path', 'category:id,name'];
 
     protected $guarded = [];
 
