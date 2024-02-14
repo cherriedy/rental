@@ -2,20 +2,19 @@
 
 namespace App\Models;
 
-use App\Models\User;
 use App\Models\Category;
 use App\Models\Location;
-use DateTime;
-use Illuminate\Support\Str;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Room extends Model
 {
     use HasFactory;
 
-    protected $with = ['user:id,name,avatar,phone', 'image:id,room_id,path', 'category:id,name'];
+    protected $with = ['user:id,name,avatar,phone', 'image:id,room_id,path', 'category:id,name', 'city:id,name', 'district:id,name', 'ward:id,name'];
 
     protected $guarded = [];
 
