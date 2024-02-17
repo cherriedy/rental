@@ -56,6 +56,8 @@ class AppServiceProvider extends ServiceProvider
             $_CITY = Location::select('id', 'name', 'slug')->where('type', 1)->get();
 
             $_SIDEBAR_ROOM_SPECIAL_SERVICE = RoomService::getSpecialServiceRoom();
+
+            $_SIDEBAR_ROOM_NEW = RoomService::getRoomNew();
         } catch (\Exception $exception) {
         }
 
@@ -64,5 +66,6 @@ class AppServiceProvider extends ServiceProvider
         View::share('_PRICE_RANGE', $_PRICE_RANGE ?? []);
         View::share('_AREA_RANGE', $_AREA_RANGE ?? []);
         View::share('_SIDEBAR_ROOM_SPECIAL_SERVICE', $_SIDEBAR_ROOM_SPECIAL_SERVICE ?? []);
+        View::share('_SIDEBAR_ROOM_NEW', $_SIDEBAR_ROOM_NEW ?? []);
     }
 }
