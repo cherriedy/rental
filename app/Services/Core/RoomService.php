@@ -9,8 +9,20 @@ class RoomService
 {
     protected $col = ['id', 'slug', 'title', 'description', 'price', 'exact_address', 'updated_at', 'status'];
 
+    public static function getSpecialServiceRoom($limit = 5) {
+        $self = new self();
+
+        return Room::whereIn('Status', [Room::STATUS_ACTIVE, Room::STATUS_EXPIRED])
+            ->where('hot_service', Room::SERVICE_SPECIAL)
+            ->limit($limit)
+            ->select($self->col)
+            ->orderbyDesc('updated_at')
+            ->get();
+    }
+
     public static function getRoomNew($limit = 5) {
         $self = new self();
+
         return Room::whereIn('Status', [Room::STATUS_ACTIVE, Room::STATUS_EXPIRED])
             ->limit($limit)
             ->select($self->col)
