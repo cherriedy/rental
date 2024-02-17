@@ -7,7 +7,7 @@ use Illuminate\Support\Arr;
 
 class RoomService
 {
-    protected $col = ['id', 'slug', 'title', 'description', 'price', 'exact_address', 'updated_at', 'status', 'starting_time'];
+    protected $col = ['id', 'slug', 'title', 'description', 'price', 'exact_address', 'updated_at', 'status', 'starting_date'];
 
     public static function getSpecialServiceRoom($limit = 5) {
         $self = new self();
