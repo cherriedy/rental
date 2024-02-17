@@ -4,8 +4,9 @@ namespace App\Providers;
 
 use App\Models\Category;
 use App\Models\Location;
+use App\Services\Core\RoomService;
 use Illuminate\Support\ServiceProvider;
-// use Yajra\DataTables\Html\Builder;
+use Illuminate\Support\Facades\View;
 
 
 class AppServiceProvider extends ServiceProvider
@@ -53,12 +54,15 @@ class AppServiceProvider extends ServiceProvider
             $_CATEGORY = Category::select('id', 'name', 'slug')->orderBy('name', 'ASC')->get();
 
             $_CITY = Location::select('id', 'name', 'slug')->where('type', 1)->get();
+
+            $_SIDEBAR_ROOM_SPECIAL_SERVICE = RoomService::getSpecialServiceRoom();
         } catch (\Exception $exception) {
         }
 
-        \View::share('_CATEGORY', $_CATEGORY ?? []);
-        \View::share('_CITY', $_CITY ?? []);
-        \View::share('_PRICE_RANGE', $_PRICE_RANGE ?? []);
-        \View::share('_AREA_RANGE', $_AREA_RANGE ?? []);
+        View::share('_CATEGORY', $_CATEGORY ?? []);
+        View::share('_CITY', $_CITY ?? []);
+        View::share('_PRICE_RANGE', $_PRICE_RANGE ?? []);
+        View::share('_AREA_RANGE', $_AREA_RANGE ?? []);
+        View::share('_SIDEBAR_ROOM_SPECIAL_SERVICE', $_SIDEBAR_ROOM_SPECIAL_SERVICE ?? []);
     }
 }
