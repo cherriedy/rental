@@ -26,7 +26,7 @@ class RoomService
         return Room::whereIn('Status', [Room::STATUS_ACTIVE, Room::STATUS_EXPIRED])
             ->limit($limit)
             ->select($self->col)
-            ->orderbyDesc('updated_at')
+            ->orderbyDesc('starting_data')
             ->get();
     }
 
