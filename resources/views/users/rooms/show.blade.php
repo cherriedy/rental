@@ -125,7 +125,7 @@
 
                         @can('hideRoom', $room)
                             <div class="btn btn-sm __info-owner-action _white">
-                                <a href="{{ route('rooms.edit', $room->id) }}" class="__info-onwer-hide-post-btn">
+                                <a href="{{ route('rooms.hide', $room->id) }}" class="__info-onwer-hide-post-btn">
                                     <div class="svg-container">
                                         <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" width="32px" height="32px"
                                             xmlns="http://www.w3.org/2000/svg" fill="curerntColor" viewBox="0 0 24 24">
