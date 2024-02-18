@@ -109,8 +109,9 @@
                             <div class="btn btn-sm __info-owner-action">
                                 <a href="{{ route('rooms.edit', $room->id) }}" class="__info-onwer-hide-post-btn">
                                     <div class="svg-container">
-                                        <svg clip-rule="evenodd" fill-rule="evenodd" stroke-linejoin="round" width="32px" height=32px"
-                                            stroke-miterlimit="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <svg clip-rule="evenodd" fill-rule="evenodd" stroke-linejoin="round" width="32px"
+                                            height=32px" stroke-miterlimit="2" viewBox="0 0 24 24"
+                                            xmlns="http://www.w3.org/2000/svg">
                                             <path
                                                 d="m19 20.25c0-.402-.356-.75-.75-.75-2.561 0-11.939 0-14.5 0-.394 0-.75.348-.75.75s.356.75.75.75h14.5c.394 0 .75-.348.75-.75zm-7.403-3.398 9.124-9.125c.171-.171.279-.423.279-.684 0-.229-.083-.466-.28-.662l-3.115-3.104c-.185-.185-.429-.277-.672-.277s-.486.092-.672.277l-9.143 9.103c-.569 1.763-1.555 4.823-1.626 5.081-.02.075-.029.15-.029.224 0 .461.349.848.765.848.511 0 .991-.189 5.369-1.681zm-3.27-3.342 2.137 2.137-3.168 1.046zm.955-1.166 7.651-7.616 2.335 2.327-7.637 7.638z"
                                                 fill-rule="nonzero" />
@@ -118,6 +119,27 @@
                                     </div>
 
                                     <span>Sửa tin</span>
+                                </a>
+                            </div>
+                        @endcan
+
+                        @can('hideRoom', $room)
+                            <div class="btn btn-sm __info-owner-action _white">
+                                <a href="{{ route('rooms.edit', $room->id) }}" class="__info-onwer-hide-post-btn">
+                                    <div class="svg-container">
+                                        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" width="32px" height="32px"
+                                            xmlns="http://www.w3.org/2000/svg" fill="curerntColor" viewBox="0 0 24 24">
+                                            <path
+                                                d="m4 15.6 3-3V12a5 5 0 0 1 5-5h.5l1.8-1.7A9 9 0 0 0 12 5C6.6 5 2 10.3 2 12c.3 1.4 1 2.7 2 3.6Z" />
+                                            <path
+                                                d="m14.7 10.7 5-5a1 1 0 1 0-1.4-1.4l-5 5A3 3 0 0 0 9 12.7l.2.6-5 5a1 1 0 1 0 1.4 1.4l5-5 .6.2a3 3 0 0 0 3.6-3.6 3 3 0 0 0-.2-.6Z" />
+                                            <path
+                                                d="M19.8 8.6 17 11.5a5 5 0 0 1-5.6 5.5l-1.7 1.8 2.3.2c6.5 0 10-5.2 10-7 0-1.2-1.6-2.9-2.2-3.4Z" />
+                                        </svg>
+
+                                    </div>
+
+                                    <span>Ẩn tin</span>
                                 </a>
                             </div>
                         @endcan
