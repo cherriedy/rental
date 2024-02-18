@@ -24,6 +24,7 @@ class Room extends Model
     const STATUS_EXPIRED = -2; // hết hạn
     const STATUS_ACTIVE = 3; // đã duyệt
     const STATUS_CANCEL = -1; // huỷ bỏ
+    const STATUS_HIDE = 4; // Tạm ẩn
 
     const GENDER_ALL = 0;
     const GENDER_MALE = 1;
