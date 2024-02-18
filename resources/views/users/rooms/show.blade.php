@@ -311,7 +311,7 @@
                                                 <span class="post-price">{{ $item->price }}</span>
                                                 <span class="post-area">{{ $item->area }} m<sup>2</sup></span>
                                                 <span
-                                                    class="post-brief-address">{{ $item->district . ', ' . $item->city }}</span>
+                                                    class="post-brief-address">{{ $item->district->name . ', ' . $item->city->name }}</span>
                                                 <time class="post-time">{{ $item->starting_date }}</time>
                                             </div>
 
