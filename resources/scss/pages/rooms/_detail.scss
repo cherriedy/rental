@@ -232,6 +232,21 @@
                         color: $warning;
                     }
                 }
+
+                &._white {
+                    border: none;
+                    background-color: $warning;
+
+                    .svg-container {
+                        svg {
+                            fill: #fff !important;
+                        }
+                    }
+
+                    span {
+                        color: #fff !important;
+                    }
+                }
             }
         }
 
