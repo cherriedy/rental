@@ -1,0 +1,66 @@
+@use './../theme/'as *;
+
+table {
+    font-size: 0.9rem;
+}
+
+table thead {
+    font-weight: bold;
+}
+
+.table_listing_sm {
+    font-size: 0.9rem;
+
+    th,
+    td {
+        vertical-align: middle !important;
+    }
+
+    .post_thumb {
+        width: 100px;
+        height: 100px;
+        margin: 0 auto;
+        position: relative;
+    }
+
+    .post_title {
+        font-weight: bold;
+        font-size: 1rem;
+        color: $primary;
+    }
+
+    .post_action_toolbar {
+        display: flex;
+        align-items: center;
+        margin-top: 12px;
+
+        a {
+            font-size: 12px;
+        }
+
+        .post_action_toolbar-btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 5px;
+            border: 0;
+            background-color: #eee;
+            margin-right: 6px;
+
+            .cash {
+                color: $warning !important;
+            }
+
+            .svg-container {
+                margin-right: 6px;
+            }
+
+        }
+    }
+
+    .post-price {
+        font-size: 12.5px;
+        color: #37a344;
+        white-space: nowrap;
+        text-align: center;
+    }
+}
