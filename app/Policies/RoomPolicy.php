@@ -21,6 +21,10 @@ class RoomPolicy
     // public function restore(User $user, Room $room): bool {
     // }
 
+    public function getSellerPhone(User $user, Room $room) {
+        return !($room->user()->is($user));
+    }
+
     public function hotServiceIndex(User $user, Room $room)
     {
         return $room->user()->is($user) &&
