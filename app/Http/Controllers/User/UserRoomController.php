@@ -161,7 +161,7 @@ class UserRoomController extends Controller
         $validated = $this->mappingPrice($validated);
         $validated = $this->mappingArea($validated);
         $validated['updated_at'] = Carbon::now();
-        $validated['map'] = env('GOOGLEMAPS_API_URL') . '?key=' . env('GOOGLEMAPS_API_KEY') . '&q=' . urlencode(str_replace(' ', '', $validated['exact_address']));
+        $validated['map'] = config('googlemaps.url') . '?key=' . config('googlemaps.key') . '&q=' . urlencode(str_replace(' ', '', $validated['exact_address']));
 
         try {
             DB::beginTransaction();
@@ -269,5 +269,13 @@ class UserRoomController extends Controller
 
             return redirect()->back();
         }
+    }
+
+    public function hide(Room $room) {
+        $room->update([
+            'status' => Room::STATUS_HIDE
+        ]);
+
+        return redirect()->route('rooms.index');
     }
 }
