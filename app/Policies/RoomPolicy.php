@@ -25,6 +25,14 @@ class RoomPolicy
         return !($room->user()->is($user));
     }
 
+    public function hideRoom(User $user, Room $room) {
+        if ($room->getRawOriginal('status') == Room::STATUS_ACTIVE && $room->user()->is($user)) {
+            return true;
+        }
+
+        return false;
+    }
+
     public function hotServiceIndex(User $user, Room $room)
     {
         return $room->user()->is($user) &&
