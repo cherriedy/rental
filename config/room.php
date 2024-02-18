@@ -10,6 +10,7 @@ return [
         Room::STATUS_EXPIRED => 'Hết hạn',
         Room::STATUS_ACTIVE => 'Hoạt động',
         Room::STATUS_CANCEL => 'Đã huỷ',
+        Room::STATUS_HIDE => 'Tạm ẩn',
     ],
 
     'subject' => [
