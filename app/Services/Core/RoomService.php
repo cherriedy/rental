@@ -7,9 +7,10 @@ use Illuminate\Support\Arr;
 
 class RoomService
 {
-    protected $col = ['id', 'slug', 'title', 'description', 'price', 'exact_address', 'updated_at', 'status', 'starting_date'];
+    protected $col = ['id', 'slug', 'title', 'description', 'price', 'exact_address', 'updated_at', 'status', 'starting_date', 'city_id', 'district_id', 'user_id', 'area'];
 
-    public static function getSpecialServiceRoom($limit = 5) {
+    public static function getSpecialServiceRoom($limit = 5)
+    {
         $self = new self();
 
         return Room::whereIn('Status', [Room::STATUS_ACTIVE, Room::STATUS_EXPIRED])
@@ -20,17 +21,19 @@ class RoomService
             ->get();
     }
 
-    public static function getRoomNew($limit = 5) {
+    public static function getRoomNew($limit = 10)
+    {
         $self = new self();
 
         return Room::whereIn('Status', [Room::STATUS_ACTIVE, Room::STATUS_EXPIRED])
             ->limit($limit)
             ->select($self->col)
-            ->orderbyDesc('starting_data')
+            ->orderbyDesc('starting_date')
             ->get();
     }
 
-    public static function getListRoom($params = []) {
+    public static function getListRoom($params = [])
+    {
         $self = new self();
         $rooms = Room::whereIn('Status', [Room::STATUS_ACTIVE, Room::STATUS_EXPIRED]);
 
@@ -58,6 +61,20 @@ class RoomService
             $rooms->where('area_range', $areaRANGE);
         }
 
-        return $rooms->select($self->col)->orderbyDesc('updated_at')->get();
+        if ($limit = Arr::get($params, 'limit')) {
+            $rooms->limit($limit);
+        }
+
+        if (Arr::get($params, 'inRandomOrder') == true) {
+            return $rooms
+                ->select($self->col)
+                ->inRandomOrder()
+                ->get();
+        }
+
+        return $rooms
+            ->select($self->col)
+            ->orderbyDesc('updated_at')
+            ->get();
     }
 }
