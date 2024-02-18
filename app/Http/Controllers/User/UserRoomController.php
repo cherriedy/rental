@@ -260,6 +260,8 @@ class UserRoomController extends Controller
 
     public function active(Room $room)
     {
+        $this->authorize('activeRoom', $room);
+
         $today = date('Y-m-d');
         $checkDateOfRoom = Room::where([['created_at', '<=', $today], ['expiration_date', '>=', $today]])->get();
 
@@ -272,6 +274,8 @@ class UserRoomController extends Controller
     }
 
     public function hide(Room $room) {
+        $this->authorize('hideRoom', $room);
+
         $room->update([
             'status' => Room::STATUS_HIDE
         ]);
