@@ -1,68 +1,91 @@
-<div class="container" id="category">
-    <div class="left-col">
-        <section class="card">
-            <div class="card-header">
-                <span class="card-title">Tổng {{ $rooms->count() ? $rooms->count() : 0 }} kết
-                    quả</span>
+@if (isset($districts))
+    <div class="container-fluid room-list-secion top-location-bar">
+        <ul class="relative-district-list clearfix">
+            @foreach ($districts as $district)
+                <li>
+                    <a href="{{ route('districts.index', ['district' => $district->id, 'slug' => $district->slug]) }}"
+                        class="relative-distict-item">{{ $district->name }}</a>
+                    <span class="relative-district-room-count">({{ $district->roomDistrict->count() }})</span>
+                </li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 
-                <div class="sort-by">
+<div class="container-fluid room-list-body clearfix">
+    <div class="room-list-body__left-side">
+        <div class="card">
+            <div class="card-header">
+                <div class="card-header__info clearfix">
+                    <span class="card-title">Tổng {{ number_format($rooms->count() ? $rooms->count() : 0, 0, '', '.') }}
+                        kết quả</span>
+
+                    <span class="updated-at">
+                        Cập nhật:
+                        <time>23:44 18/02/2024</time>
+                    </span>
+                </div>
+
+                <div class="card-header__sortBy">
                     <span>Sắp xếp: </span>
-                    <a href="">Mặc định</a>
-                    <a href="">Mới nhất</a>
-                    <a href="">Có video</a>
+                    <a class="btn btn-sm __sortBy-btn" href="{{ request()->url() . '?orderBy=defualt' }}">Mặc định</a>
+
+                    <a class="btn btn-sm __sortBy-btn" href="{{ request()->url() . '?orderBy=newest' }}">Mới nhất</a>
+
+                    <a class="btn btn-sm __sortBy-btn" href="{{ request()->url() . '?orderBy=video' }}">Có video</a>
                 </div>
             </div>
 
-            @foreach ($rooms ?? [] as $room)
-                <div class="card-body">
-                    <div class="card-item">
-                        <div class="card-item-img">
-                            <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cm9vbXxlbnwwfHwwfHx8MA%3D%3D"
-                                alt="" style="width: 100%; height: 100%; object-fit: cover;">
+            <div class="card-body">
+                <ul class="post-list clearfix">
+                    @foreach ($rooms as $room)
+                        <li class="post-list-item goitin__noibat">
+                            <figure class="post-thumb">
+                                <a href="{{ route('rooms.show', ['room' => $room->id, 'slug' => $room->slug]) }}">
+                                    <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cm9vbXxlbnwwfHwwfHx8MA%3D%3D"
+                                        alt="">
+                                </a>
 
-                        </div>
+                                <span class="post-number-images">11 ảnh</span>
+                            </figure>
 
-                        <div class="card-info">
-                            <span class="post-title"><a
-                                    href="{{ route('rooms.show', ['slug' => $room->slug, 'room' => $room->id]) }}">{{ $room->title }}</a></span>
-
-                            <div class="post-row">
-                                <span class="post-price">{{ number_format($room->price, 0, '', ',') }}
-                                    vnđ/tháng</span>
-                                <span class="post-area">{{ $room->area }}m²</span>
-                                <span class="post-location">{{ $room->exact_address }}</span>
-                                <span class="post-time">{{ date('Y-m-d', $room->created_at) }}</span>
-                            </div>
-
-                            <div class="post-row">
-                                <p class="post-summary">{{ $room->description }}</p>
-                            </div>
-                            {{--
-                            <div class="post-row">
-                                <div class="post-author">
-                                    <img src="{{ url('storage/' . $room->user->avatar) }}"
-                                        alt="{{ $room->user->name }}">
-                                    <span class="author-name">{{ $room->user->name }}</span>
+                            <div class="post-meta">
+                                <div class="post-title">
+                                    <a href="{{ route('rooms.show', ['room' => $room->id, 'slug' => $room->slug]) }}">
+                                        {{ $room->title }}
+                                    </a>
                                 </div>
 
-                                <div class="post-contact">
-                                    <a rel="nofollow" target="_blank" href="https://zalo.me/{{ $room->user->phone }}"
-                                        class="btn btn-primary">Nhắn Zalo</a>
-                                    <a rel="nofollow" target="_blank" href="tel:{{ $room->user->phone }}"
-                                        class="btn btn-secondary">Gọi 0815777735</a>
+                                <div class="meta-row clearfix">
+                                    <div class="post-price">{{ $room->price }}</div>
+                                    <div class="post-area">{{ $room->area }}m²</div>
+                                    <div class="post-brief-address">
+                                        {{ $room->district->name . ', ' . $room->city->name }}</div>
+                                    <time class="post-time">{{ $room->starting_date }}</time>
                                 </div>
-                            </div> --}}
-                        </div>
-                    </div>
-                </div>
 
-                <hr>
-            @endforeach
+                                <div class="meta-row">
+                                    <div class="meta-summary">
+                                        {{ $room->description }}
+                                    </div>
+                                </div>
 
-        </section>
+                                <div class="meta-row">
+                                    <div class="post-owner">
+                                        <img src="{{ asset('images/' . $room->user->avatar) }}" alt="owner-avatar">
+                                        <span>{{ $room->user->name }}</span>
+                                    </div>
+
+                                    <a href="tel:{{ $room->user->phone }}" class="quick-call-btn">Gọi
+                                        {{ $room->user->phone }}</a>
+                                </div>
+                            </div>
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
+        </div>
     </div>
 
-    <div class="right-col">
-        @include('shared.room-list-aside')
-    </div>
+    @include('shared.room-list-aside')
 </div>
