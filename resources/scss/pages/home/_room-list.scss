@@ -1,0 +1,91 @@
+@use './../../theme/'as *;
+
+.room-list-section {
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #dedede;
+    border-radius: 8px;
+}
+
+.top-location-bar {
+    text-align: center;
+    margin-bottom: 24px;
+
+    .relative-district-list {
+        padding: 15px;
+        background-color: #fff;
+        border-radius: 5px;
+        border: 1px solid #dedede;
+
+        li {
+            float: left;
+            text-align: left;
+            width: 170px;
+
+            .relative-district-item {
+                display: inline-block;
+                padding: 5px 0;
+                font-size: 1rem;
+
+                a {
+                    color: $secondary;
+                }
+            }
+
+            .relative-district-room-count {
+                color: #999;
+                margin-left: 5px;
+                font-size: 0.9rem;
+            }
+        }
+
+
+    }
+}
+
+.room-list-body {
+    .room-list-body__left-side {
+        float: left;
+        width: 850px;
+        width: calc(100% - 30% - 1.5rem);
+
+        .card {
+            .card-header {
+                padding-top: 14px;
+
+                .card-header__info {
+                    margin: 0 0 15px 0;
+
+                    .card-title {
+                        float: left;
+                        margin-left: 0;
+
+                        font-size: 1.3rem;
+                        font-weight: 700;
+                        margin: 0;
+                        padding: 0
+                    }
+
+                    .updated-at {
+                        float: right;
+                        margin-right: 0;
+                        font-size: 0.9rem;
+                        color: #999;
+                    }
+                }
+
+                .card-header__sortBy {
+                    margin-bottom: 12px;
+                    font-size: 0.95rem !important;
+
+                    .__sortBy-btn {
+                        border-radius: 5px;
+                        background-color: #f1f1f1;
+                        color: #333;
+                        margin-left: 5px;
+                    }
+                }
+            }
+        }
+    }
+}

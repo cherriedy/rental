@@ -1,0 +1,33 @@
+.section {
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #dedede;
+    border-radius: 8px;
+
+    .section-header {
+        margin-top: 0;
+        margin-bottom: 15px;
+
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin: 0;
+            padding: 0;
+
+            &.small {
+                font-size: 1.2rem;
+            }
+
+            &.big {
+                font-size: 2rem;
+            }
+        }
+
+        h2 {
+            &.section-title {
+                font-size: 1.5rem;
+            }
+        }
+    }
+}
