@@ -55,8 +55,8 @@ Route::group(['prefix' => 'nap-tien', 'as' => 'recharge.', 'middleware' => 'auth
     Route::post('chuyen-khoan', [UserRechargeHistoryController::class, 'transferProcess']);
 
     Route::group(['prefix' => 'internet-banking'], function () {
-        Route::get('internet-banking', [UserRechargeHistoryController::class, 'internetBankingIndex'])->name('internet-banking');
-        Route::post('internet-banking', [UserRechargeHistoryController::class, 'internetBankingProcess']);
+        Route::get('', [UserRechargeHistoryController::class, 'internetBankingIndex'])->name('internet-banking');
+        Route::post('', [UserRechargeHistoryController::class, 'internetBankingProcess']);
 
         Route::group(['as' => 'internet-banking.'], function () {
             Route::get('vnpay_return.php', VnPayReturnController::class)->name('vnpayReturn');
