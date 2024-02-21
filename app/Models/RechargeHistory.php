@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\User;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Support\Arr;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -19,6 +20,7 @@ class RechargeHistory extends Model
     const STATUS_DEFAULT = 1;
     const STATUS_SUCCESS = 2;
     const STATUS_ERROR = -1;
+
 
     public function getStatus() {
         return Arr::get($this->statusSet, $this->status);
