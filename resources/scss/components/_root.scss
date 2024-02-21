@@ -1,0 +1,44 @@
+* {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+}
+
+.clearfix {
+    // overflow: auto;
+
+    &::after {
+        visibility: hidden;
+        display: block;
+        font-size: 0;
+        content: " ";
+        clear: both;
+        height: 0;
+    }
+}
+
+.main-content {
+    padding: 0 24px 30px 24px;
+    margin: 0 auto;
+}
+
+.table-striped {
+    tbody {
+        tr {
+            &:nth-of-type(odd) {
+                >* {
+                    --bs-table-color-type: #000 !important;
+                    --bs-table-bg-type: #000 !important;
+                }
+            }
+
+            td {
+                &.title {
+                    width: 25%;
+                }
+            }
+        }
+    }
+}
