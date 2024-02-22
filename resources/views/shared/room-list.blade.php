@@ -1,68 +1,80 @@
-<div class="container" id="category">
-    <div class="left-col">
-        <section class="card">
-            <div class="card-header">
-                <span class="card-title">Tổng {{ $rooms->count() ? $rooms->count() : 0 }} kết
-                    quả</span>
+@if (isset($districts))
+    <div class="section section-relative-location">
+        <ul class="location__district clearfix">
+            @foreach ($districts as $district)
+                <li>
+                    <a href="" class="location__district-item">{{ $district->name }}</a>
+                    <span class="count-item">{{ $district->roomDistrict->count() }}</span>
+                </li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 
-                <div class="sort-by">
-                    <span>Sắp xếp: </span>
-                    <a href="">Mặc định</a>
-                    <a href="">Mới nhất</a>
-                    <a href="">Có video</a>
-                </div>
+<div id="left-side">
+    <div class="section section-post-list">
+        <div class="section-header clearfix">
+            <span class="section-title">Tổng {{ $rooms->count() ? $rooms->count() : 0 }} kết
+                quả</span>
+
+            <div class="post-sort">
+                <span>Sắp xếp: </span>
+                <a class="active" href="{{ request()->url() . '?sortBy=default&page=1' }}">Mặc định</a>
+                <a href="{{ request()->url() . '?sortBy=newest&page=1' }}">Mới nhất</a>
+                <a href="{{ request()->url() . '?sortBy=video&page=1' }}">Có video</a>
             </div>
 
-            @foreach ($rooms ?? [] as $room)
-                <div class="card-body">
-                    <div class="card-item">
-                        <div class="card-item-img">
-                            <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cm9vbXxlbnwwfHwwfHx8MA%3D%3D"
-                                alt="" style="width: 100%; height: 100%; object-fit: cover;">
+            <ul class="post-list clearfix">
+                @foreach ($rooms ?? [] as $room)
+                    <li class="post-list-item {{ $room->getHotService($room->hot_service)['class'] }}"
+                        style="border-color: {{ $room->getHotService($room->hot_service)['color'] }}">
+                        <figure class="post-thumb">
+                            <a href="{{ route('rooms.show', ['room' => $room->id, 'slug' => $room->slug]) }}"
+                                class="clearfix"></a>
+                            <span class="post-number-images">{{ $room->image->count() }} ảnh</span>
+                        </figure>
 
-                        </div>
+                        <div class="post-meta">
+                            <h3 class="post-title"
+                                style="color: {{ $room->getHotService($room->hot_service)['color'] }}">
+                                {{ $room->title }}</h3>
 
-                        <div class="card-info">
-                            <span class="post-title"><a
-                                    href="{{ route('rooms.show', ['slug' => $room->slug, 'room' => $room->id]) }}">{{ $room->title }}</a></span>
-
-                            <div class="post-row">
-                                <span class="post-price">{{ number_format($room->price, 0, '', ',') }}
-                                    vnđ/tháng</span>
+                            <div class="meta-row clearfix">
+                                <span class="post-price">{{ $room->price }}</span>
                                 <span class="post-area">{{ $room->area }}m²</span>
-                                <span class="post-location">{{ $room->exact_address }}</span>
-                                <span class="post-time">{{ date('Y-m-d', $room->created_at) }}</span>
+                                <span
+                                    class="post-brief-address">{{ $room->district->name . ', ' . $room->city->name }}</span>
+                                <time class="post-time">{{ $room->starting_date }}</time>
                             </div>
 
-                            <div class="post-row">
-                                <p class="post-summary">{{ $room->description }}</p>
+                            <div class="meta-row clearfix">
+                                <div class="post-summary">{{ $room->getBriefDescription() }}</div>
                             </div>
-                            {{--
-                            <div class="post-row">
-                                <div class="post-author">
-                                    <img src="{{ url('storage/' . $room->user->avatar) }}"
-                                        alt="{{ $room->user->name }}">
-                                    <span class="author-name">{{ $room->user->name }}</span>
+
+                            <div class="meta-row clearfix">
+                                <div class="post-owner">
+                                    <img src="{{ asset('images/' . $room->user->avatar) }}" alt="">
+                                    <span class="owner-name">{{ $room->user->name }}</span>
                                 </div>
 
-                                <div class="post-contact">
-                                    <a rel="nofollow" target="_blank" href="https://zalo.me/{{ $room->user->phone }}"
-                                        class="btn btn-primary">Nhắn Zalo</a>
-                                    <a rel="nofollow" target="_blank" href="tel:{{ $room->user->phone }}"
-                                        class="btn btn-secondary">Gọi 0815777735</a>
-                                </div>
-                            </div> --}}
+                                @if ($room->user->phone != null)
+                                    <a href="tel:{{ $room->user->phone }}" class="quick-call-btn">Gọi
+                                        {{ $room->user->phone }}</a>
+                                @endif
+                            </div>
                         </div>
-                    </div>
-                </div>
-
-                <hr>
-            @endforeach
-
-        </section>
+                    </li>
+                @endforeach
+            </ul>
+        </div>
     </div>
 
-    <div class="right-col">
-        @include('shared.room-list-aside')
+    <div class="mt-3">
+        {{ $rooms->links() }}
     </div>
+</div>
+
+
+<div class="main-content">
+    @include('shared.room-list-aside')
 </div>

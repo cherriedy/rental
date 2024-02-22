@@ -52,14 +52,6 @@
             </div>
 
             @auth
-                <div class="d-flex flex-row align-items-center justify-content-between" style="column-gap: 12px;">
-                    <a href="{{ route('rooms.create') }}" class="btn btn-sm btn-primary">Thêm tin mới</a>
-
-                    @if (Auth::user()->isAdmin)
-                        <a href="{{ route('admins.dashboard') }}" class="btn btn-sm btn-outline-success">Quản trị</a>
-                    @endif
-                </div>
-
                 <div class="nav-item dropdown-center">
                     <a class="nav-link" data-bs-toggle="dropdown" role="button" aria-expanded="false">
                         <img src="{{ asset('images/' . Auth::user()->avatar) }}"
@@ -93,6 +85,14 @@
                             <button type="submit" class="dropdown-item">Đăng xuất</a>
                         </form>
                     </div>
+                </div>
+
+                <div class="d-flex flex-row align-items-center justify-content-between" style="column-gap: 12px;">
+                    <a href="{{ route('rooms.create') }}" class="btn btn-sm btn-primary">Thêm tin mới</a>
+
+                    @if (Auth::user()->isAdmin)
+                        <a href="{{ route('admins.dashboard') }}" class="btn btn-sm btn-outline-success">Quản trị</a>
+                    @endif
                 </div>
             @endauth
 

@@ -3,7 +3,30 @@
 @section('title', 'Lịch sử nạp tiền')
 
 @section('content')
-    <div class="container table-responsive py-5">
+    {{-- HEADER --}}
+    <div class="container-fluid header bg-white p-0" style="margin-bottom: 0;">
+        <div class="row g-0 align-items-center flex-column-reverse flex-md-row">
+            <div class="col-md-6 p-5 mt-lg-5">
+                <h1 class="display-5 animated fadein mb-4">Lịch sử nạp tiền</h1>
+
+                <nav aria-label="breadcrumb animated fadein">
+                    <ol class="breadcrumb text-uppercase">
+                        <li class="breadcrumb-item"><a href="{{ route('profile') }}">{{ Auth::user()->name }}</a></li>
+                        <li class="breadcrumb-item text-body active" aria-current="page">Lịch sử nạp tiền</li>
+                    </ol>
+                </nav>
+            </div>
+
+            <div class="col-md-6 animated fadein">
+                <img class="img-fluid" src="{{ Vite::asset('resources/images/header.jpg') }}" alt="">
+            </div>
+        </div>
+    </div>
+
+    {{-- BLANK SEARCH BAR --}}
+    @include('shared.blank-search-bar')
+
+    <div class="container-fluid table-responsive">
         <table class="table table-bordered table-striped">
             <thead>
                 <tr>
@@ -30,17 +53,20 @@
                         @else
                             <td scope="row">VnPay</td>
                         @endif
-                        <td scope="row">{{ number_format($rechargeHistory->amount, 0, '', ',') }}</td>
-                        <td scope="row">{{ number_format($rechargeHistory->discount, 0, '', ',') }}</td>
-                        <td scope="row">{{ number_format($rechargeHistory->total, 0, '', ',') }}</td>
+                        <td scope="row">{{ number_format($rechargeHistory->amount, 0, '', ',') }}đ</td>
+                        <td scope="row">{{ number_format($rechargeHistory->discount, 0, '', ',') }}đ</td>
+                        <td scope="row">{{ number_format($rechargeHistory->total, 0, '', ',') }}đ</td>
                         <td scope="row">{{ $rechargeHistory->getStatus() }}</td>
-                        <td scope="row" class="text text-sm">{{ $rechargeHistory->note }}</td>
-                        <td scope="row">{{ date('d-m-Y', strtotime($rechargeHistory->created_at)) }}</td>
+                        <td scope="row">{{ $rechargeHistory->note }}</td>
+                        <td scope="row">{{ $rechargeHistory->created_at }}</td>
                         </td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
 
+        <div class="mt-3">
+            {{ $rechargeHistories->links() }}
+        </div>
     </div>
 @endsection

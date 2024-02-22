@@ -4,43 +4,67 @@
 
 
 @section('content')
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item">{{ Auth::user()->name }}</li>
-        <li class="breadcrumb-item">Quản lí</li>
-        <li class="breadcrumb-item">Nạp tiền</li>
-        <li class="breadcrumb-item active">Thẻ ngân hàng nội địa (ATM Internet Banking)</li>
-    </ol>
+    {{-- HEADER --}}
+    <div class="container-fluid header bg-white p-0" style="margin-bottom: 0;">
+        <div class="row g-0 align-items-center flex-column-reverse flex-md-row">
+            <div class="col-md-6 p-5 mt-lg-5">
+                <h1 class="display-5 animated fadein mb-4">Lịch sử nạp tiền</h1>
 
-    <h2>Thẻ ngân hàng nội địa (ATM Internet Banking)</h2>
-    <hr>
-
-    <form action="" method="POST">
-        @csrf
-        <h4>Chọn số tiền cần nạp</h4>
-        <small>Chọn nhanh số tiền cần nạp</small>
-
-        @foreach ($priceType as $key => $value)
-            <div class="">
-                <div class="form-check-inline">
-                    <input type="radio" name="amount_radio" id="radio{{ $value }}" value="{{ $value }}"
-                        {{ request()->amount_radio ?? 0 ? 'checked' : '' }}>
-                    <label for="radio{{ $value }}">{{ number_format($value * 100, 0, '', ',') }} đ</label>
-                </div>
+                <nav aria-label="breadcrumb animated fadein">
+                    <ol class="breadcrumb text-uppercase">
+                        <li class="breadcrumb-item"><a href="{{ route('profile') }}">{{ Auth::user()->name }}</a></li>
+                        <li class="breadcrumb-item text-body active" aria-current="page">Lịch sử nạp tiền</li>
+                    </ol>
+                </nav>
             </div>
-        @endforeach
 
-        <div class="col-md-4 mt-3">
-            <small>Hoặc nhập số tiền cần nạp</small>
-            <div class="input-group">
-                <input type="number" class="form-control" placeholder="Nhập số tiền cần nạp" name="amount_input">
-                <div class="input-group-prepend">
-                    <div class="input-group-text">vnđ</div>
-                </div>
+            <div class="col-md-6 animated fadein">
+                <img class="img-fluid" src="{{ Vite::asset('resources/images/header.jpg') }}" alt="">
             </div>
         </div>
+    </div>
 
-        <div class="form-group mt-3">
-            <button type="submit" class="btn btn-success">Nạp tiền</button>
+    {{-- BLANK SEARCH BAR --}}
+    @include('shared.blank-search-bar')
+
+    {{-- MAIN CONTENT --}}
+    <div class="main-content">
+        <div class="row">
+
+
+            <div class="col-md-9">
+                <h3 class="mb-4">Chọn số tiền cần nạp</h3>
+
+                <form action="" method="POST">
+                    @csrf
+
+                    <div class="col-md-6">
+                        <div class="input-group mb-3">
+                            <input type="number" class="form-control" placeholder="Nhập số tiền cần nạp"
+                                name="amount_input">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">vnđ</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group mt-3">
+                        <button type="submit" class="btn btn-md btn-success">Nạp tiền</button>
+                    </div>
+                </form>
+
+                <div class="alert alert-danger mt-5">
+                    <p>Lưu ý quan trọng: Trong quá trình thanh toán, bạn vui lòng <strong>KHÔNG ĐÓNG TRÌNH DUYỆT</strong>.
+                    </p>
+                    <p>Nếu gặp khó khăn trong quá trình thanh toán, xin liên hệ <strong>0917686101</strong> để chúng tôi hỗ
+                        trợ
+                        bạn.</p>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                @include('users.recharge.shared.aside-column')
+            </div>
         </div>
-    </form>
+    </div>
 @endsection
