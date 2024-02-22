@@ -30,4 +30,75 @@
             }
         }
     }
-}
+  
+    &.section-relative-location {
+        text-align: center;
+        background-color: transparent;
+        border: 0;
+        padding: 0;
+
+        .location__district,
+        .location__ward {
+            padding: 15px;
+            background-color: #fff;
+            border-radius: 5px;
+            border: 1px solid #dedede;
+
+            li {
+                width: 170px;
+                float: left;
+                text-align: left;
+
+                .location__district-item {
+                    display: inline-block;
+                    padding: 5px 0;
+                    font-size: 1.05rem;
+                }
+
+                .count-item {
+                    color: #999;
+                    margin-left: 5px;
+                    font-size: .9rem;
+                }
+            }
+        }
+    }
+
+    &.section-post-list {
+        .post-sort {
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+
+            a {
+                display: inline-block;
+                margin-left: 5px;
+                margin-right: 0px;
+                text-decoration: none;
+                color: #333;
+                background: #f1f1f1;
+                padding: 5px 10px;
+                border-radius: 5px;
+
+                &:hover {
+                    background-color: #e7f0f7;
+                }
+
+                &:last-of-type {
+                    margin-right: 0;
+                }
+
+                &.active {
+                    font-weight: bold;
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
+
+    &.section-aside__new-post {
+        background-color: #f7fbff;
+
+        .post-list-item {
+            background-color: transparent;
+        }
+    }

@@ -7,7 +7,7 @@
 }
 
 .clearfix {
-    overflow: auto;
+    // overflow: auto;
 
     &::after {
         visibility: hidden;
@@ -16,5 +16,29 @@
         content: " ";
         clear: both;
         height: 0;
+    }
+}
+
+.main-content {
+    padding: 0 24px 30px 24px;
+    margin: 0 auto;
+}
+
+.table-striped {
+    tbody {
+        tr {
+            &:nth-of-type(odd) {
+                >* {
+                    --bs-table-color-type: #000 !important;
+                    --bs-table-bg-type: #000 !important;
+                }
+            }
+
+            td {
+                &.title {
+                    width: 25%;
+                }
+            }
+        }
     }
 }

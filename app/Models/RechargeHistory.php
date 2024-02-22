@@ -21,18 +21,12 @@ class RechargeHistory extends Model
     const STATUS_SUCCESS = 2;
     const STATUS_ERROR = -1;
 
-    protected function status(): Attribute
-    {
-        return Attribute::make(
-            get: fn($value) => config('rechargehistory.statusSet')[$value]
-        );
+    public function getStatus($value) {
+        return Arr::get(config('rechargehistory.statusSet')[$value], $this->status);
     }
 
-    protected function type(): Attribute
-    {
-        return Attribute::make(
-            get: fn($value) => config('rechargehistory.typeSet')[$value]
-        );
+    public function getType() {
+        return Arr::get(config('rechargehistory.method'), $this->status);
     }
 
     public function user() {

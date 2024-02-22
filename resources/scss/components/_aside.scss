@@ -2,3 +2,8 @@
     float: right;
     width: calc(100% - 70%);
 }
+
+#left-side {
+    float: left;
+    width: calc(100% - 30% - 1.5rem);
+}

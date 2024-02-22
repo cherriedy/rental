@@ -1,0 +1,244 @@
+body {
+}
+
+.filter-top-inner {
+    .black-overlay {
+        display: none;
+        background-color: rgba(0, 0, 0, 0.5);
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 9999;
+
+        &.show {
+            display: block;
+        }
+    }
+
+    .filter-top {
+        padding: 28px;
+        margin-bottom: 32px;
+        height: 100%;
+        // border-radius: 8px;
+
+        .filter-body {
+            display: flex;
+            align-content: center;
+
+            .filter-item {
+                background-color: #fff;
+                border: 1px solid #fff;
+                border-radius: 3px;
+                display: inline-flex;
+                align-items: center;
+                width: 100%;
+                // height: 36px;
+                margin: 0 3px;
+                padding: 0;
+                position: relative;
+                cursor: pointer;
+
+                span {
+                    font-size: 0.95rem;
+                    align-items: center;
+                    padding: 10px 30px 10px 22px;
+                    white-space: nowrap;
+                    display: block;
+                    height: 100%;
+                    width: 100%;
+                    color: #777;
+                }
+
+                &:hover {
+                    box-shadow: 0 0 10px 1px rgb(0 0 0 / 10%);
+                }
+
+                &:before {
+                    display: block;
+                    width: 12px;
+                    height: 12px;
+                    content: "";
+                    background-size: contain;
+                    position: absolute;
+                    left: 5px;
+                    pointer-events: none;
+                }
+
+                &:after {
+                    display: block;
+                    width: 10px;
+                    height: 10px;
+                    content: "";
+                    background: url("../images/icons/arrow-right.svg") center no-repeat;
+                    background-size: contain;
+                    position: absolute;
+                    right: 5px;
+                    pointer-events: none;
+                }
+
+                &.post-category:before {
+                    background: url(../images/building-icon.svg) center no-repeat;
+                }
+
+                &.post-location:before {
+                    background: url('./../../images/about.jpg') center no-repeat;
+                }
+
+                &.post-area:before {
+                    background: url(../images/acreage-icon.svg) center no-repeat;
+                }
+
+                &.post-price:before {
+                    background: url(../images/price-icon.svg) center no-repeat;
+                }
+
+                &.post-submit:before {
+                    background: url(../images/search-white-icon.svg) center no-repeat;
+                    background-size: contain;
+                    position: relative;
+                    width: 16px;
+                    height: 16px;
+                    display: inline-block;
+                    margin-right: 10px;
+                }
+
+                .item-delete {
+                    display: inline-block;
+                    width: 35px;
+                    height: 35px;
+                    background: url(../images/mobile/delete-filter-item.svg) center no-repeat;
+                    background-size: 12px 12px;
+                    position: absolute;
+                    right: 0px;
+                    padding: 0;
+                }
+
+                &.submit,
+                &.active {
+                    &:after {
+                        display: none;
+                    }
+                }
+
+                &.submit {
+                    background-color: #0E2E50;
+                    border: 1px solid #0E2E50;
+                    color: #fff;
+                    justify-content: center;
+                    font-weight: 700;
+                    cursor: pointer;
+
+                    span {
+                        width: auto;
+                        padding-right: 0px;
+                        padding-left: 0px;
+                        color: #fff;
+                    }
+                }
+
+                &.active {
+                    span {
+                        font-weight: bold;
+                        color: #000;
+                        max-width: 210px;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                    }
+                }
+            }
+        }
+
+        .filter-popup {
+            display: none;
+            position: fixed;
+            top: 60px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 99999;
+            background-color: #fff;
+            overflow: hidden;
+            width: 700px;
+            max-height: 500px;
+            margin: 0 auto;
+            border-radius: 8px;
+
+            &.show {
+                display: block;
+            }
+
+            .filter-popup-header {
+                height: 45px;
+                text-transform: uppercase;
+                font-weight: bold;
+                position: relative;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-bottom: 1px solid #ddd;
+                padding: 0 40px;
+
+                .popup-close {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 45px;
+                    height: 45px;
+                    background: url(../images/mobile/left-arrow.svg) center no-repeat;
+                    background-size: 50%;
+                    text-indent: -999999px;
+                    cursor: pointer;
+                }
+            }
+
+            .filter-popup-body {
+                width: 100%;
+                height: calc(100% - 40px);
+                overflow-y: scroll;
+                padding: 10px 25px;
+
+                .filter-popup-option {
+                    ul>li {
+                        padding: 12px 10px 12px 25px;
+                        border-bottom: 1px solid #ddd;
+                        font-size: 1.1rem;
+                        position: relative;
+                        cursor: pointer;
+
+                        &:hover {
+                            color: #0E2E50;
+                        }
+
+                        &.selected {
+                            font-weight: bold;
+                            color: #0E2E50;
+                        }
+
+                        &:before {
+                            background: url("../images/icons/checkbox-blank-circle.svg") center no-repeat;
+                            background-size: contain;
+                            width: 15px;
+                            height: 15px;
+                            position: absolute;
+                            top: 50%;
+                            left: 0;
+                            margin-top: -8px;
+                            display: block;
+                            content: "";
+                            opacity: 0.45;
+                        }
+
+                        &.selected {
+                            background: url(../images/cirlcle-rec-active.svg) center no-repeat;
+                            background-size: contain;
+                            opacity: 1;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+}
