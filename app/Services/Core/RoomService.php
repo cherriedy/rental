@@ -11,10 +11,7 @@ class RoomService
 
     public static function getSpecialServiceRoom($limit = 5)
     {
-    public static function getSpecialServiceRoom($limit = 5)
-    {
         $self = new self();
-
 
         return Room::whereIn('Status', [Room::STATUS_ACTIVE, Room::STATUS_EXPIRED])
             ->where('hot_service', Room::SERVICE_SPECIAL)
@@ -36,19 +33,7 @@ class RoomService
             ->get();
     }
 
-    public static function getRoomNew($limit = 10)
-    {
-        $self = new self();
-
-        return Room::whereIn('Status', [Room::STATUS_ACTIVE, Room::STATUS_EXPIRED])
-            ->limit($limit)
-            ->select($self->col)
-            ->orderbyDesc('starting_date')
-            ->get();
-    }
-
     public static function getListRoom($params = [])
-
     {
         $self = new self();
         $rooms = Room::whereIn('Status', [Room::STATUS_ACTIVE, Room::STATUS_EXPIRED]);
