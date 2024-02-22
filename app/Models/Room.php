@@ -85,6 +85,20 @@ class Room extends Model
         );
     }
 
+    protected function startingDate(): Attribute
+    {
+        return Attribute::make(
+            get: fn(string $value) => date('d-m-Y', strtotime($value))
+        );
+    }
+
+    protected function expirationDate(): Attribute
+    {
+        return Attribute::make(
+            get: fn(string $value) => date('d-m-Y', strtotime($value))
+        );
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);

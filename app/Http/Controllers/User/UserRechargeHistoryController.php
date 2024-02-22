@@ -15,7 +15,9 @@ class UserRechargeHistoryController extends Controller
     public function index()
     {
         $methods = config('rechargehistory.method');
+        $methods = config('rechargehistory.method');
 
+        return view('users.recharge.index', compact('methods'));
         return view('users.recharge.index', compact('methods'));
     }
 
@@ -28,6 +30,7 @@ class UserRechargeHistoryController extends Controller
 
     public function internetBankingIndex()
     {
+        return view('users.recharge.internet-banking');
         return view('users.recharge.internet-banking');
     }
 

@@ -14,10 +14,6 @@ class UserProfileController extends Controller
 {
     public function show(User $user)
     {
-        if (!$user) {
-            abort(404);
-        }
-
         return view('users.show', compact('user'));
     }
 

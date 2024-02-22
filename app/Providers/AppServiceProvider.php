@@ -59,9 +59,19 @@ class AppServiceProvider extends ServiceProvider
             $_SIDEBAR_ROOM_SPECIAL_SERVICE = RoomService::getSpecialServiceRoom();
 
             $_SIDEBAR_ROOM_NEW = RoomService::getRoomNew();
+
+            $_SIDEBAR_ROOM_SPECIAL_SERVICE = RoomService::getSpecialServiceRoom();
+
+            $_SIDEBAR_ROOM_NEW = RoomService::getRoomNew();
         } catch (\Exception $exception) {
         }
 
+        View::share('_CATEGORY', $_CATEGORY ?? []);
+        View::share('_CITY', $_CITY ?? []);
+        View::share('_PRICE_RANGE', $_PRICE_RANGE ?? []);
+        View::share('_AREA_RANGE', $_AREA_RANGE ?? []);
+        View::share('_SIDEBAR_ROOM_SPECIAL_SERVICE', $_SIDEBAR_ROOM_SPECIAL_SERVICE ?? []);
+        View::share('_SIDEBAR_ROOM_NEW', $_SIDEBAR_ROOM_NEW ?? []);
         View::share('_CATEGORY', $_CATEGORY ?? []);
         View::share('_CITY', $_CITY ?? []);
         View::share('_PRICE_RANGE', $_PRICE_RANGE ?? []);
