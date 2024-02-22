@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Support\Arr;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -10,22 +11,16 @@ class Category extends Model
 {
     use HasFactory;
 
-    // protected $guared = [];
-    protected $fillable = [
-        'name',
-        'slug',
-        'title',
-        'description',
-        'status',
-    ];
+    protected $guarded = [];
 
-    protected $CategoryStatus = [
-        1 => 'Hiển thị',
-        2 => 'Tạm Ẩn'
-    ];
+    const STATUS_DEFAULT = 1;
+    const STATUS_HIDE = 2;
 
-    public function getCategoryStatus() {
-        return Arr::get($this->CategoryStatus, $this->status, '???');
+    protected function status(): Attribute
+    {
+        return Attribute::make(
+            get: fn($value) => config('category.categoryStatus')[$value]
+        );
     }
 
     public function room() {

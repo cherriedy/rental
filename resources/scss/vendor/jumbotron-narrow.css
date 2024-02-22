@@ -69,9 +69,9 @@
     padding-left: 0;
   }
   /* Space out the masthead */
-  .header {
+  /* .header {
     margin-bottom: 30px;
-  }
+  } */
   /* Remove the bottom border on the jumbotron for visual effect */
   .jumbotron {
     border-bottom: 0;

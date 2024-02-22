@@ -2,19 +2,19 @@
 
 namespace App\Models;
 
-use App\Models\User;
 use App\Models\Category;
 use App\Models\Location;
-use Illuminate\Support\Str;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Room extends Model
 {
     use HasFactory;
 
-    protected $with = ['user:id,name,avatar,phone'];
+    protected $with = ['user:id,name,avatar,phone', 'image:id,room_id,path', 'category:id,name', 'city:id,name', 'district:id,name', 'ward:id,name'];
 
     protected $guarded = [];
 
@@ -24,6 +24,7 @@ class Room extends Model
     const STATUS_EXPIRED = -2; // hết hạn
     const STATUS_ACTIVE = 3; // đã duyệt
     const STATUS_CANCEL = -1; // huỷ bỏ
+    const STATUS_HIDE = 4; // Tạm ẩn
 
     const GENDER_ALL = 0;
     const GENDER_MALE = 1;
@@ -35,6 +36,14 @@ class Room extends Model
     const SERVICE_H2 = 3;
     const SERVICE_H3 = 4;
     const SERVICE_SPECIAL = 5;
+
+    public function getHotService($value) {
+        return config('room.hotServiceAttribute')[$value];
+    }
+
+    public function getBriefDescription(){
+        return substr($this->description, 0, 350) . '...';
+    }
 
     public function slug()
     {
@@ -55,10 +64,24 @@ class Room extends Model
         );
     }
 
-    protected function hotService(): Attribute
+    // protected function hotService(): Attribute
+    // {
+    //     return Attribute::make(
+    //         get: fn($value) => config('room.hot_service')[$value]
+    //     );
+    // }
+
+    protected function startingDate(): Attribute
     {
         return Attribute::make(
-            get: fn($value) => config('room.hot_service')[$value]
+            get: fn(string $value) => date('d-m-Y', strtotime($value))
+        );
+    }
+
+    protected function expirationDate(): Attribute
+    {
+        return Attribute::make(
+            get: fn(string $value) => date('d-m-Y', strtotime($value))
         );
     }
 

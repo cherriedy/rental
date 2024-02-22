@@ -2,26 +2,25 @@
 
 namespace App\Http\Controllers\User;
 
-use Exception;
-use Carbon\Carbon;
-use App\Models\Room;
-use App\Models\Image;
-use App\Models\Category;
-use App\Models\Location;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use App\Models\TemporaryFile;
-use App\Models\PaymentHistory;
-use App\DataTables\RoomDataTable;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
-use Yajra\DataTables\Facades\DataTables;
 use App\Http\Requests\Room\CreateRoomRequest;
 use App\Http\Requests\Room\UpdateRoomRequest;
+use App\Models\Category;
+use App\Models\Image;
+use App\Models\Location;
+use App\Models\PaymentHistory;
+use App\Models\Room;
+use App\Models\TemporaryFile;
+use App\Services\Core\RoomService;
+use Carbon\Carbon;
+use Exception;
+use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class UserRoomController extends Controller
 {
@@ -34,7 +33,14 @@ class UserRoomController extends Controller
 
     public function show($slug, Room $room)
     {
-        return view('users.rooms.show', compact('room'));
+        $roomSuggestions = RoomService::getListRoom([
+            'category_id' => $room->category_id,
+            'district_id' => $room->district_id,
+            'inRandomOrder'=> true,
+            'limit' => 10,
+        ]);
+
+        return view('users.rooms.show', compact('room', 'roomSuggestions'));
     }
 
     public function create()
@@ -155,13 +161,44 @@ class UserRoomController extends Controller
         $validated = $this->mappingPrice($validated);
         $validated = $this->mappingArea($validated);
         $validated['updated_at'] = Carbon::now();
-        $validated['map'] = env('GOOGLEMAPS_API_URL') . '?key=' . env('GOOGLEMAPS_API_KEY') . '&q=' . urlencode(str_replace(' ', '', $validated['exact_address']));
+        $validated['map'] = config('googlemaps.url') . '?key=' . config('googlemaps.key') . '&q=' . urlencode(str_replace(' ', '', $validated['exact_address']));
 
-        if ($room->update($validated)) {
-            return response()->json([
-                'status_code' => '200',
-                'message' => 'Cập nhật thành công!',
-            ]);
+        try {
+            DB::beginTransaction();
+
+            if ($room->update($validated)) {
+                $temporaryFiles = TemporaryFile::all();
+
+                foreach ($temporaryFiles as $temporaryFile) {
+                    Storage::copy('images/tmp/' . $temporaryFile->folder . '/' . $temporaryFile->filename, 'images/' . $temporaryFile->folder . '/' . $temporaryFile->filename);
+
+                    Image::create([
+                        'name' => $temporaryFile->filename,
+                        'path' => $temporaryFile->folder . '/' . $temporaryFile->filename,
+                        'room_id' => $room->id,
+                    ]);
+
+                    Storage::deleteDirectory('images/tmp/' . $temporaryFile->folder);
+
+                    $temporaryFile->delete();
+                }
+
+                DB::commit();
+
+                return response()->json([
+                    'status_code' => '200',
+                    'message' => 'Cập nhật thành công!',
+                ]);
+            }
+        } catch (Exception $exception) {
+            DB::rollBack();
+
+            $temporaryImages = TemporaryFile::all();
+
+            foreach ($temporaryImages as $temporaryImage) {
+                Storage::deleteDirectory('images/tmp/' . $temporaryImage->folder);
+                $temporaryImage->delete();
+            }
         }
     }
 
@@ -223,6 +260,8 @@ class UserRoomController extends Controller
 
     public function active(Room $room)
     {
+        $this->authorize('activeRoom', $room);
+
         $today = date('Y-m-d');
         $checkDateOfRoom = Room::where([['created_at', '<=', $today], ['expiration_date', '>=', $today]])->get();
 
@@ -232,5 +271,15 @@ class UserRoomController extends Controller
 
             return redirect()->back();
         }
+    }
+
+    public function hide(Room $room) {
+        $this->authorize('hideRoom', $room);
+
+        $room->update([
+            'status' => Room::STATUS_HIDE
+        ]);
+
+        return redirect()->route('rooms.index');
     }
 }
