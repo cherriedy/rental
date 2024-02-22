@@ -3,11 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use Illuminate\Support\Arr;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\User\LoginUserRequest;
-use DebugBar\DebugBar;
 
 class LoginController extends Controller
 {
@@ -20,7 +18,7 @@ class LoginController extends Controller
     {
         $validated = $request->validated();
 
-        $remember = ($validated['remember'] ?? false) == 'on' ? true : false;
+        $remember = Arr::get($validated, 'remember', 'off') === 'on';
 
         if (Auth::attempt(Arr::except($validated, 'rememberme'), $remember)) {
             $response = [
@@ -28,7 +26,7 @@ class LoginController extends Controller
                 'message' => 'Đăng nhập thành công',
             ];
 
-            $response['isAdmin'] = Auth::user()->isAdmin ? true : false;
+            $response['isAdmin'] = Auth::user()->isAdmin;
 
             return response()->json($response);
         }

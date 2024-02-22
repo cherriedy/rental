@@ -1,40 +1,59 @@
-<section class="card">
-    <div class="card-header">
-        <span class="card-title">Xem theo giá</span>
-    </div>
-
-    <ul class="d-flex flex-col flex-wrap" style="list-style:none; row-gap: 4px; column-gap: 8px;">
-        @foreach ($_PRICE_RANGE as $key => $item)
-            {{-- <li><a href="{{ request()->fullUrlWithQuery(['price_range' => $key]) }}">{{ $item }}</a></li> --}}
-            <li><a href="{{ request()->url() . '?price_range=' . $key }}">{{ $item }}</a></li>
-        @endforeach
-    </ul>
-</section>
-
-<section class="card mt-3">
-    <div class="card-header">
-        <span class="card-title">Xem theo diện tích</span>
-    </div>
-
-    <ul class="d-flex flex-col flex-wrap" style="list-style:none; row-gap: 4px; column-gap: 8px;">
-        @foreach ($_AREA_RANGE as $key => $item)
-            {{-- <li><a href="{{ request()->fullUrlWithQuery(['area_range' => $key]) }}">{{ $item }}</a></li> --}}
-            <li><a href="{{ request()->url() . '?area_range=' . $key }}">{{ $item }}</a></li>
-        @endforeach
-    </ul>
-</section>
-
-@if (isset($wards) && !$wards->IsEmpty())
-    <section class="card mt-3">
-        <div class="card-header">
-            <span class="card-title">Xem theo phường</span>
+<aside class="post-list-aside" id="aside">
+    <section class="section section-sublink">
+        <div class="section-header">
+            <span class="section-title">Xem theo giá</span>
         </div>
 
-        <ul class="d-flex flex-col flex-wrap" style="list-style:none; row-gap: 4px; column-gap: 8px;">
-            @foreach ($wards as $ward)
-                {{-- <li><a href="{{ request()->fullUrlWithQuery(['ward_id' => $ward->id]) }}">{{ $ward->name }}</a></li> --}}
-            <li><a href="{{ request()->url() . '?ward_id=' . $ward->id }}">{{ $ward->name }}</a></li>
+        <ul class="link-list price clearfix" style="padding: 0">
+            @foreach ($_PRICE_RANGE as $key => $value)
+                <li>
+                    <a href="{{ request()->url() . '?price_range=' . $key }}">{{ $value }}</a>
+                </li>
             @endforeach
         </ul>
     </section>
-@endif
+
+    <section class="section section-sublink">
+        <div class="section-header">
+            <span class="section-title">Xem theo diện tích</span>
+        </div>
+
+        <ul class="link-list area clearfix" style="padding: 0">
+            @foreach ($_AREA_RANGE as $key => $value)
+                <li>
+                    <a href="{{ request()->url() . '?area_range=' . $key }}">{{ $value }}</a>
+                </li>
+            @endforeach
+        </ul>
+    </section>
+
+    <section class="section section-aside__new-post">
+        <div class="section-header">
+            <span class="section-title">Tin mới đăng</span>
+        </div>
+
+        <ul class="post-list aside clearfix">
+            @foreach ($_SIDEBAR_ROOM_NEW as $item)
+                <li class="post-list-item">
+                    @php
+                        $thumb = $item->images !== null ? $item->images->first()->path : 'no-avatar.jpg';
+                    @endphp
+
+                    <a href="{{ route('rooms.show', ['room' => $item->id, 'slug' => $item->slug]) }}">
+                        <figure class="post-thumb">
+                            <img src="{{ asset('images/' . $thumb) }}" alt="post-thumb">
+                        </figure>
+
+                        <div class="post-meta">
+                            <span class="post-title">{{ $item->title }}</span>
+                            <span class="post-price">{{ $item->price }}</span>
+                            <span class="post-time">{{ $item->starting_date }}</span>
+                        </div>
+                    </a>
+                </li>
+            @endforeach
+        </ul>
+
+    </section>
+
+</aside>

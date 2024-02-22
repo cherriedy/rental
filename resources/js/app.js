@@ -1,4 +1,5 @@
 import './bootstrap'
+import 'bootstrap'
 import './notify'
 import 'select2'
 import './jquery.donetyping'

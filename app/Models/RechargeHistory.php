@@ -21,7 +21,6 @@ class RechargeHistory extends Model
     const STATUS_SUCCESS = 2;
     const STATUS_ERROR = -1;
 
-
     public function getStatus($value) {
         return Arr::get(config('rechargehistory.statusSet')[$value], $this->status);
     }
