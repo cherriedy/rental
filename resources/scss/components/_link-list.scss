@@ -1,0 +1,40 @@
+.link-list {
+    &.price,
+    &.area {
+        > li {
+            width: 50%;
+            float: left;
+        }
+    }
+
+    li {
+        position: relative;
+        display: flex;
+        align-items: center;
+        padding-left: 20px;
+        border-bottom: 1px dashed #eee;
+
+        &::before {
+            display: inline-block;
+            content: "";
+            width: 14px;
+            height: 14px;
+            background: url("../images/icons/chevron-right.svg") center no-repeat;
+            background-size: contain;
+            position: absolute;
+            left: 0;
+            opacity: 0.3;
+        }
+
+        a {
+            padding: 5px 0;
+            display: inline-flex;
+            align-items: center;
+            color: #333;
+            width: 100%;
+            line-height: 1.4;
+            font-size: 1rem;
+            font-weight: 400;
+        }
+    }
+}
