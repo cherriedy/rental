@@ -13,7 +13,7 @@ class UserPaymentHistoryController extends Controller
     {
         $paymentHistories = PaymentHistory::where('user_id', Auth::id())
             ->orderByDesc('id')
-            ->get();
+            ->paginate(15);
 
         return view('users.payment.index', compact('paymentHistories'));
     }
