@@ -64,14 +64,6 @@ class Room extends Model
         );
     }
 
-    // protected function hotService(): Attribute
-    // {
-    //     return Attribute::make(
-    //         get: fn($value) => config('room.hot_service')[$value]
-    //     );
-    // }
-
-
     protected function startingDate(): Attribute
     {
         return Attribute::make(
