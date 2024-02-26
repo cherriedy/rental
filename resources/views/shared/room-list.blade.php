@@ -74,7 +74,4 @@
     </div>
 </div>
 
-
-<div class="main-content">
-    @include('shared.room-list-aside')
-</div>
+@include('shared.room-list-aside')
