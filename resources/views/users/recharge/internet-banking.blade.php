@@ -37,15 +37,16 @@
 
                 <form action="" method="POST">
                     @csrf
-
                     <div class="col-md-6">
-                        <div class="input-group mb-3">
+                        <div class="input-group">
                             <input type="number" class="form-control" placeholder="Nhập số tiền cần nạp"
-                                name="amount_input">
+                                name="amount_input" min="10000">
                             <div class="input-group-prepend">
                                 <div class="input-group-text">vnđ</div>
                             </div>
                         </div>
+
+                        <small class="d-block mt-2">Số tiền không bé hơn 10.000đ</small>
                     </div>
 
                     <div class="form-group mt-3">
