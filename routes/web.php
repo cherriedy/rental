@@ -2,7 +2,9 @@
 
 use Carbon\Carbon;
 use App\Models\Room;
+use App\Services\Core\RoomService;
 use Illuminate\Support\Facades\Route;
+use App\Services\Page\HomePageService;
 use App\Http\Controllers\TemporaryImageController;
 use App\Http\Controllers\Public\SearchRoomController;
 use App\Http\Controllers\Public\GetRoomByCategoryController;
@@ -10,7 +12,9 @@ use App\Http\Controllers\Public\GetRoomByLocationController;
 
 /* HOMEPAGE */
 Route::get('/', function () {
-    return view('public.pages.home.index');
+    $viewData = HomePageService::home();
+
+    return view('public.pages.home.index', $viewData);
 })->name('index');
 
 /* TEMPORARY IMAGE */
