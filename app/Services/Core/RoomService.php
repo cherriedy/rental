@@ -7,14 +7,13 @@ use Illuminate\Support\Arr;
 
 class RoomService
 {
-    protected $col = ['id', 'slug', 'title', 'description', 'price', 'exact_address', 'updated_at', 'status', 'starting_date', 'city_id', 'district_id', 'user_id', 'area', 'hot_service'];
+    protected $col = ['id', 'slug', 'title', 'description', 'price', 'exact_address', 'updated_at', 'status', 'starting_date', 'city_id', 'district_id', 'user_id', 'area', 'hot_service', 'subject_id', 'category_id'];
 
     public static function getSpecialServiceRoom($limit = 5)
     {
         $self = new self();
 
         return Room::whereIn('Status', [Room::STATUS_ACTIVE, Room::STATUS_EXPIRED])
-            ->where('hot_service', Room::SERVICE_SPECIAL)
             ->where('hot_service', Room::SERVICE_SPECIAL)
             ->limit($limit)
             ->select($self->col)
@@ -77,6 +76,6 @@ class RoomService
         return $rooms
             ->select($self->col)
             ->orderbyDesc('hot_service')
-            ->paginate(5);
+            ->paginate(10);
     }
 }
