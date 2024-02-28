@@ -98,7 +98,7 @@
                             <th scope="col">Giá</th>
                             <th scope="col" style="white-space: nowrap;">Ngày bắt đầu</th>
                             <th scope="col" style="white-space: nowrap;">Ngày kết thúc</th>
-                            <th scope="col">Trạng thái</th>
+                            <th scope="col" style="white-space: nowrap;">Trạng thái</th>
                         </tr>
                     </thead>
 
