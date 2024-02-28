@@ -16,15 +16,14 @@ class User extends Authenticatable
 
     protected $guarded = [];
 
+    // protected $with = ['room:id,user_id,slug,title,hot_service,picture,price,area'];
+
     /**
      * The attributes that should be hidden for serialization.
      *
      * @var array<int, string>
      */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+    protected $hidden = ['password', 'remember_token'];
 
     /**
      * The attributes that should be cast.
@@ -36,18 +35,20 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    // protected $with = ['recharge_histories:id'];
-
-    public function password() {
+    public function password()
+    {
         return Hash::make($this->password());
     }
 
-    public function room() {
-        return $this->hasMany(Room::class);
+    public function room()
+    {
+        return $this->hasMany(Room::class)
+            ->orderbyDesc('hot_service')
+            ->orderbyDesc('starting_date');
     }
 
-    public function rechargeHistory() {
+    public function rechargeHistory()
+    {
         return $this->hasMany(RechargeHistory::class)->orderByDesc('id');
     }
-
 }
