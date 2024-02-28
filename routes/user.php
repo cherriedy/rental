@@ -35,7 +35,7 @@ Route::get('{slug}-{room}', [UserRoomController::class, 'show'])
 /* USER */
 Route::get('profile', [UserProfileController::class, 'profile'])->name('profile');
 Route::group(['prefix' => 'users', 'as' => 'users.', 'middleware' => 'auth'], function () {
-    Route::get('show', [UserProfileController::class, 'show'])->name('show');
+    Route::get('{user}/show', [UserProfileController::class, 'show'])->name('show');
 
     Route::group(['prefix' => 'settings', 'as' => 'settings.'], function () {
         Route::get('edit', [UserProfileController::class, 'edit'])->name('edit');
