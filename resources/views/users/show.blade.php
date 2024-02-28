@@ -3,16 +3,29 @@
 @section('title', $user->name)
 
 @section('content')
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item">User</li>
-        <li class="breadcrumb-item ">Profile</li>
-        <li class="breadcrumb-item active">{{ $user->name }}</li>
-    </ol>
+    {{-- HEADER --}}
+    <div class="container-fluid header bg-white p-0">
+        <div class="row g-0 align-items-center flex-column-reverse flex-md-row">
+            <div class="col-md-6 p-5 mt-lg-5">
+                <h1 class="display-5 animated fadeIn mb-4">Trang cá nhân</h1>
 
-    <div>
-        @include('shared.success-message')
-        @include('shared.error-message')
+                <nav aria-label="breadcrumb animated fadeIn">
+                    <ol class="breadcrumb text-uppercase">
+                        <li class="breadcrumb-item"><a href="{{ route('profile') }}">{{ Auth::user()->name }}</a></li>
+                        <li class="breadcrumb-item text-body active" aria-current="page">Trang cá nhân</li>
+                    </ol>
+                </nav>
+            </div>
+
+            <div class="col-md-6 animated fadeIn">
+                <img class="img-fluid" src="{{ Vite::asset('resources/images/header.jpg') }}" alt="">
+            </div>
+        </div>
     </div>
+
+    {{-- SEARCH BAR --}}
+    @include('shared.blank-search-bar')
+
 
     <div class="col-6">
         <div class="card">
@@ -20,7 +33,7 @@
                 <div class="d-flex align-items-center justify-content-between">
                     <div class="d-flex align-items-center">
                         <img style="width: 150px; height: 150px;" class="me-3 avatar-sm rounded-circle"
-                            src="{{ asset('images/'. $user->avatar) }}" alt="{{ $user->name }}">
+                            src="{{ asset('images/' . $user->avatar) }}" alt="{{ $user->name }}">
 
                         <div>
                             <h3 class="card-title mb-0"><a href="/profile">{{ $user->name }}</a></h3>
