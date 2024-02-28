@@ -3,47 +3,66 @@
 @section('title', 'Dịch vụ tin nổi bật')
 
 @section('content')
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item">{{ $room->user->name }}</li>
-        <li class="breadcrumb-item">Quản lý phòng</li>
-        <li class="breadcrumb-item active">Gia hạn phòng</li>
-    </ol>
+    {{-- HEADER --}}
+    <div class="container-fluid header bg-white p-0">
+        <div class="row g-0 align-items-center flex-column-reverse flex-md-row">
+            <div class="col-md-6 p-5 mt-lg-5">
+                <h1 class="display-5 animated fadeIn mb-4">Gia hạn phòng</h1>
 
-    <h1 class="h1">Gia hạn tin</h1>
+                <nav aria-label="breadcrumb animated fadeIn">
+                    <ol class="breadcrumb text-uppercase">
+                        <li class="breadcrumb-item"><a href="{{ route('profile') }}">{{ Auth::user()->name }}</a></li>
+                        <li class="breadcrumb-item text-body" aria-current="page">Quản lý bài đăng</li>
+                        <li class="breadcrumb-item text-body active" aria-current="page">Gia hạn phòng</li>
+                    </ol>
+                </nav>
+            </div>
 
-    <div class="alert alert-dismissible alert-warning" role="alert">
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        <h6 class="alert-heading">Nếu bạn đã từng đăng tin trên , hãy sử dụng chức năng ĐẨY TIN / GIA HẠN / NÂNG CẤP VIP
-            trong mục QUẢN LÝ TIN ĐĂNG
-            để làm mới, đẩy tin lên cao thay vì đăng tin mới. Tin đăng trùng nhau sẽ không được duyệt.</p>
-            <h6>Xin cảm ơn!</p>
+            <div class="col-md-6 animated fadeIn">
+                <img class="img-fluid" src="{{ Vite::asset('resources/images/header.jpg') }}" alt="">
+            </div>
+        </div>
     </div>
 
-    <form action="" method="POST" id="store-hot-service">
-        @csrf
-        <h5 class="h5">Chọn loại tin</h5>
+    {{-- SEARCH BAR --}}
+    @include('shared.blank-search-bar')
 
-        <div class="form-group">
-            @foreach (config('rental.hotServiceOption') as $option => $service)
-                <div class="form-check">
-                    <label for="ServiceID{{ $option }}" class="form-check-label">{{ $service['name'] }}</label>
-                    <input type="radio" name="hotServiceOption" id="ServiceID{{ $option }}" class="form-check-input"
-                        value="{{ $option }}" {{ ($request['hotServiceOption'] ?? 0) == $option ? 'checked' : '' }}>
-                </div>
-            @endforeach
+    {{-- MAIN CONTENT --}}
+    <div class="main-content">
+        <div class="alert alert-dismissible alert-warning" role="alert">
+            <h6 class="alert-heading">Nếu bạn đã từng đăng tin trên , hãy sử dụng chức năng ĐẨY TIN / GIA HẠN / NÂNG CẤP VIP
+                trong mục QUẢN LÝ TIN ĐĂNG
+                để làm mới, đẩy tin lên cao thay vì đăng tin mới. Tin đăng trùng nhau sẽ không được duyệt.</p>
+                <h6>Xin cảm ơn!</p>
         </div>
 
-        <h5 class="h5">Chọn ngày bắt đầu</h5>
-        <input type="date" name="starting_date" id="starting_date">
+        <form action="" method="POST" id="store-hot-service">
+            @csrf
+            <h5 class="h5">Chọn loại tin</h5>
 
-        <h5 class="h5">Chọn số ngày</h5>
-        <div class="form-group mb-3 col-md-4">
-            <label for="ServiceDay" class="">Số ngày sử dụng dịch vụ</label>
-            <input type="number" name="days" id="ServiceDay" class="form-control" min="1" max="20">
-        </div>
+            <div class="form-group">
+                @foreach (config('rental.hotServiceOption') as $option => $service)
+                    <div class="form-check">
+                        <label for="ServiceID{{ $option }}" class="form-check-label">{{ $service['name'] }}</label>
+                        <input type="radio" name="hotServiceOption" id="ServiceID{{ $option }}"
+                            class="form-check-input" value="{{ $option }}"
+                            {{ ($request['hotServiceOption'] ?? 0) == $option ? 'checked' : '' }}>
+                    </div>
+                @endforeach
+            </div>
 
-        <button type="submit" class="btn btn-success">Xác nhận</button>
-    </form>
+            <h5 class="h5 mt-3">Chọn ngày bắt đầu</h5>
+            <input type="date" name="starting_date" id="starting_date">
+
+            <h5 class="h5 mt-3">Chọn số ngày</h5>
+            <div class="form-group mb-3 col-md-4">
+                <input type="number" name="days" id="ServiceDay" class="form-control" min="1" max="20">
+                <small class="d-block mt-2">Số ngày sử dụng không lớn hơn 20 ngày </small>
+            </div>
+
+            <button type="submit" class="btn btn-success">Xác nhận</button>
+        </form>
+    </div>
 @endsection
 
 @section('script')
