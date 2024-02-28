@@ -2,25 +2,26 @@
 
 namespace App\Http\Controllers\User;
 
-use Exception;
-use Carbon\Carbon;
-use App\Models\Room;
-use App\Models\Image;
-use App\Models\Category;
-use App\Models\Location;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use App\Models\TemporaryFile;
-use App\Models\PaymentHistory;
-use App\Services\Core\RoomService;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\Room\CreateRoomRequest;
 use App\Http\Requests\Room\UpdateRoomRequest;
+use App\Models\Category;
+use App\Models\Image;
+use App\Models\Location;
+use App\Models\PaymentHistory;
+use App\Models\Room;
+use App\Models\TemporaryFile;
+use App\Services\Core\RoomService;
+use Carbon\Carbon;
+use DebugBar\DebugBar;
+use Exception;
+use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class UserRoomController extends Controller
 {
@@ -102,6 +103,10 @@ class UserRoomController extends Controller
 
             if ($room = Room::create(Arr::except($validated, 'image'))) {
                 $temporaryFiles = TemporaryFile::all();
+
+                $postThumb = $temporaryFiles->first();
+                $postThumbPath = $postThumb->folder . '/' . $postThumb->filename;
+                $room->update(['picture' => $postThumbPath]);
 
                 foreach ($temporaryFiles as $temporaryFile) {
                     Storage::copy('images/tmp/' . $temporaryFile->folder . '/' . $temporaryFile->filename, 'images/' . $temporaryFile->folder . '/' . $temporaryFile->filename);
