@@ -35,9 +35,10 @@
                         </figure>
 
                         <div class="post-meta">
-                            <h3 class="post-title"
+                            <a class="post-title h3"
+                                href="{{ route('rooms.show', ['slug' => $room->slug, 'room' => $room->id]) }}"
                                 style="color: {{ $room->getHotService($room->hot_service)['color'] }}">
-                                {{ $room->title }}</h3>
+                                {{ $room->title }}</a>
 
                             <div class="meta-row clearfix">
                                 <span class="post-price">{{ $room->price }}</span>
