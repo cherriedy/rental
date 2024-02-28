@@ -2,25 +2,25 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Room\CreateRoomRequest;
-use App\Http\Requests\Room\UpdateRoomRequest;
-use App\Models\Category;
-use App\Models\Image;
-use App\Models\Location;
-use App\Models\PaymentHistory;
-use App\Models\Room;
-use App\Models\TemporaryFile;
-use App\Services\Core\RoomService;
-use Carbon\Carbon;
 use Exception;
-use Illuminate\Http\Request;
+use Carbon\Carbon;
+use App\Models\Room;
+use App\Models\Image;
+use App\Models\Category;
+use App\Models\Location;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use App\Models\TemporaryFile;
+use App\Models\PaymentHistory;
+use App\Services\Core\RoomService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
+use App\Http\Requests\Room\CreateRoomRequest;
+use App\Http\Requests\Room\UpdateRoomRequest;
 
 class UserRoomController extends Controller
 {
@@ -36,7 +36,7 @@ class UserRoomController extends Controller
         $roomSuggestions = RoomService::getListRoom([
             'category_id' => $room->category_id,
             'district_id' => $room->district_id,
-            'inRandomOrder'=> true,
+            'inRandomOrder' => true,
             'limit' => 10,
         ]);
 
@@ -273,11 +273,12 @@ class UserRoomController extends Controller
         }
     }
 
-    public function hide(Room $room) {
+    public function hide(Room $room)
+    {
         $this->authorize('hideRoom', $room);
 
         $room->update([
-            'status' => Room::STATUS_HIDE
+            'status' => Room::STATUS_HIDE,
         ]);
 
         return redirect()->route('rooms.index');
