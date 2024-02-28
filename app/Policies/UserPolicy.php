@@ -8,8 +8,8 @@ use Illuminate\Support\Facades\Auth;
 
 class UserPolicy
 {
-    public function update(User $user): bool
+    public function update(User $user, User $currentUser): bool
     {
-        return $user->is(Auth::user());
+        return $user->is($currentUser);
     }
 }
