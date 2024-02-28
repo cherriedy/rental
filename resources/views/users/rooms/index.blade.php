@@ -108,11 +108,8 @@
                                 <td scope="row" style="text-align: center;">#{{ $room->id }}</td>
                                 <td>
                                     <div style="overflow: hidden; width: 100px; margin: 0 auto; position: relative;">
-                                        @php
-                                            $image = $room->image->first() !== null ? $room->image->first()->path : 'no-avatar.jpg';
-                                        @endphp
-
-                                        <img src="{{ asset('images/' . $image) }}" alt="" class="post_thumb">
+                                        <img src="{{ asset('images/' . $room->picture) }}" alt=""
+                                            class="post_thumb">
                                     </div>
                                 </td>
 
@@ -120,7 +117,8 @@
                                     <span class="badge bg-primary">{{ $room->category->name ?? null }}</span>
 
                                     <a href="{{ route('rooms.show', ['slug' => $room->slug, 'room' => $room->id]) }}"
-                                        class="post_title">{{ $room->title }}</a>
+                                        class="post_title"
+                                        style="color: {{ $room->getHotService($room->hot_service)['color'] }}">{{ $room->title }}</a>
 
                                     <p style="margin-top: 12px; font-size: 12.5px;">
                                         <strong>Địa chỉ: </strong>
@@ -176,7 +174,7 @@
                                             </a>
                                         @endif
 
-                                        @can ('hideRoom', $room)
+                                        @can('hideRoom', $room)
                                             <a href="{{ route('rooms.hide', $room->id) }}"
                                                 class="btn btn-sm post_action_toolbar-btn edit">
                                                 <div class="svg-container">
