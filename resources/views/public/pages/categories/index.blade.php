@@ -29,5 +29,8 @@
     {{-- SEARCH BAR --}}
     @include('shared.search-bar-2')
 
-    @include('shared.room-list')
+    {{-- MAIN CONTENT --}}
+    <div class="main-content clearfix">
+        @include('shared.room-list')
+    </div>
 @endsection
