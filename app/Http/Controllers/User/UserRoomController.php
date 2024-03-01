@@ -13,7 +13,6 @@ use App\Models\Room;
 use App\Models\TemporaryFile;
 use App\Services\Core\RoomService;
 use Carbon\Carbon;
-use DebugBar\DebugBar;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
