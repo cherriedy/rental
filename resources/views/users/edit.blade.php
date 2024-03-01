@@ -3,75 +3,127 @@
 @section('title', $user->name)
 
 @section('content')
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item">User</li>
-        <li class="breadcrumb-item ">Profile</li>
-        <li class="breadcrumb-item ">Edit</li>
-        <li class="breadcrumb-item active">{{ $user->name }}</li>
-    </ol>
+    {{-- HEADER --}}
+    <div class="container-fluid header bg-white p-0">
+        <div class="row g-0 align-items-center flex-column-reverse flex-md-row">
+            <div class="col-md-6 p-5 mt-lg-5">
+                <h1 class="display-5 animated fadeIn mb-4">Thông tin cá nhân</h1>
 
-    <div class="col-6">
-        <div class="card">
-            <div class="px-3 pt-4 pb-2">
-                <div class="d-flex align-items-center justify-content-between">
-                    <div class="d-flex align-items-center">
+                <nav aria-label="breadcrumb animated fadeIn">
+                    <ol class="breadcrumb text-uppercase">
+                        <li class="breadcrumb-item"><a href="{{ route('users.show', $user->id) }}">{{ $user->name }}</a>
+                        </li>
+                        <li class="breadcrumb-item text-body active" aria-current="page">Thông tin cá nhân</li>
+                    </ol>
+                </nav>
+            </div>
 
-                        {{-- <img style="width: 150px" class="me-3 avatar-sm rounded-circle"
-                            src="{{ url('storage/' . $user->avatar) }}" alt="{{ $user->name }}"> --}}
+            <div class="col-md-6 animated fadeIn">
+                <img class="img-fluid" src="{{ Vite::asset('resources/images/header.jpg') }}" alt="">
+            </div>
+        </div>
+    </div>
 
-                        <div>
-                            <h3 class="card-title mb-0"><a href="{{ route('profile') }}">{{ $user->name }}</a></h3>
-                            <span class="fs-6 text-muted">@~{{ $user->name }}</span>
+    {{-- SEARCH BAR --}}
+    @include('shared.blank-search-bar')
+
+    {{-- MAIN CONTENT --}}
+    <div class="main-content">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="section" style="padding: 12px; border-radius: 5px;">
+                    <div class="section-header">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div class="d-flex align-items-center">
+                                <img style="width: 50px; height: 50px;" class="me-3 avatar-sm rounded-circle"
+                                    src="{{ asset('images/' . $user->avatar) }}" alt="{{ $user->name }}">
+
+                                <div>
+                                    <h3 class="card-title fs-6 mb-0"><a
+                                            href="{{ route('users.show', $user->id) }}">{{ $user->name }}</a></h3>
+                                    <span class="text-muted" style="font-size: 12px;">@~{{ $user->name }}</span>
+                                </div>
+
+                            </div>
                         </div>
-
+                    </div>
+                    <div class="link-list area">
+                        <ul style="padding-left: 0;">
+                            <li><a href="">Thông tin cá nhân</a></li>
+                            <li><a href="">Đổi mật khẩu</a></li>
+                        </ul>
                     </div>
                 </div>
             </div>
 
-            <form class="px-4 py-4" method="POST" action="" enctype="multipart/form-data" id="update-user-form">
-                @csrf
-                @method('PUT')
+            <div class="col-md-9">
+                <div class="section">
+                    <div class="section-header">
+                        <h2 class="section-title">Hồ sơ cá nhân</h2>
+                    </div>
 
-                {{-- <div class="form-group">
-                    <label for="" class="form-label mt-4">Avatar</label>
-                    <input class="form-control" type="file" name="avatar">
-                </div> --}}
+                    <form method="POST" enctype="multipart/form-data" id="update-user-form">
+                        @csrf
+                        @method('PUT')
 
-                {{-- FILEPOND TEST --}}
-                <div style="width: 150px; height: 150px;" class="me-3">
-                    <input type="file" class="filepond" name="image" id="image"
-                        accept="image/png, image/jpeg, image/gif" />
+                        {{-- FILEPOND TEST --}}
+                        {{-- <div style="width: 150px; height: 150px;" class="me-3">
+                            <input type="file" class="filepond" name="image" id="image"
+                                accept="image/png, image/jpeg, image/gif" />
+                        </div> --}}
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" name="name" placeholder="Họ và tên"
+                                        value="{{ $user->name }}">
+                                    <label for="name">Họ và tên</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="tel" class="form-control" name="phone" placeholder="Số điện thoại"
+                                        value="{{ $user->phone }}">
+                                    <label for="phone" class="form-label">Số điện thoại</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-floating">
+                                    <input type="email" class="form-control" name="email" value="{{ $user->email }}"
+                                        disabled>
+                                    <label for="email">Email</label>
+                                    <small class="form-text text-muted d-block mt-2">Email sử dụng để đăng nhập tài
+                                        khoản.</small>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" name="facebook" placeholder="Facebook"
+                                        value="{{ $user->facebook }}">
+                                    <label for="facebook">Facebook</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-floating">
+                                    <textarea class="form-control" name="introduction" placeholder="Viết vài dòng giới thiệu về gian hàng của bạn..."
+                                        style="height: 150px;"></textarea>
+                                    <label for="introduction">Giới thiệu</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <button type="submit" class="btn btn-primary w-25 py-3">Lưu thay đổi</button>
+                            </div>
+                        </div>
+
+                    </form>
                 </div>
-
-
-                <div class="form-group">
-                    <label for="exampleInputEmail1" class="form-label mt-4">Name</label>
-                    <input type="text" class="form-control" name="name" value="{{ $user->name }}">
-                </div>
-
-                <div class="form-group">
-                    <label for="exampleInputEmail1" class="form-label mt-4">Email address</label>
-                    <input type="email" class="form-control" name="email" value="{{ $user->email }}" disabled>
-                    <small class="form-text text-muted">Email sử dụng để đăng nhập tài khoản!</small>
-                </div>
-
-                <div class="form-group">
-                    <label for="exampleInputEmail1" class="form-label mt-4">Phone</label>
-                    <input type="tel" class="form-control" name="phone" value="{{ $user->phone }}">
-                </div>
-
-                <div class="form-group">
-                    <label for="exampleInputEmail1" class="form-label mt-4">Facebook</label>
-                    <input type="text" class="form-control" name="facebook" value="{{ $user->facebook }}">
-                </div>
-
-                <a href="" class="d-block text-decoration-none mt-3">Đổi mật khẩu tài khoản</a>
-                <a href="{{ route('profile') }}" class="btn btn-primary mt-2">Cancel</a>
-
-                <button type="submit" class="btn btn-primary mt-2">Save</button>
-            </form>
+            </div>
         </div>
-    </div>
     </div>
 @endsection
 

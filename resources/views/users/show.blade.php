@@ -11,7 +11,8 @@
 
                 <nav aria-label="breadcrumb animated fadeIn">
                     <ol class="breadcrumb text-uppercase">
-                        <li class="breadcrumb-item"><a href="{{ route('profile') }}">{{ Auth::user()->name }}</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('users.show', $user->id) }}">{{ $user->name }}</a>
+                        </li>
                         <li class="breadcrumb-item text-body active" aria-current="page">Trang cá nhân</li>
                     </ol>
                 </nav>
@@ -38,7 +39,8 @@
                                     src="{{ asset('images/' . $user->avatar) }}" alt="{{ $user->name }}">
 
                                 <div>
-                                    <h3 class="card-title fs-6 mb-0"><a href="/profile">{{ $user->name }}</a></h3>
+                                    <h3 class="card-title fs-6 mb-0"><a
+                                            href="{{ route('users.show', $user->id) }}">{{ $user->name }}</a></h3>
                                     <span class="text-muted" style="font-size: 12px;">@~{{ $user->name }}</span>
                                 </div>
 
@@ -80,7 +82,8 @@
                                                 src="{{ asset('images/' . $room->picture) }}" alt=""></a> --}}
 
 
-                                        <a href=""><img class="img-fluid"
+                                        <a href="{{ route('rooms.show', ['room' => $room->id, 'slug' => $room->slug]) }}"><img
+                                                class="img-fluid"
                                                 src="{{ Vite::asset('resources/images/property-1.jpg') }}"
                                                 alt=""></a>
 
@@ -94,7 +97,7 @@
                                     </div>
 
                                     <div class="p-4 pb-0">
-                                        <h5 class="text-primary mb-3">{{ $room->price }}</h5>
+                                        <h5 class="text-primary mb-3 post-price">{{ $room->price }}</h5>
                                         <a class="d-block h5 mb-2"
                                             style="white-space: nowrap; overflow:hidden; text-overflow: ellipsis;"
                                             href="{{ route('rooms.show', ['slug' => $room->slug, 'room' => $room->id]) }}">{{ $room->title }}</a>
