@@ -4,9 +4,9 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\UpdateUserRequest;
+use App\Models\Room;
 use App\Models\TemporaryFile;
 use App\Models\User;
-use Illuminate\Contracts\Cache\Store;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
@@ -14,7 +14,12 @@ class UserProfileController extends Controller
 {
     public function show(User $user)
     {
-        return view('users.show', compact('user'));
+        $rooms = Room::where('user_id', $user->id)
+            ->orderbyDesc('hot_service')
+            ->orderbyDesc('starting_date')
+            ->paginate(6);
+
+        return view('users.show', compact('user', 'rooms'));
     }
 
     public function profile()
